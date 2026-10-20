@@ -16,7 +16,6 @@ private deployment. Changes on top of upstream:
   `YYYY.MM.DD HH:mm`), independent of the browser locale.
 - **UI** — quick-actions panel sizing, image card action menu, dotted dates,
   and hover-only image action bars.
-- **i18n scaffolding** — components call `$t()`, but only English is enabled.
 
 The project is distributed under the MIT license, see [LICENSE](LICENSE).
 

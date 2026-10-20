@@ -10,7 +10,7 @@
     flex-flow: row nowrap;
     align-items: center;
     padding: 10px 0;
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     font-weight: 600;
     list-style: none;
@@ -57,7 +57,7 @@
     margin: 0;
     padding: 0;
     color: #888;
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     font-weight: 600;
 }

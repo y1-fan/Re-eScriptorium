@@ -9,7 +9,7 @@
             class="tools"
         >
             <i
-                title="Visual Transcription Panel"
+                :title="$t('Visual Transcription Panel')"
                 class="panel-icon fas fa-language"
             />
 
@@ -17,7 +17,7 @@
                 <button
                     id="font-smaller"
                     ref="font-smaller"
-                    title="Smaller font"
+                    :title="$t('Smaller font')"
                     class="btn btn-sm btn-info ml-3 fas fa-minus"
                     autocomplete="off"
                     @click="smallerFont"
@@ -25,7 +25,7 @@
                 <button
                     id="font-larger"
                     ref="font-larger"
-                    title="Larger font"
+                    :title="$t('Larger font')"
                     class="btn btn-sm btn-info fas fa-plus"
                     autocomplete="off"
                     @click="largerFont"
@@ -42,7 +42,7 @@
                 min="1"
                 max="10"
                 step="0.1"
-                title="Scale the color range for average confidence visualizations"
+                :title="$t('Scale the color range for average confidence visualizations')"
                 @input="changeConfidenceScale"
             >
         </div>
@@ -80,7 +80,7 @@
                                 </template>
                             </ToggleButton>
                             <template #popper>
-                                Confidence visualization
+                                {{ $t("Confidence visualization") }}
                             </template>
                         </VDropdown>
                         <VDropdown
@@ -104,7 +104,7 @@
                             </EscrButton>
                             <template #popper>
                                 <div class="confidence-scale">
-                                    <h3>Confidence range scale</h3>
+                                    <h3>{{ $t("Confidence range scale") }}</h3>
                                     <input
                                         id="confidence-range"
                                         type="range"
@@ -116,7 +116,7 @@
                                         @input="changeConfidenceScale"
                                     >
                                     <span class="small">
-                                        Scale the color range for average confidence visualizations
+                                        {{ $t("Scale the color range for average confidence visualizations") }}
                                     </span>
                                 </div>
                             </template>

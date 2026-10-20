@@ -15,6 +15,19 @@
                                 {{ documentName }}
                             </h1>
                             <div class="escr-card-actions">
+                                <EscrButton
+                                    class="escr-note-button"
+                                    color="text"
+                                    size="small"
+                                    :aria-label="$t('Note')"
+                                    :title="$t('Note')"
+                                    :on-click="openNoteModal"
+                                    :disabled="loading && loading.document"
+                                >
+                                    <template #button-icon>
+                                        <NoteIcon />
+                                    </template>
+                                </EscrButton>
                                 <VerticalMenu
                                     :is-open="documentMenuOpen"
                                     :close-menu="closeDocumentMenu"
@@ -33,17 +46,33 @@
                                     :scripts="scripts"
                                     :tags="allDocumentTags"
                                 />
+                                <NoteModal
+                                    v-if="noteModalOpen"
+                                    :disabled="noteSaving"
+                                    :note="documentNote"
+                                    :on-cancel="closeNoteModal"
+                                    :on-save="saveNote"
+                                    :title="$t('Document note')"
+                                />
+                                <NoteModal
+                                    v-if="partNoteModalOpen"
+                                    :disabled="partNoteSaving"
+                                    :note="(partNoteTarget && partNoteTarget.note) || ''"
+                                    :on-cancel="closePartNoteModal"
+                                    :on-save="savePartNote"
+                                    :title="$t('Image note')"
+                                />
                             </div>
                         </div>
                         <span class="escr-document-metadata">
-                            Main script: {{ mainScript }}
+                            {{ $t("Main script: {script}", { script: mainScript || "—" }) }}
                         </span>
                     </div>
 
                     <!-- Document tags card -->
                     <div class="escr-card escr-card-padding escr-document-tags">
                         <div class="escr-card-header">
-                            <h2>Tags</h2>
+                            <h2>{{ $t("Tags") }}</h2>
                         </div>
                         <EscrTags
                             v-if="tags && tags.length"
@@ -53,19 +82,17 @@
                         <EscrLoader
                             v-else
                             :loading="loading && loading.document"
-                            no-data-message="This document does not have any tags. You can add tags
-                                using the Edit form, accessible from the dropdown menu in the above
-                                panel (to the right of the document title)."
+                            :no-data-message="$t('This document does not have any tags. You can add tags using the Edit form, accessible from the dropdown menu in the above panel (to the right of the document title).')"
                         />
                     </div>
 
                     <!-- Document tasks card -->
                     <div class="escr-card escr-card-table escr-document-tasks">
                         <div class="escr-card-header">
-                            <h2>Tasks</h2>
+                            <h2>{{ $t("Tasks") }}</h2>
                             <div class="escr-card-actions">
                                 <EscrButton
-                                    label="View All"
+                                    :label="$t('View All')"
                                     size="small"
                                     :on-click="() => navigateToTasks()"
                                     :disabled="loading && loading.tasks"
@@ -85,17 +112,17 @@
                         <EscrLoader
                             v-else
                             :loading="loading && loading.tasks"
-                            no-data-message="There are no tasks to display."
+                            :no-data-message="$t('There are no tasks to display.')"
                         />
                     </div>
 
                     <!-- Document images list -->
                     <div class="escr-card escr-card-table escr-document-images">
                         <div class="escr-card-header">
-                            <h2>Your Recent Images</h2>
+                            <h2>{{ $t("Your Recent Images") }}</h2>
                             <div class="escr-card-actions">
                                 <EscrButton
-                                    label="View All"
+                                    :label="$t('View All')"
                                     size="small"
                                     :on-click="() => navigateToImages()"
                                     :disabled="loading && loading.parts"
@@ -115,21 +142,37 @@
                                 :headers="partsHeaders"
                                 item-key="pk"
                                 linkable
-                            />
+                            >
+                                <template #actions="{ item }">
+                                    <EscrButton
+                                        v-tooltip.bottom="$t('Note')"
+                                        class="escr-note-button"
+                                        size="small"
+                                        color="text"
+                                            :on-click="() => openPartNoteModal(item)"
+                                        :disabled="loading && loading.parts"
+                                        :aria-label="$t('Note')"
+                                    >
+                                        <template #button-icon>
+                                            <NoteIcon />
+                                        </template>
+                                    </EscrButton>
+                                </template>
+                            </EscrTable>
                         </div>
                         <EscrLoader
                             v-else
                             :loading="loading && loading.parts"
-                            no-data-message="There are no images to display"
+                            :no-data-message="$t('There are no images to display')"
                         />
                     </div>
                 </div>
                 <div class="escr-doc-right-grid">
                     <!-- transcription picker -->
                     <div class="doc-stats-header">
-                        <h2>Document Statistics</h2>
+                        <h2>{{ $t("Document Statistics") }}</h2>
                         <div>
-                            <h3>View:</h3>
+                            <h3>{{ $t("View:") }}</h3>
                             <EscrDropdown
                                 :options="transcriptionLevels"
                                 :on-change="selectTranscription"
@@ -140,7 +183,7 @@
                     <!-- Document total images card -->
                     <div class="escr-card escr-card-padding images-stats">
                         <div class="escr-card-header">
-                            <h2>Total Images</h2>
+                            <h2>{{ $t("Total Images") }}</h2>
                         </div>
                         <span class="escr-stat">
                             {{
@@ -153,7 +196,7 @@
                     <!-- Document total lines card -->
                     <div class="escr-card escr-card-padding lines-stats">
                         <div class="escr-card-header">
-                            <h2>Total Lines</h2>
+                            <h2>{{ $t("Total Lines") }}</h2>
                         </div>
                         <EscrLoader
                             v-if="!lineCount ||
@@ -173,7 +216,7 @@
                     <!-- Document total characters card -->
                     <div class="escr-card escr-card-padding chars-stats">
                         <div class="escr-card-header">
-                            <h2>Total Characters</h2>
+                            <h2>{{ $t("Total Characters") }}</h2>
                         </div>
                         <EscrLoader
                             v-if="!charCount ||
@@ -192,9 +235,9 @@
                     </div>
                     <!-- Document transcription status card -->
                     <div class="escr-card escr-card-padding transcription-status">
-                        <h2>Transcription Status</h2>
+                        <h2>{{ $t("Transcription Status") }}</h2>
                         <dl>
-                            <dt>Confidence</dt>
+                            <dt>{{ $t("Confidence") }}</dt>
                             <dd>{{ transcriptionConfidence }}</dd>
                         </dl>
                     </div>
@@ -219,9 +262,9 @@
                 <!-- delete document modal -->
                 <ConfirmModal
                     v-if="deleteModalOpen"
-                    body-text="Are you sure you want to delete this document?"
-                    confirm-verb="Delete"
-                    title="Delete Document"
+                    :body-text="$t('Are you sure you want to delete this document?')"
+                    :confirm-verb="$t('Delete')"
+                    :title="$t('Delete Document')"
                     :cannot-undo="true"
                     :disabled="loading && loading.document"
                     :on-cancel="closeDeleteModal"
@@ -245,11 +288,10 @@
                 <!-- cancel image uploads modal -->
                 <ConfirmModal
                     v-if="taskModalOpen && taskModalOpen.imageCancelWarning"
-                    :body-text="'Uploads are still in progress. Are you sure you want ' +
-                        'to cancel? Incomplete uploads may be lost.'"
-                    title="Cancel Upload In Progress"
-                    cancel-verb="No"
-                    confirm-verb="Yes, cancel"
+                    :body-text="$t('Uploads are still in progress. Are you sure you want to cancel? Incomplete uploads may be lost.')"
+                    :title="$t('Cancel Upload In Progress')"
+                    :cancel-verb="$t('No')"
+                    :confirm-verb="$t('Yes, cancel')"
                     :disabled="loading && loading.document"
                     :on-cancel="() => closeTaskModal('imageCancelWarning')"
                     :on-confirm="confirmImageCancelWarning"
@@ -277,10 +319,9 @@
                 <!-- overwrite segmentation modal -->
                 <ConfirmModal
                     v-if="taskModalOpen && taskModalOpen.overwriteWarning"
-                    :body-text="'Are you sure you want to continue? Re-segmenting will delete ' +
-                        'any existing transcriptions.'"
-                    title="Overwrite Existing Segmentation and Transcriptions"
-                    confirm-verb="Continue"
+                    :body-text="$t('Are you sure you want to continue? Re-segmenting will delete any existing transcriptions.')"
+                    :title="$t('Overwrite Existing Segmentation and Transcriptions')"
+                    :confirm-verb="$t('Continue')"
                     :disabled="loading && loading.document"
                     :cannot-undo="true"
                     :on-cancel="() => closeTaskModal('overwriteWarning')"
@@ -320,10 +361,10 @@
                 <!-- cancel task modal -->
                 <ConfirmModal
                     v-if="taskModalOpen && taskModalOpen.cancelWarning"
-                    :body-text="'Are you sure you want to cancel this task?'"
-                    title="Cancel Task"
-                    confirm-verb="Yes"
-                    cancel-verb="No"
+                    :body-text="$t('Are you sure you want to cancel this task?')"
+                    :title="$t('Cancel Task')"
+                    :confirm-verb="$t('Yes')"
+                    :cancel-verb="$t('No')"
                     :cannot-undo="false"
                     :disabled="loading && loading.tasks"
                     :on-cancel="() => closeTaskModal('cancelWarning')"
@@ -352,6 +393,7 @@ import EscrTable from "../../components/Table/Table.vue";
 import ImportModal from "../../components/ImportModal/ImportModal.vue";
 import ModelsIcon from "../../components/Icons/ModelsIcon/ModelsIcon.vue";
 import ModelsPanel from "../../components/ModelsPanel/ModelsPanel.vue";
+import NoteModal from "../../components/NoteModal/NoteModal.vue";
 import OntologyCard from "../../components/OntologyCard/OntologyCard.vue";
 import PencilIcon from "../../components/Icons/PencilIcon/PencilIcon.vue";
 import PeopleIcon from "../../components/Icons/PeopleIcon/PeopleIcon.vue";
@@ -366,8 +408,12 @@ import ToolsIcon from "../../components/Icons/ToolsIcon/ToolsIcon.vue";
 import TrashIcon from "../../components/Icons/TrashIcon/TrashIcon.vue";
 import TranscribeModal from "../../components/TranscribeModal/TranscribeModal.vue";
 import VerticalMenu from "../../components/VerticalMenu/VerticalMenu.vue";
+import NoteIcon from "../../components/Icons/NoteIcon/NoteIcon.vue";
+import { updateDocumentNote } from "../../../src/api/document";
+import { updatePart } from "../../../src/api/documentPart";
 import "../../components/Common/Card.css"
 import "./Document.css";
+import { formatDate } from "../../util/dates";
 
 export default {
     name: "EscrDocumentDashboard",
@@ -390,6 +436,7 @@ export default {
         ModelsIcon,
         // eslint-disable-next-line vue/no-unused-components
         ModelsPanel,
+        NoteModal,
         OntologyCard,
         // eslint-disable-next-line vue/no-unused-components
         PeopleIcon,
@@ -412,6 +459,7 @@ export default {
         TrashIcon,
         TranscribeModal,
         VerticalMenu,
+        NoteIcon,
     },
     props: {
         /**
@@ -446,6 +494,11 @@ export default {
     data() {
         return {
             msgSocket: undefined,
+            noteModalOpen: false,
+            noteSaving: false,
+            partNoteModalOpen: false,
+            partNoteSaving: false,
+            partNoteTarget: null,
         };
     },
     computed: {
@@ -459,6 +512,7 @@ export default {
             documentMenuOpen: (state) => state.document.menuOpen,
             documentMetadata: (state) => state.document.metadata,
             documentName: (state) => state.document.name,
+            documentNote: (state) => state.document.note,
             deleteModalOpen: (state) => state.document.deleteModalOpen,
             editModalOpen: (state) => state.document.editModalOpen,
             groups: (state) => state.user.groups,
@@ -493,7 +547,7 @@ export default {
          * Links and titles for the breadcrumbs above the page.
          */
         breadcrumbs() {
-            let docBreadcrumbs = [{ title: "Loading..." }];
+            let docBreadcrumbs = [{ title: this.$t("Loading...") }];
             if (this.projectName && this.projectSlug && this.documentName) {
                 docBreadcrumbs = [
                     {
@@ -504,7 +558,7 @@ export default {
                 ];
             }
             return [
-                { title: "My Projects", href: "/projects" },
+                { title: this.$t("My Projects"), href: "/projects" },
                 ...docBreadcrumbs,
             ];
         },
@@ -516,13 +570,13 @@ export default {
                 {
                     icon: PencilIcon,
                     key: "edit",
-                    label: "Edit",
+                    label: this.$t("Edit"),
                     onClick: this.openEditModal,
                 },
                 {
                     icon: TrashIcon,
                     key: "delete",
-                    label: "Delete Document",
+                    label: this.$t("Delete Document"),
                     onClick: this.openDeleteModal,
                 }
             ]
@@ -532,14 +586,11 @@ export default {
          */
         partsHeaders() {
             return [
-                { label: "Name", value: "title", image: "thumbnail" },
+                { label: this.$t("Name"), value: "title", image: "thumbnail" },
                 {
-                    label: "Last Update",
+                    label: this.$t("Last Update"),
                     value: "updated_at",
-                    format: (val) => new Date(val).toLocaleDateString(
-                        undefined,
-                        { year: "numeric", month: "long", day: "numeric" },
-                    ),
+                    format: formatDate,
                 },
             ];
         },
@@ -555,7 +606,7 @@ export default {
                     },
                     icon: ToolsIcon,
                     key: "tasks",
-                    label: "Quick Actions",
+                    label: this.$t("Quick Actions"),
                     panel: QuickActionsPanel,
                 },
                 {
@@ -567,7 +618,7 @@ export default {
                     },
                     icon: PeopleIcon,
                     key: "share",
-                    label: "Groups & Users",
+                    label: this.$t("Groups & Users"),
                     panel: SharePanel,
                 },
                 {
@@ -577,7 +628,7 @@ export default {
                     },
                     icon: ModelsIcon,
                     key: "models",
-                    label: "Document Models",
+                    label: this.$t("Document Models"),
                     panel: ModelsPanel,
                 }
             ];
@@ -592,7 +643,7 @@ export default {
                     },
                     icon: SearchIcon,
                     key: "search",
-                    label: "Search Document",
+                    label: this.$t("Search Document"),
                     panel: SearchPanel,
                 });
             }
@@ -602,7 +653,7 @@ export default {
             const confidence = this.transcriptions?.find(
                 (transcription) => transcription.pk === this.selectedTranscription
             )?.avg_confidence;
-            return confidence ? `${Math.round(confidence * 100)}%` : "N/A";
+            return confidence ? `${Math.round(confidence * 100)}%` : this.$t("N/A");
         },
         transcriptionLevels() {
             return this.transcriptions.map((transcription) => ({
@@ -677,6 +728,68 @@ export default {
         ...mapActions("alerts", ["addError"]),
         ...mapActions("project", ["createNewDocumentTag"]),
         ...mapActions("user", ["fetchGroups"]),
+        openNoteModal() {
+            this.noteModalOpen = true;
+        },
+        closeNoteModal() {
+            this.noteModalOpen = false;
+        },
+        openPartNoteModal(part) {
+            this.partNoteTarget = part;
+            this.partNoteModalOpen = true;
+        },
+        closePartNoteModal() {
+            this.partNoteModalOpen = false;
+            this.partNoteTarget = null;
+        },
+        /**
+         * Persist the markdown note attached to one of this document's images.
+         */
+        async savePartNote(text) {
+            if (!this.partNoteTarget) {
+                return;
+            }
+            this.partNoteSaving = true;
+            try {
+                await updatePart(this.id, this.partNoteTarget.pk, { note: text });
+                this.$store.commit("document/updatePart", {
+                    ...this.partNoteTarget,
+                    note: text,
+                });
+                this.partNoteModalOpen = false;
+                this.partNoteTarget = null;
+                this.$store.commit("alerts/addAlert", {
+                    color: "success",
+                    message: this.$t("Note saved successfully"),
+                });
+            } catch (error) {
+                this.addError(error);
+            } finally {
+                this.partNoteSaving = false;
+            }
+        },
+        /**
+         * Persist the document's markdown note.
+         */
+        async saveNote(text) {
+            this.noteSaving = true;
+            try {
+                await updateDocumentNote({
+                    documentId: this.id,
+                    note: text,
+                });
+                this.$store.commit("document/setNote", text);
+                this.noteModalOpen = false;
+                this.$store.commit("alerts/addAlert", {
+                    color: "success",
+                    message: this.$t("Note saved successfully"),
+                });
+            } catch (error) {
+                this.addError(error);
+            } finally {
+                this.noteSaving = false;
+            }
+        },
         ...mapActions("tasks", {
             cancelTask: "cancel",
             closeTaskModal: "closeModal",
@@ -685,7 +798,7 @@ export default {
             if (this.id) {
                 window.location = `/document/${this.id}/images`;
             } else {
-                this.addError({ message: "Error navigating to the images page." });
+                this.addError({ message: this.$t("Error navigating to the images page.") });
             }
         },
         navigateToTasks() {
@@ -718,7 +831,7 @@ export default {
                 }`;
                 this.$el.style.setProperty(
                     "--transcription-font-family",
-                    `"escr-transcription-font", "Noto Sans", "Resized Arabic", sans-serif`,
+                    `"escr-transcription-font", "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", serif`,
                 );
                 if (font.line_height) {
                     this.$el.style.setProperty(

@@ -13,6 +13,7 @@ import {
     updateComponentTaxonomy,
     deleteComponentTaxonomy,
 } from "../../api";
+import { t } from "../../../vue/i18n";
 
 export const initialState = () => ({
     id: null,
@@ -199,7 +200,7 @@ export const actions = {
         const resp = await api.retrieveDocument(state.id);
         let data = resp.data;
         var valid_part_types = data.valid_part_types;
-        valid_part_types.unshift({ pk: null, name: "Element" });
+        valid_part_types.unshift({ pk: null, name: t("Element") });
 
         // store the resolved font before processing the rest of the document data
         commit("setTranscriptionFont", data.effective_transcription_font);
@@ -315,7 +316,7 @@ export const actions = {
                 }
             }
         } else if (state.editorPanels.length >= 3) {
-            dispatch("alerts/addError", "Cannot view more than three panels", {
+            dispatch("alerts/addError", t("Cannot view more than three panels"), {
                 root: true,
             });
         }
@@ -412,8 +413,8 @@ export const actions = {
                 if (data?.results) {
                     types[category] = data.results;
                 }
-                let noneType = { pk: null, name: "None" };
-                if (category === "parts") noneType.name = "Element";
+                let noneType = { pk: null, name: t("None") };
+                if (category === "parts") noneType.name = t("Element");
                 types[category] = [noneType, ...types[category]];
                 return;
             }),
@@ -431,7 +432,7 @@ export const actions = {
         } else {
             dispatch(
                 "alerts/addError",
-                "Must have at least one visible panel",
+                t("Must have at least one visible panel"),
                 {
                     root: true,
                 },

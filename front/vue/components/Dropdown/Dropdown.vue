@@ -11,7 +11,7 @@
                 disabled
                 :selected="!options || !options.some((option) => option.selected)"
             >
-                Select
+                {{ $t("Select") }}
             </option>
             <option
                 v-for="option in options"

@@ -20,7 +20,7 @@
             >
                 <EscrButton
                     color="text"
-                    :aria-label="`${getPrevOrNextString('left')} page`"
+                    :aria-label="getPrevOrNextAriaLabel('left')"
                     :on-click="() => loadPart(getPrevOrNextString('left'))"
                     :disabled="disabled || !hasPrevOrNextElement('left')"
                 >
@@ -40,7 +40,7 @@
             >
                 <EscrButton
                     color="text"
-                    :aria-label="`${getPrevOrNextString('right')} page`"
+                    :aria-label="getPrevOrNextAriaLabel('right')"
                     :on-click="() => loadPart(getPrevOrNextString('right'))"
                     :disabled="disabled || !hasPrevOrNextElement('right')"
                 >
@@ -77,7 +77,7 @@
             >
                 <EscrButton
                     color="text"
-                    aria-label="View Element Details"
+                    :aria-label="$t('View Element Details')"
                     :disabled="disabled"
                     :on-click="() => openModal('elementDetails')"
                 >
@@ -86,7 +86,7 @@
                     </template>
                 </EscrButton>
                 <template #popper>
-                    View Element Details
+                    {{ $t("View Element Details") }}
                 </template>
             </VDropdown>
             <VDropdown
@@ -97,7 +97,7 @@
             >
                 <EscrButton
                     color="text"
-                    aria-label="Manage Ontology"
+                    :aria-label="$t('Manage Ontology')"
                     :disabled="disabled"
                     :on-click="() => openModal('ontology')"
                 >
@@ -106,7 +106,7 @@
                     </template>
                 </EscrButton>
                 <template #popper>
-                    Ontology
+                    {{ $t("Ontology") }}
                 </template>
             </VDropdown>
             <VDropdown
@@ -117,7 +117,7 @@
             >
                 <EscrButton
                     color="text"
-                    aria-label="Manage Transcriptions"
+                    :aria-label="$t('Manage Transcriptions')"
                     :disabled="disabled"
                     :on-click="() => openModal('transcriptions')"
                 >
@@ -126,7 +126,7 @@
                     </template>
                 </EscrButton>
                 <template #popper>
-                    Transcriptions
+                    {{ $t("Transcriptions") }}
                 </template>
             </VDropdown>
         </div>
@@ -181,10 +181,10 @@ export default {
             readDirection: (state) => state.document.readDirection,
         }),
         breadcrumbs() {
-            let breadcrumbs = [{ title: "Loading..." }];
+            let breadcrumbs = [{ title: this.$t("Loading...") }];
             if (this.projectName && this.projectSlug && this.documentName && this.documentId) {
                 breadcrumbs = [
-                    { title: "My Projects", href: "/projects" },
+                    { title: this.$t("My Projects"), href: "/projects" },
                     {
                         title: this.projectName,
                         href: `/project/${this.projectSlug}`
@@ -194,7 +194,7 @@ export default {
                         href: `/document/${this.documentId}`
                     },
                     {
-                        title: "Images",
+                        title: this.$t("Images"),
                         // include select=pk to select the image being edited in the list
                         href: `/document/${this.documentId}/images${
                             this.elementPk ? "?select=" + this.elementPk : ""
@@ -203,7 +203,7 @@ export default {
                     {
                         title: this.elementTitle
                             ? (this.elementTitle.length > 60 ? this.elementTitle.slice(0, 60) + "…" : this.elementTitle)
-                            : "Loading...",
+                            : this.$t("Loading..."),
                     },
                 ];
             }
@@ -212,10 +212,10 @@ export default {
         elementHeadingFull() {
             return (this.elementTitle && this.elementFilename)
                 ? `${this.elementTitle} – ${this.elementFilename}`
-                : "Loading...";
+                : this.$t("Loading...");
         },
         elementHeading() {
-            if (!this.elementTitle || !this.elementFilename) return "Loading...";
+            if (!this.elementTitle || !this.elementFilename) return this.$t("Loading...");
             const full = `${this.elementTitle} – ${this.elementFilename}`;
             return full.length > 60 ? full.slice(0, 60) + "…" : full;
         },
@@ -242,17 +242,22 @@ export default {
                 return this.readDirection === "rtl" ? "previous" : "next";
             }
         },
+        getPrevOrNextAriaLabel(direction) {
+            return this.getPrevOrNextString(direction) === "next"
+                ? this.$t("Next page")
+                : this.$t("Previous page");
+        },
         getPrevOrNextTooltip(direction) {
             if (direction === "left") {
                 // left = next in RTL, previous in LTR
                 return this.readDirection === "rtl"
-                    ? "Next Element (PgDn)"
-                    : "Previous Element (PgUp)";
+                    ? this.$t("Next Element (PgDn)")
+                    : this.$t("Previous Element (PgUp)");
             } else {
                 // right = previous in RTL, next in LTR
                 return this.readDirection === "rtl"
-                    ? "Previous Element (PgUp)"
-                    : "Next Element (PgDn)";
+                    ? this.$t("Previous Element (PgUp)")
+                    : this.$t("Next Element (PgDn)");
             }
         },
         submitNavigation(e) {

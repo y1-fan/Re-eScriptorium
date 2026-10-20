@@ -1,3 +1,5 @@
+import { t } from "../../i18n";
+
 // initial state
 const state = () => ({
     /**
@@ -30,7 +32,7 @@ const actions = {
             if (typeof err === "string" || err instanceof String) {
                 commit("addAlert", {
                     color: "alert",
-                    message: `Error: ${err}`,
+                    message: t("Error: {message}", { message: err }),
                 });
             } else {
                 Object.entries(err || {}).forEach(
@@ -38,12 +40,17 @@ const actions = {
                         if (key === "non_field_errors") {
                             commit("addAlert", {
                                 color: "alert",
-                                message: `Error: ${value}`,
+                                message: t("Error: {message}", {
+                                    message: value,
+                                }),
                             });
                         } else {
                             commit("addAlert", {
                                 color: "alert",
-                                message: `Error for field ${key}: ${value}`,
+                                message: t(
+                                    "Error for field {field}: {message}",
+                                    { field: key, message: value },
+                                ),
                             });
                         }
                     },

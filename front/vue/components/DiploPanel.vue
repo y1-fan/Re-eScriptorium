@@ -8,19 +8,19 @@
             class="tools"
         >
             <i
-                title="Text Panel"
+                :title="$t('Text Panel')"
                 class="panel-icon fas fa-list-ol"
             />
             <i
                 id="save-notif"
                 ref="saveNotif"
-                title="There is content waiting to be saved (don't leave the page)"
+                :title="$t('There is content waiting to be saved (don\'t leave the page)')"
                 class="notice fas fa-save hide"
             />
             <button
                 id="sortMode"
                 ref="sortMode"
-                title="Toggle sorting mode."
+                :title="$t('Toggle sorting mode.')"
                 class="btn btn-sm ml-3 btn-info fas fa-sort"
                 autocomplete="off"
                 :disabled="isVKEnabled"
@@ -30,7 +30,7 @@
             <button
                 class="btn btn-sm ml-2"
                 :class="{'btn-info': isVKEnabled, 'btn-outline-info': !isVKEnabled}"
-                title="Toggle Virtual Keyboard for this document."
+                :title="$t('Toggle Virtual Keyboard for this document.')"
                 @click="toggleVK"
             >
                 <i class="fas fa-keyboard" />
@@ -87,7 +87,7 @@
                             </template>
                         </ToggleButton>
                         <template #popper>
-                            Line ordering mode
+                            {{ $t("Line ordering mode") }}
                         </template>
                     </VDropdown>
 
@@ -110,14 +110,14 @@
                             </template>
                         </ToggleButton>
                         <template #popper>
-                            Show/hide regions
+                            {{ $t("Show/hide regions") }}
                         </template>
                     </VDropdown>
 
                     <i
                         id="save-notif"
                         ref="saveNotif"
-                        title="There is content waiting to be saved (don't leave the page)"
+                        :title="$t('There is content waiting to be saved (don\'t leave the page)')"
                         class="notice fas fa-save hide new-section"
                     />
 
@@ -139,7 +139,7 @@
                                 </template>
                             </ToggleButton>
                             <template #popper>
-                                Virtual keyboard
+                                {{ $t("Virtual keyboard") }}
                             </template>
                         </VDropdown>
                     </div>
@@ -245,7 +245,7 @@
                     @dragstart="(e) => handleRegionDragStart(e, region)"
                     @dragend="handleRegionDragEnd"
                 >
-                    <span>{{ region.type || "Region (no type)" }}</span>
+                    <span>{{ region.type || $t("Region (no type)") }}</span>
                     <ChevronDownIcon aria-hidden="true" />
                 </summary>
                 <ol
@@ -783,7 +783,7 @@ export default {
                         line.setAttribute("title", "");
                     } else if (i >= this.allLines.length) {
                         line.classList.add("alert-danger");
-                        line.setAttribute("title", "Line not present in segmentation");
+                        line.setAttribute("title", this.$t("Line not present in segmentation"));
                     }
                 }
             } else {
@@ -809,7 +809,7 @@ export default {
                             line.remove();
                         } else {
                             line.classList.add("alert-danger");
-                            line.setAttribute("title", "Line not present in segmentation");
+                            line.setAttribute("title", this.$t("Line not present in segmentation"));
                         }
                     }
                 }

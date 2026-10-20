@@ -7,25 +7,25 @@
             <thead>
                 <tr>
                     <th class="name-column">
-                        <div><span>Name</span></div>
+                        <div><span>{{ $t("Name") }}</span></div>
                     </th>
                     <th>
-                        <div><span>Button Text</span></div>
+                        <div><span>{{ $t("Button Text") }}</span></div>
                     </th>
                     <th>
-                        <div><span>Components</span></div>
+                        <div><span>{{ $t("Components") }}</span></div>
                     </th>
                     <th>
-                        <div><span>Type</span></div>
+                        <div><span>{{ $t("Type") }}</span></div>
                     </th>
                     <th>
-                        <div><span>Marker Type</span></div>
+                        <div><span>{{ $t("Marker Type") }}</span></div>
                     </th>
                     <th class="color-column">
-                        <div><span>Color</span></div>
+                        <div><span>{{ $t("Color") }}</span></div>
                     </th>
                     <th class="comments-column">
-                        <div><span>Comments</span></div>
+                        <div><span>{{ $t("Comments") }}</span></div>
                     </th>
                     <th class="remove-column" />
                 </tr>
@@ -76,8 +76,10 @@
                                 size="small"
                                 color="text"
                                 :label="(item.components && item.components.length)
-                                    ? `${item.components.length} selected`
-                                    : 'Components'"
+                                    ? $t('{count} selected', {
+                                        count: item.components.length
+                                    })
+                                    : $t('Components')"
                             >
                                 <template #button-icon-right>
                                     <ChevronDownIcon />
@@ -127,15 +129,15 @@
                                         v-else
                                         class="escr-no-components"
                                     >
-                                        <span>No Components</span>
-                                        <small>Click "Add New" to add</small>
+                                        <span>{{ $t("No Components") }}</span>
+                                        <small>{{ $t('Click "Add New" to add') }}</small>
                                     </div>
                                 </div>
                                 <div>
                                     <EscrButton
                                         size="small"
                                         color="text"
-                                        label="Add New"
+                                        :label="$t('Add New')"
                                         :on-click="openAddComponentModal"
                                     >
                                         <template #button-icon>
@@ -158,7 +160,7 @@
                     <!-- marker type -->
                     <td>
                         <DropdownField
-                            label="Marker type"
+                            :label="$t('Marker type')"
                             :disabled="disabled"
                             :options="getMarkerTypeOptions(item)"
                             :on-change="(e) => onChange(e, 'marker_type', item)"
@@ -172,7 +174,7 @@
                         <input
                             type="color"
                             class="escr-color-button"
-                            aria-label="select color"
+                            :aria-label="$t('select color')"
                             :disabled="disabled"
                             :value="item.marker_detail"
                             @focusout="(e) => onChange(e, 'marker_detail', item)"
@@ -216,7 +218,11 @@
             class="escr-add-component"
         >
             <template #modal-header>
-                <h2>{{ editComponentMode === 'add' ? "Add New" : "Edit" }} Component</h2>
+                <h2>
+                    {{ editComponentMode === "add"
+                        ? $t("Add New Component")
+                        : $t("Edit Component") }}
+                </h2>
                 <EscrButton
                     color="text"
                     :on-click="closeAddComponentModal"
@@ -229,8 +235,8 @@
             </template>
             <template #modal-content>
                 <TextField
-                    label="Name"
-                    placeholder="Name"
+                    :label="$t('Name')"
+                    :placeholder="$t('Name')"
                     :disabled="disabled"
                     :on-input="(e) => handleGenericInput({
                         form: 'addComponent', field: 'name', value: e.target.value
@@ -240,9 +246,9 @@
                     required
                 />
                 <TextField
-                    help-text="Comma-separated list of accepted values for this component"
-                    label="Allowed Values"
-                    placeholder="Allowed Values"
+                    :help-text="$t('Comma-separated list of accepted values for this component')"
+                    :label="$t('Allowed Values')"
+                    :placeholder="$t('Allowed Values')"
                     :disabled="disabled"
                     :on-input="(e) => handleGenericInput({
                         form: 'addComponent', field: 'values', value: e.target.value
@@ -253,13 +259,13 @@
             <template #modal-actions>
                 <EscrButton
                     color="outline-primary"
-                    label="Cancel"
+                    :label="$t('Cancel')"
                     :disabled="disabled"
                     :on-click="closeAddComponentModal"
                 />
                 <EscrButton
                     color="primary"
-                    :label="editComponentMode === 'add' ? 'Add' : 'Save'"
+                    :label="editComponentMode === 'add' ? $t('Add') : $t('Save')"
                     :disabled="disabled"
                     :on-click="editComponentMode === 'add' ? onAddComponent : onUpdateComponent"
                 />
@@ -267,9 +273,11 @@
         </EscrModal>
         <ConfirmModal
             v-if="confirmDeleteComponentModalOpen"
-            :body-text="`Are you sure you want to delete ${componentToDelete.name}?`"
-            confirm-verb="Delete"
-            title="Delete Component"
+            :body-text="$t('Are you sure you want to delete {name}?', {
+                name: componentToDelete.name
+            })"
+            :confirm-verb="$t('Delete')"
+            :title="$t('Delete Component')"
             :cannot-undo="true"
             :disabled="disabled"
             :on-cancel="closeConfirmDeleteComponent"
@@ -382,27 +390,37 @@ export default {
             if (this.tab === "text") {
                 return [
                     {
-                        label: "Background Color",
+                        label: this.$t("Background Color"),
                         value: "Background Color",
                         selected: item.marker_type === "Background Color",
                     },
                     {
-                        label: "Text Color",
+                        label: this.$t("Text Color"),
                         value: "Text Color",
                         selected: item.marker_type === "Text Color",
                     },
-                    { label: "Bold", value: "Bold", selected: item.marker_type === "Bold" },
-                    { label: "Italic", value: "Italic", selected: item.marker_type === "Italic" },
+                    {
+                        label: this.$t("Bold"),
+                        value: "Bold",
+                        selected: item.marker_type === "Bold",
+                    },
+                    {
+                        label: this.$t("Italic"),
+                        value: "Italic",
+                        selected: item.marker_type === "Italic",
+                    },
                 ];
             } else if (this.tab === "image") {
                 return [
                     {
-                        label: "Rectangle",
+                        label: this.$t("Rectangle"),
                         value: "Rectangle",
                         selected: item.marker_type === "Rectangle"
                     },
                     {
-                        label: "Polygon", value: "Polygon", selected: item.marker_type === "Polygon"
+                        label: this.$t("Polygon"),
+                        value: "Polygon",
+                        selected: item.marker_type === "Polygon"
                     },
                 ];
             }

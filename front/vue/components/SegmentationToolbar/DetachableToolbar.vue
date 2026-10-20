@@ -33,7 +33,7 @@
                 </template>
             </ToggleButton>
             <template #popper>
-                Add lines (A)
+                {{ $t("Add lines (A)") }}
             </template>
         </VDropdown>
         <template v-if="displayMode === 'regions'">
@@ -56,7 +56,7 @@
                     </template>
                 </ToggleButton>
                 <template #popper>
-                    Toggle region labels
+                    {{ $t("Toggle region labels") }}
                 </template>
             </VDropdown>
             <!-- add region tool -->
@@ -78,7 +78,7 @@
                     </template>
                 </ToggleButton>
                 <template #popper>
-                    Add region (A)
+                    {{ $t("Add region (A)") }}
                 </template>
             </VDropdown>
         </template>
@@ -100,7 +100,7 @@
                 </template>
             </ToggleButton>
             <template #popper>
-                Cut (C)
+                {{ $t("Cut (C)") }}
             </template>
         </VDropdown>
 
@@ -119,7 +119,7 @@
             >
                 <EscrButton
                     color="text"
-                    aria-label="Link selected lines to the first detected background region (Y)"
+                    :aria-label="$t('Link selected lines to the first detected background region (Y)')"
                     :on-click="onLink"
                     :disabled="disabled"
                 >
@@ -129,7 +129,7 @@
                 </EscrButton>
                 <template #popper>
                     <div class="escr-toolbar-tooltip">
-                        Link selected lines to the first detected background region (Y)
+                        {{ $t("Link selected lines to the first detected background region (Y)") }}
                     </div>
                 </template>
             </VDropdown>
@@ -142,7 +142,7 @@
             >
                 <EscrButton
                     color="text"
-                    aria-label="Unlink selected lines from region (U)"
+                    :aria-label="$t('Unlink selected lines from region (U)')"
                     :on-click="onUnlink"
                     :disabled="disabled"
                 >
@@ -152,7 +152,7 @@
                 </EscrButton>
                 <template #popper>
                     <div class="escr-toolbar-tooltip">
-                        Unlink selected lines from region (U)
+                        {{ $t("Unlink selected lines from region (U)") }}
                     </div>
                 </template>
             </VDropdown>
@@ -166,7 +166,7 @@
                 :triggers="['hover']"
             >
                 <EscrButton
-                    aria-label="Join selected lines"
+                    :aria-label="$t('Join selected lines')"
                     color="text"
                     :on-click="onJoin"
                     :disabled="disabled"
@@ -176,7 +176,7 @@
                     </template>
                 </EscrButton>
                 <template #popper>
-                    Join selected lines (J)
+                    {{ $t("Join selected lines (J)") }}
                 </template>
             </VDropdown>
 
@@ -189,7 +189,7 @@
                 :triggers="['hover']"
             >
                 <EscrButton
-                    aria-label="Reverse selected lines"
+                    :aria-label="$t('Reverse selected lines')"
                     color="text"
                     :on-click="onReverse"
                     :disabled="disabled"
@@ -199,7 +199,7 @@
                     </template>
                 </EscrButton>
                 <template #popper>
-                    Reverse selected lines (I)
+                    {{ $t("Reverse selected lines (I)") }}
                 </template>
             </VDropdown>
 
@@ -222,7 +222,7 @@
                     @apply-hide="closeTypeMenu"
                 >
                     <EscrButton
-                        aria-label="Change type"
+                        :aria-label="$t('Change type')"
                         color="text"
                         :on-click="openTypeMenu"
                         :disabled="disabled"
@@ -258,9 +258,7 @@
                     </template>
                 </VMenu>
                 <template #popper>
-                    Set type of selected {{
-                        displayMode === "masks" ? "lines" : displayMode
-                    }} (T)
+                    {{ $t("Set type of selected {type} (T)", { type: displayModeLabel }) }}
                 </template>
             </VDropdown>
         </div>
@@ -288,7 +286,7 @@
                 >
                     <EscrButton
                         id="escr-delete-dropdown-button"
-                        aria-label="Delete lines/regions/points"
+                        :aria-label="$t('Delete lines/regions/points')"
                         color="text"
                         :on-click="openDeleteMenu"
                         :disabled="disabled"
@@ -308,7 +306,7 @@
                                     :disabled="disabled"
                                     @mousedown="() => clickDelete(true)"
                                 >
-                                    <span>Delete selected points (Ctrl Del)</span>
+                                    <span>{{ $t("Delete selected points (Ctrl Del)") }}</span>
                                 </button>
                             </li>
                             <li>
@@ -317,11 +315,9 @@
                                     @mousedown="() => clickDelete(false)"
                                 >
                                     <span>
-                                        Delete all selected {{
-                                            displayMode === "masks"
-                                                ? "lines"
-                                                : displayMode
-                                        }} (Del)
+                                        {{ $t("Delete all selected {type} (Del)", {
+                                            type: displayModeLabel,
+                                        }) }}
                                     </span>
                                 </button>
                             </li>
@@ -329,7 +325,7 @@
                     </template>
                 </VMenu>
                 <template #popper>
-                    Delete selection
+                    {{ $t("Delete selection") }}
                 </template>
             </VDropdown>
         </div>
@@ -352,7 +348,7 @@
                 </template>
             </EscrButton>
             <template #popper>
-                Detach toolbar
+                {{ $t("Detach toolbar") }}
             </template>
         </VDropdown>
         <div
@@ -457,6 +453,12 @@ export default {
             lineTypes: (state) => state.document.types.lines,
             regionTypes: (state) => state.document.types.regions,
         }),
+        /**
+         * Label for the current display mode, used in tooltips
+         */
+        displayModeLabel() {
+            return this.displayMode === "regions" ? this.$t("regions") : this.$t("lines");
+        },
         /**
          * Current available types with "None" appended at the beginning
          */

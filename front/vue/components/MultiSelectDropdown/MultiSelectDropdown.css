@@ -16,7 +16,7 @@
     border-radius: 4px;
     background-color: transparent;
     color: var(--primary);
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
@@ -43,7 +43,7 @@
     border-radius: 4px;
     min-height: 32px;
     background-color: var(--background);
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -117,7 +117,7 @@
     padding: 6px 12px;
     border: 1px solid var(--border-light, #e5e7eb);
     border-radius: 4px;
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     color: var(--text1);
     background-color: var(--background);
@@ -140,7 +140,7 @@
     align-items: center;
     gap: 10px;
     padding: 8px 12px;
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     color: var(--text1);
     cursor: pointer;
@@ -164,7 +164,7 @@
     padding: 12px 15px;
     text-align: center;
     color: var(--text2);
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     font-style: italic;
 }

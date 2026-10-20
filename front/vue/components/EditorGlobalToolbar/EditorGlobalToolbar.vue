@@ -24,7 +24,7 @@
                     </template>
                 </ToggleButton>
                 <template #popper>
-                    Select (S)
+                    {{ $t("Select (S)") }}
                 </template>
             </VDropdown>
             <VDropdown
@@ -46,7 +46,7 @@
                     </template>
                 </ToggleButton>
                 <template #popper>
-                    Pan (P)
+                    {{ $t("Pan (P)") }}
                 </template>
             </VDropdown>
             <div class="new-section with-separator">
@@ -57,7 +57,7 @@
                     :triggers="['hover']"
                 >
                     <EscrButton
-                        aria-label="Zoom in"
+                        :aria-label="$t('Zoom in')"
                         color="text"
                         :on-click="onZoomIn"
                         :disabled="disabled"
@@ -67,7 +67,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Zoom in (Ctrl +)
+                        {{ $t("Zoom in (Ctrl +)") }}
                     </template>
                 </VDropdown>
                 <VDropdown
@@ -77,7 +77,7 @@
                     :triggers="['hover']"
                 >
                     <EscrButton
-                        aria-label="Zoom out"
+                        :aria-label="$t('Zoom out')"
                         color="text"
                         :on-click="onZoomOut"
                         :disabled="disabled"
@@ -87,7 +87,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Zoom out (Ctrl -)
+                        {{ $t("Zoom out (Ctrl -)") }}
                     </template>
                 </VDropdown>
                 <VDropdown
@@ -97,7 +97,7 @@
                     :triggers="['hover']"
                 >
                     <EscrButton
-                        aria-label="Reset zoom"
+                        :aria-label="$t('Reset zoom')"
                         color="text"
                         :on-click="onZoomReset"
                         :disabled="disabled"
@@ -107,7 +107,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Reset zoom (Ctrl 0)
+                        {{ $t("Reset zoom (Ctrl 0)") }}
                     </template>
                 </VDropdown>
             </div>
@@ -119,7 +119,7 @@
                     :triggers="['hover']"
                 >
                     <EscrButton
-                        aria-label="Rotate Counterclockwise"
+                        :aria-label="$t('Rotate Counterclockwise')"
                         color="text"
                         :on-click="() => onRotate(270)"
                         :disabled="disabled"
@@ -129,7 +129,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Rotate Counterclockwise (Ctrl ,)
+                        {{ $t("Rotate Counterclockwise (Ctrl ,)") }}
                     </template>
                 </VDropdown>
                 <VDropdown
@@ -139,7 +139,7 @@
                     :triggers="['hover']"
                 >
                     <EscrButton
-                        aria-label="Rotate Clockwise"
+                        :aria-label="$t('Rotate Clockwise')"
                         color="text"
                         :on-click="() => onRotate(90)"
                         :disabled="disabled"
@@ -149,7 +149,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Rotate Clockwise (Ctrl .)
+                        {{ $t("Rotate Clockwise (Ctrl .)") }}
                     </template>
                 </VDropdown>
             </div>
@@ -170,7 +170,7 @@
                     :disabled="disabled"
                     :on-click="openAddPanelMenu"
                     color="text-alt"
-                    label="Add Panel"
+                    :label="$t('Add Panel')"
                 >
                     <template #button-icon>
                         <AddPanelIcon />
@@ -187,7 +187,7 @@
                                 @mousedown="onAddEditorPanel('segmentation')"
                             >
                                 <SegmentIcon />
-                                <span>Segmentation</span>
+                                <span>{{ $t("Segmentation") }}</span>
                             </button>
                         </li>
                         <li v-if="!editorPanels.includes('visualisation')">
@@ -196,7 +196,7 @@
                                 @mousedown="onAddEditorPanel('visualisation')"
                             >
                                 <TranscribeIcon />
-                                <span>Transcription</span>
+                                <span>{{ $t("Transcription") }}</span>
                             </button>
                         </li>
                         <li v-if="!editorPanels.includes('diplomatic')">
@@ -205,7 +205,7 @@
                                 @mousedown="onAddEditorPanel('diplomatic')"
                             >
                                 <TextPanelIcon />
-                                <span>Text / Line Ordering</span>
+                                <span>{{ $t("Text / Line Ordering") }}</span>
                             </button>
                         </li>
                         <li v-if="!editorPanels.includes('source')">
@@ -214,7 +214,7 @@
                                 @mousedown="onAddEditorPanel('source')"
                             >
                                 <ImageAnnotationIcon />
-                                <span>Image Annotation</span>
+                                <span>{{ $t("Image Annotation") }}</span>
                             </button>
                         </li>
                         <li v-if="!editorPanels.includes('elements')">
@@ -223,7 +223,7 @@
                                 @mousedown="onAddEditorPanel('elements')"
                             >
                                 <TableIcon />
-                                <span>Overview</span>
+                                <span>{{ $t("Overview") }}</span>
                             </button>
                         </li>
                     </ul>

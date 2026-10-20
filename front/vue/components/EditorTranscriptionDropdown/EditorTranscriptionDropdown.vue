@@ -4,7 +4,7 @@
         :disabled="disabled"
         :options="transcriptionLayerOptions"
         :on-change="changeTranscriptionlayer"
-        label="Change the visible transcription layer"
+        :label="$t('Change the visible transcription layer')"
     />
 </template>
 <script>

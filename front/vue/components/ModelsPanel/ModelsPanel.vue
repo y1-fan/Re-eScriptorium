@@ -12,31 +12,31 @@
                 <span>{{ model.name }}</span>
                 <a
                     :href="model.file"
-                    aria-label="Download model file"
+                    :aria-label="$t('Download model file')"
                 >
                     <DownloadIcon />
                 </a>
             </summary>
             <dl>
-                <dt>Role</dt>
+                <dt>{{ $t("Role") }}</dt>
                 <dd>{{ model.job }}</dd>
-                <dt>Script</dt>
+                <dt>{{ $t("Script") }}</dt>
                 <dd>{{ model.script || "-" }}</dd>
-                <dt>Size</dt>
+                <dt>{{ $t("Size") }}</dt>
                 <dd>{{ filesize(model.file_size) }}</dd>
-                <dt>Trained from</dt>
+                <dt>{{ $t("Trained from") }}</dt>
                 <dd>{{ model.parent || "-" }}</dd>
-                <dt>Trained status</dt>
+                <dt>{{ $t("Trained status") }}</dt>
                 <dd><component :is="trainedStatusIcon(model.training)" /></dd>
-                <dt>Accuracy</dt>
+                <dt>{{ $t("Accuracy") }}</dt>
                 <dd>
                     {{ model.accuracy_percent ? `${model.accuracy_percent.toFixed(2)}%` : "-" }}
                 </dd>
-                <dt>Rights</dt>
+                <dt>{{ $t("Rights") }}</dt>
                 <dd>{{ model.rights }}</dd>
-                <dt>Sharing</dt>
+                <dt>{{ $t("Sharing") }}</dt>
                 <dd v-if="model.can_share">
-                    <a :href="`/model/${model.pk}/rights/`">Share</a>
+                    <a :href="`/model/${model.pk}/rights/`">{{ $t("Share") }}</a>
                 </dd>
                 <dd v-else>
                     -
@@ -47,7 +47,7 @@
     <EscrLoader
         v-else
         :loading="data.loading"
-        no-data-message="No models to display."
+        :no-data-message="$t('No models to display.')"
     />
 </template>
 <script>

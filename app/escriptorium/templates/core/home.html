@@ -114,7 +114,7 @@ html:not(.dark-mode) a img[src*="Light.png"] {
 
                 <h5 class="mt-4">{% trans "For Developers" %}</h5>
                 <ul class="list-unstyled">
-                    <li><a href="https://gitlab.com/scripta/escriptorium" target="_blank">{% trans "eScriptorium Application" %}</a> Version {{ VERSION_DATE }}</li>
+                <li><a href="https://gitlab.com/scripta/escriptorium" target="_blank">{% trans "eScriptorium Application" %}</a> {% trans "Version" %} {{ VERSION_DATE }}</li>
                     <li><a href="http://kraken.re/" target="_blank">{{ KRAKEN_VERSION }}</a></li>
                     <li><a href="https://gitlab.inria.fr/scripta/escriptorium/-/wikis/home" target="_blank">Wiki</a></li>
                 </ul>
@@ -135,9 +135,9 @@ html:not(.dark-mode) a img[src*="Light.png"] {
             <div class="col-4">
                 <h5>{% trans "Legal mentions" %}</h5>
                 <ul class="list-unstyled text-muted text-sm" style="font-size: 80%;">
-                    <li>Ce travail a bénéficié d'une aide de l'État gérée par l'Agence Nationale de la Recherche au titre du Programme d'Investissements d'Avenir portant la référence ANR-21-ESRE-0005.</li>
-                    <li class="mt-1">This project was partially funded through the RESILIENCE project, funded from the European Union's Horizon 2020 Framework Programme for Research and Innovation.</li>
-                    <li class="mt-1">Partially funded by a grant from The Andrew W. Mellon Foundation.</li>
+                <li>{% trans "Ce travail a bénéficié d'une aide de l'État gérée par l'Agence Nationale de la Recherche au titre du Programme d'Investissements d'Avenir portant la référence ANR-21-ESRE-0005." %}</li>
+                <li class="mt-1">{% trans "This project was partially funded through the RESILIENCE project, funded from the European Union's Horizon 2020 Framework Programme for Research and Innovation." %}</li>
+                    <li class="mt-1">{% trans "Partially funded by a grant from The Andrew W. Mellon Foundation." %}</li>
                 </ul>
             </div>
             {% if CUSTOM_HOME %}

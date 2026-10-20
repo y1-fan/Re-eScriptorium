@@ -10,7 +10,7 @@
                 @click.stop="selectAll"
                 :disabled="disabled"
             >
-                Select All
+                {{ $t("Select All") }}
             </button>
             <button
                 type="button"
@@ -18,7 +18,7 @@
                 @click.stop="clearAll"
                 :disabled="disabled"
             >
-                Clear
+                {{ $t("Clear") }}
             </button>
         </div>
         <div
@@ -49,7 +49,7 @@
                     ref="searchInput"
                     type="text"
                     v-model="searchText"
-                    placeholder="Search..."
+                    :placeholder="$t('Search...')"
                     class="escr-multiselect-search-input"
                 >
             </div>
@@ -58,7 +58,7 @@
                     v-if="filteredOptions.length === 0"
                     class="escr-multiselect-no-results"
                 >
-                    No results found
+                    {{ $t("No results found") }}
                 </div>
                 <label
                     v-for="option in filteredOptions"
@@ -105,7 +105,7 @@ export default {
          */
         placeholder: {
             type: String,
-            default: "Select items...",
+            default: "",
         },
         /**
          * List of options:
@@ -156,9 +156,9 @@ export default {
          */
         triggerText() {
             if (this.selectedCount === 0) {
-                return this.placeholder;
+                return this.placeholder || this.$t("Select items...");
             }
-            return `${this.selectedCount} selected`;
+            return this.$t("{count} selected", { count: this.selectedCount });
         },
         /**
          * Calculate dynamic spacing for dropdown when open

@@ -8,6 +8,7 @@ import {
     segmentDocument,
 } from "../../../src/api";
 import forms from "../util/initialFormState";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -87,7 +88,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Image(s) deleted successfully",
+                    message: t("Image(s) deleted successfully"),
                 },
                 { root: true },
             );
@@ -118,8 +119,8 @@ const actions = {
                 "document/setRegionTypes",
                 [
                     ...data.valid_block_types,
-                    { pk: "Undefined", name: "(Undefined region type)" },
-                    { pk: "Orphan", name: "(Orphan lines)" },
+                    { pk: "Undefined", name: t("(Undefined region type)") },
+                    { pk: "Orphan", name: t("(Orphan lines)") },
                 ],
                 { root: true },
             );
@@ -193,7 +194,7 @@ const actions = {
             }
         } else {
             commit("setLoading", { key: "document", loading: false });
-            throw new Error("Unable to retrieve document");
+            throw new Error(t("Unable to retrieve document"));
         }
         // fetch textual witnesses
         await dispatch("document/fetchTextualWitnesses", null, { root: true });
@@ -219,7 +220,7 @@ const actions = {
             });
             commit("setNextPage", data.next || "");
         } else {
-            throw new Error("Unable to retrieve additional images");
+            throw new Error(t("Unable to retrieve additional images"));
         }
     },
     /**
@@ -246,7 +247,7 @@ const actions = {
             );
             commit("setNextPage", data.next || "");
         } else {
-            throw new Error("Unable to retrieve document images");
+            throw new Error(t("Unable to retrieve document images"));
         }
     },
     /**
@@ -383,7 +384,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Redraw masks queued successfully",
+                    message: t("Redraw masks queued successfully"),
                 },
                 { root: true },
             );
@@ -434,7 +435,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Training queued successfully",
+                    message: t("Training queued successfully"),
                 },
                 { root: true },
             );

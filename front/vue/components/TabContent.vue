@@ -22,7 +22,7 @@
                     id="next-part"
                     href="#"
                     class="nav-btn nav-next"
-                    title="Next (Page Down or Ctrl+Left Arrow)"
+                    :title="$t('Next (Page Down or Ctrl+Left Arrow)')"
                     @click="getNext"
                 >
                     <i class="fas fa-angle-left" /></a>
@@ -31,7 +31,7 @@
                     id="prev-part"
                     href="#"
                     class="nav-btn nav-prev"
-                    title="Previous (Page Up or Ctrl+Right Arrow)"
+                    :title="$t('Previous (Page Up or Ctrl+Right Arrow)')"
                     @click="getPrevious"
                 >
                     <i class="fas fa-angle-left" /></a>
@@ -39,7 +39,7 @@
                     <button
                         id="zoom-reset"
                         class="btn btn-sm btn-info"
-                        title="Reset zoom. (Ctrl+Backspace)"
+                        :title="$t('Reset zoom. (Ctrl+Backspace)')"
                         @click="resetZoom"
                     >
                         <i class="fas fa-search" />
@@ -48,7 +48,7 @@
                     <button
                         id="zoom-in"
                         class="btn btn-sm btn-info mt-2"
-                        title="Zoom in. (mousewheel up)"
+                        :title="$t('Zoom in. (mousewheel up)')"
                         @click="zoomIn"
                     >
                         <i class="fa fa-search-plus" />
@@ -56,7 +56,7 @@
                     <button
                         id="zoom-out"
                         class="btn btn-sm btn-info mt-1"
-                        title="Zoom out. (mousewheel down)"
+                        :title="$t('Zoom out. (mousewheel down)')"
                         @click="zoomOut"
                     >
                         <i class="fa fa-search-minus" />
@@ -120,7 +120,7 @@
                     id="prev-part"
                     href="#"
                     class="nav-btn nav-prev"
-                    title="Previous (Page Up or Ctrl+Left Arrow)"
+                    :title="$t('Previous (Page Up or Ctrl+Left Arrow)')"
                     @click="getPrevious"
                 >
                     <i class="fas fa-angle-right" />
@@ -130,7 +130,7 @@
                     id="next-part"
                     href="#"
                     class="nav-btn nav-next"
-                    title="Next (Page Down or Ctrl+Right Arrow)"
+                    :title="$t('Next (Page Down or Ctrl+Right Arrow)')"
                     @click="getNext"
                 >
                     <i class="fas fa-angle-right" />

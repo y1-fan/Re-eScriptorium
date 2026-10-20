@@ -4,6 +4,7 @@ import {
     retrieveGroups,
     retrieveModels,
 } from "../../../src/api";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -56,7 +57,7 @@ const actions = {
     async fetchSegmentModels({ commit }) {
         let models = [];
         const { data } = await retrieveModels("segment");
-        if (!data?.results) throw new Error("Unable to retrieve segmentation models");
+        if (!data?.results) throw new Error(t("Unable to retrieve segmentation models"));
         models = data.results;
         let nextPage = data.next;
         while (nextPage) {
@@ -72,7 +73,7 @@ const actions = {
     async fetchRecognizeModels({ commit }) {
         let models = [];
         const { data } = await retrieveModels("recognize");
-        if (!data?.results) throw new Error("Unable to retrieve recognition models");
+        if (!data?.results) throw new Error(t("Unable to retrieve recognition models"));
         models = data.results;
         let nextPage = data.next;
         while (nextPage) {

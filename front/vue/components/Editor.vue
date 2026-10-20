@@ -40,9 +40,9 @@
         />
         <ConfirmModal
             v-if="!legacyModeEnabled && modalOpen && modalOpen.deleteTranscription"
-            :body-text="`Are you sure you want to delete ${transcriptionToDelete.name}?`"
-            confirm-verb="Delete"
-            title="Delete Transcription"
+            :body-text="$t('Are you sure you want to delete {name}?', { name: transcriptionToDelete.name })"
+            :confirm-verb="$t('Delete')"
+            :title="$t('Delete Transcription')"
             :cannot-undo="true"
             :disabled="!partsLoaded"
             :on-cancel="closeDeleteTranscriptionModal"
@@ -278,7 +278,7 @@ export default {
                 }`;
                 this.$el.style.setProperty(
                     "--transcription-font-family",
-                    `"escr-transcription-font", "Noto Sans", "Resized Arabic", sans-serif`,
+                    `"escr-transcription-font", "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", serif`,
                 );
                 if (font.line_height) {
                     this.$el.style.setProperty(
@@ -325,7 +325,7 @@ export default {
                         this.$store.commit("lines/update", lineData)
                     }
                 });
-                this.add({ color: "success", message: "Successfully calculated masks" });
+                this.add({ color: "success", message: this.$t("Successfully calculated masks") });
             }
         },
     }

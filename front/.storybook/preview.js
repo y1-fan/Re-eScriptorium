@@ -4,6 +4,7 @@ import Vue from "vue";
 import store from "../vue/store";
 import FloatingVue from "floating-vue";
 import "floating-vue/dist/style.css";
+import "../vue/i18n";
 
 Vue.use(Vuex);
 Vue.prototype.$store = store;

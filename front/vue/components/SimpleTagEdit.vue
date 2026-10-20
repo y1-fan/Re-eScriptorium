@@ -3,7 +3,7 @@
         type="button"
         data-toggle="modal"
         data-target="#tagsModal"
-        title="Assign tags"
+        :title="$t('Assign tags')"
         class="nav-item btn btn-sm btn-primary"
         @click="launchModal"
     >

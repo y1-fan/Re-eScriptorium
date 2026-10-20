@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-element-details">
         <template #modal-header>
-            <h2>Element Details</h2>
+            <h2>{{ $t("Element Details") }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -14,7 +14,7 @@
         </template>
         <template #modal-content>
             <TextField
-                label="Name"
+                :label="$t('Name')"
                 :placeholder="partTitle"
                 :disabled="disabled"
                 :max-length="512"
@@ -22,7 +22,7 @@
                 :value="name"
             />
             <DropdownField
-                label="Typology"
+                :label="$t('Typology')"
                 :disabled="disabled"
                 :on-change="(e) => handleTextFieldInput(
                     'typology', e.target.value ? parseInt(e.target.value) : null
@@ -31,20 +31,20 @@
             />
             <dl class="escr-form-field">
                 <dt class="escr-field-label">
-                    Size
+                    {{ $t("Size") }}
                 </dt>
                 <dd>
                     {{ size | prettyBytes }}
                 </dd>
                 <dt class="escr-field-label">
-                    Dimensions
+                    {{ $t("Dimensions") }}
                 </dt>
                 <dd>
                     {{ image.size[0] }} x {{ image.size[1] }}
                 </dd>
             </dl>
             <TextField
-                label="Comments"
+                :label="$t('Comments')"
                 :disabled="disabled"
                 :on-input="(e) => handleTextFieldInput('comments', e.target.value)"
                 :value="comments"
@@ -61,13 +61,13 @@
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                label="Save"
+                :label="$t('Save')"
                 :on-click="onSave"
                 :disabled="disabled || invalid"
             />

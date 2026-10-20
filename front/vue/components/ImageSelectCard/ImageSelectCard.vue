@@ -11,7 +11,7 @@
             <div class="img">
                 <img
                     :src="page.thumbnail"
-                    :alt="page.title || 'Page Thumbnail'"
+                    :alt="page.title || $t('Page Thumbnail')"
                 >
             </div>
 
@@ -40,9 +40,9 @@
                 theme="escr-tooltip-small"
                 class="filename"
             >
-                <span>{{ page.name || page.filename || page.title || `Page ${page.pk}` }}</span>
+                <span>{{ page.name || page.filename || page.title || $t('Page {number}', { number: page.pk }) }}</span>
                 <template #popper>
-                    {{ page.name || page.filename || page.title || `Page ${page.pk}` }}
+                    {{ page.name || page.filename || page.title || $t('Page {number}', { number: page.pk }) }}
                 </template>
             </VDropdown>
 

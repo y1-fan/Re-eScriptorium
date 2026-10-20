@@ -10,6 +10,7 @@ import {
     trainCollectionSegmenter,
     updateCollection
 } from "../../../src/api";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -225,7 +226,7 @@ const actions = {
         if (!collectionId) {
             dispatch(
                 "alerts/addError",
-                "The selection must be saved as a collection before training.",
+                t("The selection must be saved as a collection before training."),
                 { root: true }
             );
         }
@@ -253,7 +254,7 @@ const mutations = {
                 state.currentCollection.items.push({
                     id: null, // new collection, no id
                     document_part: partId,
-                    part_name: part.name || `Part ${part.order + 1}`,
+                    part_name: part.name || t("Part {number}", { number: part.order + 1 }),
                     thumbnail: part.image,
                     document_id: document.pk || document.id,
                     document_name: document.name,

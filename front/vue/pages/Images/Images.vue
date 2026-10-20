@@ -11,9 +11,9 @@
                 <div class="escr-images-header">
                     <div class="escr-images-title">
                         <h3 :title="documentName">
-                            {{ documentName || "Loading..." }}
+                            {{ documentName || $t("Loading...") }}
                         </h3>
-                        <h1>Images</h1>
+                        <h1>{{ $t("Images") }}</h1>
                     </div>
                     <VDropdown
                         placement="bottom-end"
@@ -24,7 +24,7 @@
                             color="primary"
                             :disabled="loading && loading.document"
                             :on-click="() => openModal('import')"
-                            label="Import"
+                            :label="$t('Import')"
                         >
                             <template #button-icon>
                                 <ImportIcon />
@@ -32,7 +32,7 @@
                         </EscrButton>
                         <template #popper>
                             <span class="escr-tooltip-text">
-                                Import images or transcription content.
+                                {{ $t("Import images or transcription content.") }}
                             </span>
                         </template>
                     </VDropdown>
@@ -47,7 +47,7 @@
                         >
                             {{
                                 (!loading.document && partsCount)
-                                    ? `${partsCount.toLocaleString()} images`
+                                    ? $t("{count} images", { count: partsCount.toLocaleString() })
                                     : ''
                             }}
                         </span>
@@ -55,7 +55,7 @@
                             v-else
                             class="escr-parts-count"
                             :loading="loading && (loading.document || loading.images)"
-                            no-data-message="0 images"
+                            :no-data-message="$t('0 images')"
                         />
                         <TextField
                             :disabled="(loading && loading.images) || !parts.length"
@@ -64,12 +64,12 @@
                             :label-visible="false"
                             :value="textFilterValue"
                             class="search-text-field"
-                            label="Search to filter images by element name"
-                            placeholder="Search element name"
+                            :label="$t('Search to filter images by element name')"
+                            :placeholder="$t('Search element name')"
                         />
                         <EscrButton
                             color="secondary"
-                            label="Search"
+                            :label="$t('Search')"
                             size="small"
                             :disabled="(loading && loading.images) || !parts.length"
                             :on-click="onSubmitSearch"
@@ -104,13 +104,13 @@
                             :label-visible="false"
                             :value="rangeInputValue"
                             class="range-text-field"
-                            :label="'Enter multiple numbers separated by a comma, and/or ranges ' +
-                                'separated by a dash, to select images'"
-                            placeholder="Enter select range"
+                            :label="$t('Enter multiple numbers separated by a comma, and/or ranges ' +
+                                'separated by a dash, to select images')"
+                            :placeholder="$t('Enter select range')"
                         />
                         <EscrButton
                             color="text"
-                            label="Select All"
+                            :label="$t('Select All')"
                             size="small"
                             :disabled="(loading && loading.images) || selectedParts.length === parts.length"
                             :on-click="selectAll"
@@ -118,7 +118,7 @@
                         <div class="new-section">
                             <ToggleButton
                                 color="secondary"
-                                label="Reorder"
+                                :label="$t('Reorder')"
                                 :checked="isReorderMode"
                                 :disabled="(loading && loading.images) || !parts.length"
                                 :on-change="() => isReorderMode = !isReorderMode"
@@ -144,7 +144,7 @@
                     class="escr-image-selection-toolbar"
                 >
                     <span class="selected-count">
-                        {{ selectedParts.length }} selected
+                        {{ $t("{count} selected", { count: selectedParts.length }) }}
                     </span>
                     <div
                         v-if="isReorderMode"
@@ -152,7 +152,7 @@
                     >
                         <EscrButton
                             color="secondary"
-                            label="Move to top"
+                            :label="$t('Move to top')"
                             size="small"
                             :on-click="() => moveSelectedParts({ index: 0 })"
                         >
@@ -162,7 +162,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Move to bottom"
+                            :label="$t('Move to bottom')"
                             size="small"
                             :on-click="() => moveSelectedParts({ index: -1 })"
                         >
@@ -172,7 +172,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Move to..."
+                            :label="$t('Move to...')"
                             size="small"
                             :on-click="openMoveModal"
                         >
@@ -187,7 +187,7 @@
                     >
                         <EscrButton
                             color="secondary"
-                            label="Segment"
+                            :label="$t('Segment')"
                             size="small"
                             :disabled="loading && loading.images"
                             :on-click="() => openModal('segment')"
@@ -198,7 +198,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Transcribe"
+                            :label="$t('Transcribe')"
                             size="small"
                             :disabled="loading && loading.images"
                             :on-click="() => openModal('transcribe')"
@@ -209,7 +209,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Align"
+                            :label="$t('Align')"
                             size="small"
                             :disabled="loading && loading.images"
                             :on-click="() => openModal('align')"
@@ -220,7 +220,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Train Model"
+                            :label="$t('Train Model')"
                             size="small"
                             :disabled="loading && loading.images || selectedParts.length === 0"
                             :on-click="goToTraining"
@@ -231,7 +231,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Redraw Masks"
+                            :label="$t('Redraw Masks')"
                             size="small"
                             :disabled="loading && loading.images"
                             :on-click="() => openRedrawModal()"
@@ -242,7 +242,7 @@
                         </EscrButton>
                         <EscrButton
                             color="secondary"
-                            label="Export"
+                            :label="$t('Export')"
                             size="small"
                             :disabled="loading && loading.images"
                             :on-click="() => openModal('export')"
@@ -275,7 +275,7 @@
                                             @mousedown="() => openModal('downloadArchive')"
                                         >
                                             <DownloadIcon class="escr-menuitem-icon" />
-                                            <span>Download Archive</span>
+                                            <span>{{ $t("Download Archive") }}</span>
                                         </button>
                                     </li>
                                     <li>
@@ -283,7 +283,7 @@
                                             @mousedown="() => openDeleteModal()"
                                         >
                                             <TrashIcon class="escr-menuitem-icon" />
-                                            <span>Delete</span>
+                                            <span>{{ $t("Delete") }}</span>
                                         </button>
                                     </li>
                                 </ul>
@@ -292,7 +292,7 @@
                     </div>
                     <EscrButton
                         color="secondary"
-                        label="Clear All"
+                        :label="$t('Clear All')"
                         size="small"
                         :disabled="loading && loading.images"
                         :on-click="selectNone"
@@ -334,7 +334,7 @@
                     </ul>
                     <EscrButton
                         v-if="nextPage"
-                        label="Load more"
+                        :label="$t('Load more')"
                         class="escr-load-more-btn"
                         color="outline-primary"
                         size="small"
@@ -349,7 +349,7 @@
                             class="escr-spinner"
                             role="status"
                         >
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ $t("Loading...") }}</span>
                         </div>
                     </div>
                 </div>
@@ -381,7 +381,7 @@
                     />
                     <EscrButton
                         v-if="nextPage"
-                        label="Load more"
+                        :label="$t('Load more')"
                         class="escr-load-more-btn"
                         color="outline-primary"
                         size="small"
@@ -396,7 +396,7 @@
                             class="escr-spinner"
                             role="status"
                         >
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ $t("Loading...") }}</span>
                         </div>
                     </div>
                 </div>
@@ -404,7 +404,7 @@
                     v-else
                     class="grid-spinner"
                     :loading="loading && loading.images"
-                    no-data-message="There are no images to display."
+                    :no-data-message="$t('There are no images to display.')"
                 />
 
                 <!-- import images modal -->
@@ -417,11 +417,11 @@
                 <!-- cancel image uploads modal -->
                 <ConfirmModal
                     v-if="taskModalOpen && taskModalOpen.imageCancelWarning"
-                    :body-text="'Uploads are still in progress. Are you sure you want ' +
-                        'to cancel? Incomplete uploads may be lost.'"
-                    title="Cancel Upload In Progress"
-                    cancel-verb="No"
-                    confirm-verb="Yes, cancel"
+                    :body-text="$t('Uploads are still in progress. Are you sure you want ' +
+                        'to cancel? Incomplete uploads may be lost.')"
+                    :title="$t('Cancel Upload In Progress')"
+                    :cancel-verb="$t('No')"
+                    :confirm-verb="$t('Yes, cancel')"
                     :disabled="loading && (loading.images || loading.document)"
                     :on-cancel="() => closeTaskModal('imageCancelWarning')"
                     :on-confirm="confirmImageCancelWarning"
@@ -446,7 +446,7 @@
                         if (selectedParts.length === 1) setSelectedParts([]);
                     }"
                     :on-submit="handleSubmitSegmentation"
-                    :scope="selectedParts.length === 1 ? 'Image' : `${selectedParts.length} Images`"
+                    :scope="selectedParts.length === 1 ? $t('Image') : $t('{count} Images', { count: selectedParts.length })"
                 />
                 <!-- transcribe images modal -->
                 <TranscribeModal
@@ -459,15 +459,15 @@
                         if (selectedParts.length === 1) setSelectedParts([]);
                     }"
                     :on-submit="handleSubmitTranscribe"
-                    :scope="selectedParts.length === 1 ? 'Image' : `${selectedParts.length} Images`"
+                    :scope="selectedParts.length === 1 ? $t('Image') : $t('{count} Images', { count: selectedParts.length })"
                 />
                 <!-- overwrite segmentation modal -->
                 <ConfirmModal
                     v-if="taskModalOpen && taskModalOpen.overwriteWarning"
-                    :body-text="'Are you sure you want to continue? Re-segmenting will delete ' +
-                        'any existing transcriptions.'"
-                    title="Overwrite Existing Segmentation and Transcriptions"
-                    confirm-verb="Continue"
+                    :body-text="$t('Are you sure you want to continue? Re-segmenting will delete ' +
+                        'any existing transcriptions.')"
+                    :title="$t('Overwrite Existing Segmentation and Transcriptions')"
+                    :confirm-verb="$t('Continue')"
                     :disabled="loading && (loading.images || loading.document)"
                     :cannot-undo="true"
                     :on-cancel="() => closeTaskModal('overwriteWarning')"
@@ -485,7 +485,7 @@
                     }"
                     :on-submit="handleSubmitAlign"
                     :textual-witnesses="textualWitnesses"
-                    :scope="selectedParts.length === 1 ? 'Image' : `${selectedParts.length} Images`"
+                    :scope="selectedParts.length === 1 ? $t('Image') : $t('{count} Images', { count: selectedParts.length })"
                 />
                 <!-- export images modal -->
                 <ExportModal
@@ -500,7 +500,7 @@
                         if (selectedParts.length === 1) setSelectedParts([]);
                     }"
                     :on-submit="handleSubmitExport"
-                    :scope="selectedParts.length === 1 ? 'Image' : `${selectedParts.length} Images`"
+                    :scope="selectedParts.length === 1 ? $t('Image') : $t('{count} Images', { count: selectedParts.length })"
                 />
                 <!-- download archive images modal -->
                 <DownloadArchiveModal
@@ -508,14 +508,14 @@
                     :disabled="loading && (loading.images || loading.document)"
                     :on-cancel="() => closeTaskModal('downloadArchive')"
                     :on-submit="handleSubmitDownloadArchive"
-                    scope="Document"
+                    :scope="$t('Document')"
                 />
                 <!-- redraw masks modal -->
                 <ConfirmModal
                     v-if="redrawModalOpen"
-                    body-text="Are you sure you want to redraw all masks on the selected image(s)?"
+                    :body-text="$t('Are you sure you want to redraw all masks on the selected image(s)?')"
                     color="primary"
-                    title="Redraw Masks"
+                    :title="$t('Redraw Masks')"
                     :cannot-undo="true"
                     :disabled="loading && loading.images"
                     :on-cancel="() => closeRedrawModal()"
@@ -525,10 +525,10 @@
                 <ConfirmModal
                     v-if="deleteModalOpen"
                     :body-text="partTitleToDelete ?
-                        `Are you sure you want to delete ${partTitleToDelete}?` :
-                        'Are you sure you want to delete the selected image(s)?'"
-                    confirm-verb="Delete"
-                    :title="selectedParts.length === 1 ? 'Delete Image' : 'Delete Images'"
+                        $t('Are you sure you want to delete {name}?', { name: partTitleToDelete }) :
+                        $t('Are you sure you want to delete the selected image(s)?')"
+                    :confirm-verb="$t('Delete')"
+                    :title="selectedParts.length === 1 ? $t('Delete Image') : $t('Delete Images')"
                     :cannot-undo="true"
                     :disabled="loading && loading.images"
                     :on-cancel="() => closeDeleteModal(!!partTitleToDelete)"
@@ -587,6 +587,7 @@ import TrashIcon from "../../components/Icons/TrashIcon/TrashIcon.vue";
 import XCircleFilledIcon from "../../components/Icons/XCircleFilledIcon/XCircleFilledIcon.vue";
 import "../../components/VerticalMenu/VerticalMenu.css";
 import "./Images.css";
+import { formatDateTime } from "../../util/dates";
 
 export default {
     name: "EscrImages",
@@ -715,7 +716,10 @@ export default {
          * Links and titles for the breadcrumbs above the page.
          */
         breadcrumbs() {
-            let docBreadcrumbs = [{ title: "Loading..." }, { title: "Loading..." }];
+            let docBreadcrumbs = [
+                { title: this.$t("Loading...") },
+                { title: this.$t("Loading...") },
+            ];
             if (this.projectName && this.projectSlug && this.documentName) {
                 docBreadcrumbs = [
                     {
@@ -729,9 +733,9 @@ export default {
                 ];
             }
             return [
-                { title: "My Projects", href: "/projects/" },
+                { title: this.$t("My Projects"), href: "/projects/" },
                 ...docBreadcrumbs,
-                { title: "Images" },
+                { title: this.$t("Images") },
             ];
         },
         /**
@@ -775,7 +779,7 @@ export default {
                     },
                     icon: PeopleIcon,
                     key: "share",
-                    label: "Groups & Users",
+                    label: this.$t("Groups & Users"),
                     panel: SharePanel,
                 },
                 {
@@ -785,7 +789,7 @@ export default {
                     },
                     icon: ModelsIcon,
                     key: "models",
-                    label: "Models",
+                    label: this.$t("Models"),
                     panel: ModelsPanel,
                 }
             ];
@@ -800,7 +804,7 @@ export default {
                     },
                     icon: SearchIcon,
                     key: "search",
-                    label: "Search Document",
+                    label: this.$t("Search Document"),
                     panel: SearchPanel,
                 });
             }
@@ -823,13 +827,13 @@ export default {
                     value: "grid",
                     label: GridIcon,
                     selected: this.displayMode === "grid",
-                    tooltip: "Grid view",
+                    tooltip: this.$t("Grid view"),
                 },
                 {
                     value: "list",
                     label: ListIcon,
                     selected: this.displayMode === "list",
-                    tooltip: "List view",
+                    tooltip: this.$t("List view"),
                 },
             ]
         },
@@ -839,48 +843,37 @@ export default {
         partsHeaders() {
             return [
                 {
-                    label: "Number",
+                    label: this.$t("Number"),
                     value: "order",
                     format: (val) => val + 1,
                     class: "number",
                 },
-                { label: "Name", value: "title", image: "thumbnail" },
+                { label: this.$t("Name"), value: "title", image: "thumbnail" },
                 {
-                    label: "Segment",
+                    label: this.$t("Segment"),
                     value: "segmentWorkflow",
                     key: "segment",
                     class: "workflow",
                     component: ImageWorkflowStatus,
                 },
                 {
-                    label: "Transcribe",
+                    label: this.$t("Transcribe"),
                     value: "transcribeWorkflow",
                     key: "transcribe",
                     class: "workflow",
                     component: ImageWorkflowStatus,
                 },
                 {
-                    label: "Align",
+                    label: this.$t("Align"),
                     value: "alignWorkflow",
                     key: "align",
                     class: "workflow",
                     component: ImageWorkflowStatus,
                 },
                 {
-                    label: "Last Edited",
+                    label: this.$t("Last Edited"),
                     value: "updated_at",
-                    format: (val) => new Date(val).toLocaleDateString(
-                        undefined,
-                        {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: false,
-                            hourCycle: "h23",
-                        },
-                    ),
+                    format: formatDateTime,
                 },
             ];
         },
@@ -1033,7 +1026,7 @@ export default {
                     );
                     this.setSelectedPartsByOrder(filteredSelected);
                 } else {
-                    this.addError({ message: "Failed to fetch additional images" });
+                    this.addError({ message: this.$t("Failed to fetch additional images") });
                 }
                 this.setLoading({ key: "images", loading: false });
             }
@@ -1130,7 +1123,7 @@ export default {
             if (failureCount < maxRetries) {
                 callback();
             } else {
-                this.addError({ message: "Failed to fetch additional images" });
+                this.addError({ message: this.$t("Failed to fetch additional images") });
             }
             this.setLoading({ key: "images", loading: false });
         },
@@ -1165,17 +1158,20 @@ export default {
                     const dashSeparated = str.split("-");
                     if (dashSeparated.length > 2) {
                         // multiple dashes e.g. 1-100-150 is invalid
-                        validationError = "Invalid range; dashes may only separate two numbers";
+                        validationError = this.$t("Invalid range; dashes may only separate two numbers");
                     } else if (dashSeparated.length === 2) {
                         // validate for actual range
                         const leftVal = parseInt(dashSeparated[0]);
                         const rightVal = parseInt(dashSeparated[1]);
                         if (leftVal >= rightVal) {
-                            validationError = "Invalid range; first number must be smaller than " +
-                                "second";
+                            validationError = this.$t(
+                                "Invalid range; first number must be smaller than second"
+                            );
                         } else if (rightVal - leftVal >= 5000) {
                             // validate for limit (memory constraint on the range() function)
-                            validationError = "Range exceeded maximum number of selections (5000)";
+                            validationError = this.$t(
+                                "Range exceeded maximum number of selections (5000)"
+                            );
                         } else {
                             // select all numbers in the range
                             selected.push(...range(leftVal, rightVal + 1));
@@ -1187,8 +1183,9 @@ export default {
                 });
             } else if (val) {
                 // invalid if not matching regex (unless empty)
-                validationError = "Must be a list of numbers separated by commas, and/or numeric " +
-                    "ranges separated by dashes";
+                validationError = this.$t(
+                    "Must be a list of numbers separated by commas, and/or numeric ranges separated by dashes"
+                );
             }
             // get unique selected indices and unique errors
             return {
@@ -1212,7 +1209,10 @@ export default {
                 try {
                     await this.fetchParts();
                     if (data.data?.progress && data.data.total) {
-                        this.importProgress = `${data.data.progress}/${data.data.total} imported`;
+                        this.importProgress = this.$t(
+                            "{progress}/{total} imported",
+                            { progress: data.data.progress, total: data.data.total }
+                        );
                     } else {
                         this.importProgress = "";
                     }

@@ -14,29 +14,29 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Cancel tasks
+                        {{ $t("Cancel tasks") }}
                     </h5>
                     <button
                         type="button"
                         class="close"
                         data-dismiss="modal"
-                        aria-label="Close"
+                        :aria-label="$t('Close')"
                         :disabled="loading"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>You're about to cancel all pending/running tasks for documents:</p>
+                    <p>{{ $t("You're about to cancel all pending/running tasks for documents:") }}</p>
                     <ul>
                         <li
                             v-for="document in documentsTasks"
                             :key="document.pk"
                         >
-                            <strong>{{ document.name }}</strong> owned by <strong>{{ document.owner }}</strong>
+                            <strong>{{ document.name }}</strong> {{ $t("owned by") }} <strong>{{ document.owner }}</strong>
                         </li>
                     </ul>
-                    <p>Please confirm that you want to proceed.</p>
+                    <p>{{ $t("Please confirm that you want to proceed.") }}</p>
                 </div>
                 <div class="modal-footer">
                     <button
@@ -45,7 +45,7 @@
                         data-dismiss="modal"
                         :disabled="loading"
                     >
-                        Abort
+                        {{ $t("Abort") }}
                     </button>
                     <button
                         type="button"
@@ -53,7 +53,7 @@
                         :disabled="loading"
                         @click="cancelTasks()"
                     >
-                        {{ loading ? 'Canceling tasks...' : 'Cancel tasks' }}
+                        {{ loading ? $t("Canceling tasks...") : $t("Cancel tasks") }}
                     </button>
                 </div>
             </div>

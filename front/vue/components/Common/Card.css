@@ -29,3 +29,28 @@
     flex-flow: row nowrap;
     align-items: center;
 }
+
+/* markdown note button, shared by the document and project tables */
+.escr-note-button {
+    position: relative;
+    margin-right: 4px;
+}
+.escr-note-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* the note action stays visible (unlike the other row actions, which only
+   appear on hover) so it is always reachable */
+.escr-table td.escr-row-actions .escr-note-button {
+    opacity: 1;
+}
+
+/* the note action always uses the plain text colour (no per-content variant) */
+.escr-card-actions .escr-note-button,
+.escr-card-actions .escr-note-button svg,
+.escr-table td.escr-row-actions .escr-note-button,
+.escr-table td.escr-row-actions .escr-note-button svg {
+    color: var(--text1);
+    stroke: var(--text1);
+}

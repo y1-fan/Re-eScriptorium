@@ -4,19 +4,19 @@
             v-if="loading"
             class="text-muted"
         >
-            Loading...
+            {{ $t("Loading...") }}
         </p>
         <p
             v-else-if="error"
             class="text-danger"
         >
-            Could not load downloads: {{ error }}
+            {{ $t("Could not load downloads: {error}", { error }) }}
         </p>
         <p
             v-else-if="!items.length"
             class="text-muted"
         >
-            No downloads yet. Exports and archives you queue will show up here.
+            {{ $t("No downloads yet. Exports and archives you queue will show up here.") }}
         </p>
         <table
             v-else
@@ -24,15 +24,15 @@
         >
             <thead>
                 <tr>
-                    <th>Label</th>
-                    <th>Type</th>
+                    <th>{{ $t("Label") }}</th>
+                    <th>{{ $t("Type") }}</th>
                     <th class="text-right">
-                        Size
+                        {{ $t("Size") }}
                     </th>
-                    <th>Created</th>
-                    <th>Expires</th>
+                    <th>{{ $t("Created") }}</th>
+                    <th>{{ $t("Expires") }}</th>
                     <th class="text-right">
-                        Downloads
+                        {{ $t("Downloads") }}
                     </th>
                     <th />
                 </tr>
@@ -60,7 +60,7 @@
                     </td>
                     <td>
                         <small>
-                            <span v-if="!item.expires_at">Never</span>
+                            <span v-if="!item.expires_at">{{ $t("Never") }}</span>
                             <span
                                 v-else
                                 :class="{ 'text-danger': item.is_expired }"
@@ -79,14 +79,14 @@
                             class="btn btn-sm btn-primary mr-1"
                             download
                         >
-                            Download
+                            {{ $t("Download") }}
                         </a>
                         <button
                             type="button"
                             class="btn btn-sm btn-outline-danger"
                             @click="onDelete(item)"
                         >
-                            Delete
+                            {{ $t("Delete") }}
                         </button>
                     </td>
                 </tr>
@@ -96,6 +96,7 @@
 </template>
 <script>
 import axios from "axios";
+import { formatDateTime } from "../../util/dates";
 
 export default {
     name: "EscrDownloads",
@@ -130,7 +131,7 @@ export default {
             }
         },
         async onDelete(item) {
-            if (!confirm(`Delete "${item.label}"? This cannot be undone.`)) {
+            if (!confirm(this.$t('Delete "{label}"? This cannot be undone.', { label: item.label }))) {
                 return;
             }
             try {
@@ -154,9 +155,7 @@ export default {
             return `${n.toFixed(n >= 100 || i === 0 ? 0 : 1)} ${units[i]}`;
         },
         formatDate(iso) {
-            if (!iso) return "";
-            const d = new Date(iso);
-            return d.toLocaleString();
+            return formatDateTime(iso);
         },
         shortMime(m) {
             if (!m) return "";

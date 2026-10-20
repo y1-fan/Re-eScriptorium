@@ -1,7 +1,7 @@
 <template>
     <EscrPage class="escr-model-training">
         <template #page-content>
-            <h1>Model Training</h1>
+            <h1>{{ $t("Model Training") }}</h1>
             <div class="escr-training-container">
                 <div class="escr-training-collections">
                     <div class="escr-training-data">
@@ -20,7 +20,7 @@
                                 tabindex="0"
                             >
                                 <h2 class="sr-only">
-                                    Browse
+                                    {{ $t("Browse") }}
                                 </h2>
                                 <EscriptoriumBrowser
                                     v-if="escrBrowserLoaded"
@@ -32,7 +32,7 @@
                                     class="escr-spinner escr-spinner--secondary"
                                     role="status"
                                 >
-                                    <span class="sr-only">Loading browser...</span>
+                                    <span class="sr-only">{{ $t("Loading browser...") }}</span>
                                 </div>
                             </div>
                             <!-- selected documents expand/collapse section -->
@@ -45,24 +45,24 @@
                                 tabindex="0"
                             >
                                 <h2 class="sr-only">
-                                    Selected Documents and Parts
+                                    {{ $t("Selected Documents and Parts") }}
                                 </h2>
                                 <div
                                     v-if="isLoadingCollection"
                                     class="escr-spinner escr-spinner--secondary"
                                     role="status"
                                 >
-                                    <span class="sr-only">Loading collection...</span>
+                                    <span class="sr-only">{{ $t("Loading collection...") }}</span>
                                 </div>
                                 <SelectedDocuments v-else-if="collectionItems.length" />
                                 <div
                                     v-else
                                     class="escr-card escr-card-padding"
                                 >
-                                    <p>No parts currently selected.</p>
-                                    <p>Load a saved collection, or navigate to the Browse tab.</p>
+                                    <p>{{ $t("No parts currently selected.") }}</p>
+                                    <p>{{ $t("Load a saved collection, or navigate to the Browse tab.") }}</p>
                                     <EscrButton
-                                        label="Browse"
+                                        :label="$t('Browse')"
                                         color="outline-primary"
                                         :on-click="() => activeTab = 'browse'"
                                     />
@@ -73,7 +73,7 @@
                     <!-- collection management -->
                     <aside class="escr-training-sidebar">
                         <section class="escr-collection-management">
-                            <h2>Manage Collection</h2>
+                            <h2>{{ $t("Manage Collection") }}</h2>
                             <ManageCollectionForm
                                 @loaded="activeTab = 'selected'"
                                 @new-started="activeTab = 'browse'"
@@ -83,7 +83,7 @@
                 </div>
                 <!-- model training form -->
                 <section class="escr-training-footer">
-                    <h2>Train Model</h2>
+                    <h2>{{ $t("Train Model") }}</h2>
                     <TrainForm />
                 </section>
             </div>
@@ -141,9 +141,9 @@ export default {
          */
         trainingDataTabs() {
             return [
-                { label: "Browse", value: "browse" },
+                { label: this.$t("Browse"), value: "browse" },
                 {
-                    label: "Selected Documents and Parts",
+                    label: this.$t("Selected Documents and Parts"),
                     value: "selected",
                     badge: this.collectionItems.length
                 },

@@ -26,7 +26,7 @@
             :disabled="disabled"
             :options="options"
             :on-change="onChange"
-            :placeholder="placeholder"
+            :placeholder="placeholder || $t('Select items...')"
         />
         <span
             v-if="helpText"
@@ -94,11 +94,11 @@ export default {
             required: true,
         },
         /**
-         * Placeholder text
+         * Placeholder text; falls back to a default prompt when empty
          */
         placeholder: {
             type: String,
-            default: "Select items...",
+            default: "",
         },
         /**
          * Whether or not this field is required in the form.

@@ -7,7 +7,7 @@
             class="escr-spinner"
             role="status"
         >
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">{{ $t("Loading...") }}</span>
         </div>
     </div>
     <div

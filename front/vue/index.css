@@ -221,6 +221,21 @@ main:has(.escr-vue-enabled):not(:has(.escr-page)) {
     font-weight: 700;
     src: url("../fonts/NotoSans-BoldItalic.ttf");
 }
+/* Literata variable font: one file covers every weight from 200 to 900 */
+@font-face {
+    font-family: "Literata";
+    font-style: normal;
+    font-weight: 200 900;
+    font-display: swap;
+    src: url("../fonts/Literata-Variable.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Literata";
+    font-style: italic;
+    font-weight: 200 900;
+    font-display: swap;
+    src: url("../fonts/Literata-Italic-Variable.ttf") format("truetype");
+}
 /* arabic resizing */
 @font-face {
     font-family: "Resized Arabic";
@@ -237,13 +252,13 @@ main:has(.escr-vue-enabled):not(:has(.escr-page)) {
         /* Ottoman Siyaq Numbers */ U+1ED00-1ED4F,
         /* Arabic Mathematical Alphabetic Symbols */ U+1EE00-1EEFF;
 }
-/* reset default fonts to 14px normal noto sans, weight 400 */
+/* reset default fonts to 14px normal literata, weight 400 */
 .escr-vue-enabled .escr-page-container,
 .escr-page input[type="text"],
 .escr-sidebar-container input[type="text"],
 .escr-global-nav,
 .v-popper__inner {
-    font-family: "Noto Sans", "Resized Arabic", sans-serif;
+    font-family: "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     font-weight: 400;
     color: var(--text1);
@@ -447,7 +462,7 @@ nav.escr-editor-nav .new-section.with-separator {
     right: auto;
 }
 .alert {
-    font-family: "Noto Sans", "Resized Arabic", sans-serif;
+    font-family: "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-weight: 600;
     font-size: 14px;
     background-color: var(--background2);

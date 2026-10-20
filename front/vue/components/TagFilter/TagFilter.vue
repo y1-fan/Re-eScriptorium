@@ -205,7 +205,7 @@ export default {
                         {
                             props: {
                                 color: "outline-primary",
-                                label: "Cancel",
+                                label: this.$t("Cancel"),
                                 onClick: this.onCancel,
                             }
                         }
@@ -215,7 +215,7 @@ export default {
                         {
                             props: {
                                 color: "primary",
-                                label: "Apply Filter",
+                                label: this.$t("Apply Filter"),
                                 disabled: !this.dirty,
                                 onClick: () => this.onApply({
                                     operator: this.selectedOperator,
@@ -241,17 +241,19 @@ export default {
             if (filteredTags.length === 0) {
                 return h(
                     "div",
-                    `No matching tags. ${this.tags.length} tag${this.tags.length !== 1 ? "s" : ""
-                    } hidden, including ${hiddenSelectedTagCount} selected.`,
+                    this.$t(
+                        "No matching tags. {count} tags hidden, including {selected} selected.",
+                        { count: this.tags.length, selected: hiddenSelectedTagCount },
+                    ),
                 );
             } else if (filteredTags.length < this.tags.length) {
                 const hiddenTagCount = this.tags.length - filteredTags.length;
                 return h(
                     "div",
-                    `+ ${hiddenTagCount
-                    } tag${hiddenTagCount !== 1 ? "s" : ""} hidden, including ${
-                        hiddenSelectedTagCount
-                    } selected tag${hiddenSelectedTagCount !== 1 ? "s" : ""}`,
+                    this.$t(
+                        "+ {count} tags hidden, including {selected} selected tags",
+                        { count: hiddenTagCount, selected: hiddenSelectedTagCount },
+                    ),
                 );
             }
             return [];
@@ -271,7 +273,7 @@ export default {
             "div",
             { class: "escr-tag-filter escr-modal" },
             [
-                h("h3", "Filter Tags"),
+                h("h3", this.$t("Filter Tags")),
                 h(
                     SegmentedButtonGroup,
                     {
@@ -280,11 +282,11 @@ export default {
                             name: "tag-filter-operator",
                             options: [{
                                 value: "and",
-                                label: "AND",
+                                label: this.$t("AND"),
                                 selected: this.selectedOperator === "and",
                             }, {
                                 value: "or",
-                                label: "OR",
+                                label: this.$t("OR"),
                                 selected: this.selectedOperator === "or",
                             }],
                             onChangeSelection: this.setOperator,
@@ -294,11 +296,11 @@ export default {
                 h(
                     "h4",
                     [
-                        h("span", "Tags"),
+                        h("span", this.$t("Tags")),
                         h("div", [
                             h(Button, {
                                 props: {
-                                    label: "Select All",
+                                    label: this.$t("Select All"),
                                     color: "link-primary",
                                     size: "small",
                                     onClick: this.selectAllTags,
@@ -307,7 +309,7 @@ export default {
                             }),
                             h(Button, {
                                 props: {
-                                    label: "Select None",
+                                    label: this.$t("Select None"),
                                     color: "link-primary",
                                     size: "small",
                                     onClick: this.selectNoTags,
@@ -321,10 +323,10 @@ export default {
                     TextField,
                     {
                         props: {
-                            label: "Find tag",
+                            label: this.$t("Find tag"),
                             labelVisible: false,
                             onInput: this.filterByString,
-                            placeholder: "Find tag",
+                            placeholder: this.$t("Find tag"),
                             value: this.stringFilter,
                         },
                     }
@@ -360,7 +362,7 @@ export default {
                         ),
                         h(
                             "span",
-                            "Untagged"
+                            this.$t("Untagged")
                         )
                     ]
                 ),

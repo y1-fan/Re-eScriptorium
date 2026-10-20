@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h3>Import images from a PDF document</h3>
-        <span>Import images by uploading a single PDF with one image per page.</span>
+        <h3>{{ $t("Import images from a PDF document") }}</h3>
+        <span>{{ $t("Import images by uploading a single PDF with one image per page.") }}</span>
         <fieldset class="pdf-import">
             <input
                 type="file"

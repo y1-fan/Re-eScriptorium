@@ -1,0 +1,10 @@
+# Normalise line endings in the repository, so a Windows checkout cannot
+# break the Linux shell scripts (entrypoint.sh with CRLF fails with
+# "exec ... no such file or directory").
+* text=auto
+*.sh text eol=lf
+*.ini text eol=lf
+*.py text eol=lf
+*.po text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf

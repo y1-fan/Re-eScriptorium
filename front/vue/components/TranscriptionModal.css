@@ -3,7 +3,7 @@
 #trans-modal #vertical_text_input,
 #trans-modal #comparison .d-table-cell:not(.text-muted),
 .escr-line-version .escr-line-content {
-    font-family: var(--transcription-font-family, "Noto Sans", "Resized Arabic", sans-serif);
+    font-family: var(--transcription-font-family, "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", serif);
 }
 
 /* trans-input is left out, it is a form-control so its line height is set inline instead */

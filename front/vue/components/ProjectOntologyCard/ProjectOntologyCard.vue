@@ -1,7 +1,7 @@
 <template>
     <div class="escr-card escr-card-padding escr-project-ontology escr-project-ontology-card">
         <div class="escr-card-header">
-            <h2>Default Ontology</h2>
+            <h2>{{ $t("Default Ontology") }}</h2>
             <div class="escr-card-actions">
                 <input
                     ref="importInput"
@@ -13,7 +13,7 @@
                 <EscrButton
                     color="text"
                     size="small"
-                    label="Import"
+                    :label="$t('Import')"
                     :disabled="disabled"
                     :on-click="onClickImport"
                 >
@@ -25,7 +25,7 @@
                     v-if="ontologyConfig"
                     color="text"
                     size="small"
-                    label="Export"
+                    :label="$t('Export')"
                     :disabled="disabled"
                     :on-click="exportOntology"
                 >
@@ -37,7 +37,7 @@
                     v-if="ontologyConfig"
                     color="text"
                     size="small"
-                    label="Clear"
+                    :label="$t('Clear')"
                     :disabled="disabled"
                     :on-click="onClickClear"
                 >
@@ -48,17 +48,16 @@
             </div>
         </div>
         <p v-if="!ontologyConfig" class="escr-project-ontology-empty">
-            No default ontology set. New documents in this project will use the
-            instance's default types instead.
+            {{ $t("No default ontology set. New documents in this project will use the instance's default types instead.") }}
         </p>
         <p v-else class="escr-project-ontology-summary">
             {{ summary }}
         </p>
         <ConfirmModal
             v-if="clearModalOpen"
-            body-text="Are you sure you want to clear this project's default ontology?"
-            confirm-verb="Clear"
-            title="Clear Default Ontology"
+            :body-text="$t('Are you sure you want to clear this project\'s default ontology?')"
+            :confirm-verb="$t('Clear')"
+            :title="$t('Clear Default Ontology')"
             :cannot-undo="true"
             :disabled="disabled"
             :on-cancel="closeClearModal"
@@ -102,17 +101,24 @@ export default {
         summary() {
             if (!this.ontologyConfig) return "";
             const counts = [
-                ["region type", this.ontologyConfig.region_types],
-                ["line type", this.ontologyConfig.line_types],
-                ["part type", this.ontologyConfig.part_types],
-                ["annotation component", this.ontologyConfig.annotation_components],
-                ["taxonomy", this.ontologyConfig.taxonomy],
+                ["region type", "region types", this.ontologyConfig.region_types],
+                ["line type", "line types", this.ontologyConfig.line_types],
+                ["part type", "part types", this.ontologyConfig.part_types],
+                ["annotation component", "annotation components", this.ontologyConfig.annotation_components],
+                ["taxonomy", "taxonomies", this.ontologyConfig.taxonomy],
             ]
-                .filter(([, list]) => list && list.length)
-                .map(([label, list]) => `${list.length} ${label}${list.length === 1 ? "" : "s"}`);
-            return counts.length
-                ? `${counts.join(", ")}.`
-                : "Empty ontology config.";
+                .filter(([, , list]) => list && list.length)
+                .map(([singular, plural, list]) => this.$t("{count} {label}", {
+                    count: list.length,
+                    label: this.$t(list.length === 1 ? singular : plural),
+                }));
+            if (!counts.length) {
+                return this.$t("Empty ontology config.");
+            }
+            // Chinese uses full-width separators and a full stop.
+            const separator = this.$lang === "zh" ? "，" : ", ";
+            const end = this.$lang === "zh" ? "。" : ".";
+            return counts.join(separator) + end;
         },
     },
     methods: {

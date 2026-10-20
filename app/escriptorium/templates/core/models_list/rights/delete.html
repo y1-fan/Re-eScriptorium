@@ -15,6 +15,6 @@
     ?
   </p>
   <input type="submit" class="btn btn-danger" value="Confirm">
-  <a href="{% url 'model-rights' object.ocr_model.pk %}" class="btn btn-default">Cancel</a>
+  <a href="{% url 'model-rights' object.ocr_model.pk %}" class="btn btn-default">{% trans "Cancel" %}</a>
 </form>
 {% endblock body %}

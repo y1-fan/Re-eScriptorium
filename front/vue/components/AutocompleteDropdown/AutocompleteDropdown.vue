@@ -7,7 +7,7 @@
             ref="input"
             type="text"
             :value="searchText"
-            :placeholder="placeholder"
+            :placeholder="$t(placeholder)"
             :disabled="disabled"
             :aria-label="label"
             @input="handleInput"
@@ -20,7 +20,7 @@
             v-if="searchText && !disabled"
             class="escr-autocomplete-clear"
             type="button"
-            :aria-label="`Clear ${label}`"
+            :aria-label="$t('Clear {label}', { label })"
             @mousedown.prevent="clearValue"
         >×</button>
         <ChevronDownIcon v-else />
@@ -33,13 +33,13 @@
                 class="escr-autocomplete-new-option"
             >
                 <span class="escr-new-option-icon">➕</span>
-                <span>Create new layer: <strong>{{ searchText }}</strong></span>
+                <span>{{ $t("Create new layer:") }} <strong>{{ searchText }}</strong></span>
             </div>
             <div
                 v-else-if="filteredOptions.length === 0"
                 class="escr-autocomplete-no-results"
             >
-                No results found
+                {{ $t("No results found") }}
             </div>
             <template v-else>
                 <div
@@ -50,7 +50,7 @@
                     @mouseenter="highlightedIndex = -1"
                 >
                     <span class="escr-new-option-icon">➕</span>
-                    <span>Create new layer: <strong>{{ searchText }}</strong></span>
+                    <span>{{ $t("Create new layer:") }} <strong>{{ searchText }}</strong></span>
                 </div>
                 <div
                     v-for="(group, index) in filteredOptions"

@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-edit-project">
         <template #modal-header>
-            <h2>{{ newProject ? "Create New" : "Edit" }} Project</h2>
+            <h2>{{ newProject ? $t("Create New Project") : $t("Edit Project") }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -14,8 +14,8 @@
         </template>
         <template #modal-content>
             <TextField
-                label="Name"
-                placeholder="Enter project name"
+                :label="$t('Name')"
+                :placeholder="$t('Enter project name')"
                 :disabled="disabled"
                 :max-length="512"
                 :on-input="(e) => handleTextFieldInput('name', e.target.value)"
@@ -23,7 +23,7 @@
                 required
             />
             <TextField
-                label="Link to Project Guidelines"
+                :label="$t('Link to Project Guidelines')"
                 placeholder="https://"
                 :disabled="disabled"
                 :on-input="(e) => handleTextFieldInput('guidelines', e.target.value)"
@@ -34,19 +34,17 @@
                 v-if="guidelines && !isHttpUrl(guidelines)"
                 class="escr-help-text escr-error-text"
             >
-                Must be a valid URL starting with http:// or https://.
+                {{ $t("Must be a valid URL starting with http:// or https://.") }}
             </span>
             <DropdownField
-                label="Transcription Font"
-                help-text="Font used to display transcription text for documents in this
-                    project, unless overridden at the document level. Leave as Default to
-                    inherit from the user or built-in font."
+                :label="$t('Transcription Font')"
+                :help-text="$t('Font used to display transcription text for documents in this project, unless overridden at the document level. Leave as Default to inherit from the user or built-in font.')"
                 :disabled="disabled"
                 :on-change="(e) => handleTextFieldInput('transcriptionFont', e.target.value)"
                 :options="fontOptions"
             />
             <TagsField
-                label="Tags"
+                :label="$t('Tags')"
                 :disabled="disabled"
                 :on-change="handleTagsFieldInput"
                 :on-change-tag-name="(e) => handleTextFieldInput('tagName', e.target.value)"
@@ -59,13 +57,13 @@
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                :label="newProject ? 'Create' : 'Save'"
+                :label="newProject ? $t('Create') : $t('Save')"
                 :on-click="onSave"
                 :disabled="disabled || invalid"
             />
@@ -160,7 +158,7 @@ export default {
             return [
                 {
                     value: "",
-                    label: "Default",
+                    label: this.$t("Default"),
                     selected: !selectedFont,
                 },
                 ...this.fonts.map((font) => ({

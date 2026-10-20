@@ -8,7 +8,7 @@
             class="tools"
         >
             <i
-                title="Source Panel"
+                :title="$t('Source Panel')"
                 class="panel-icon fas fa-eye"
             />
             <a
@@ -17,14 +17,14 @@
             >
                 <button
                     class="btn btn-sm btn-info ml-3 fas fa-download"
-                    title="Download full size image"
+                    :title="$t('Download full size image')"
                     download
                 />
             </a>
             <div class="btn-group">
                 <button
                     id="rotate-counter-clock"
-                    title="Rotate 90° counter-clockwise."
+                    :title="$t('Rotate 90° counter-clockwise.')"
                     class="btn btn-sm btn-info ml-3 fas fa-undo"
                     autocomplete="off"
                     @click="rotate(360-90)"
@@ -33,7 +33,7 @@
                 </button>
                 <button
                     id="rotate-clock"
-                    title="Rotate 90° clockwise."
+                    :title="$t('Rotate 90° clockwise.')"
                     class="btn btn-sm btn-info  fas fa-redo"
                     autocomplete="off"
                     @click="rotate(90)"

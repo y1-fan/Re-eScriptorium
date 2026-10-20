@@ -1,7 +1,7 @@
 /* overall editor layout */
 main:has(#escr-editor) {
     background-color: var(--background2);
-    font-family: "Noto Sans", "Resized Arabic", sans-serif;
+    font-family: "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     overflow: hidden;
 }
 #escr-editor {
@@ -64,7 +64,7 @@ div.escr-editor-tabcontent #diplo-panel .content-container {
 /* transcription content font, overridden by --transcription-font-family when a custom font is active */
 .escr-editor-tabcontent #diplomatic-lines,
 .escr-editor-tabcontent #transcription-panel svg text {
-    font-family: var(--transcription-font-family, "Noto Sans", "Resized Arabic", sans-serif);
+    font-family: var(--transcription-font-family, "Literata", "Noto Sans", "Resized Arabic", "Noto Serif CJK SC", "Songti SC", serif);
     line-height: var(--transcription-font-line-height, inherit);
 }
 
@@ -109,7 +109,7 @@ div.escr-editor-tabcontent #diplo-panel .content-container {
 }
 .escr-editor-tabcontent #diplomatic-lines div:before {
     border: none;
-    font-family: "Noto Sans";
+    font-family: "Literata", "Noto Sans", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
     font-size: 14px;
     font-weight: 600;
     margin-right: 1rem;

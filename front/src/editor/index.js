@@ -13,6 +13,7 @@ import documentslist from "./store/documentslist";
 import forms from "../../vue/store/modules/forms";
 import alerts from "../../vue/store/modules/alerts";
 import globalTools from "./store/globalTools";
+import "../../vue/i18n";
 
 Vue.use(Vuex);
 Vue.use(vueFilterPrettyBytes);

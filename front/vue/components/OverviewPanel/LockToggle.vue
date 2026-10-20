@@ -2,8 +2,8 @@
     <button
         type="button"
         class="escr-lock-toggle"
-        :title="locked ? 'Unlock region' : 'Lock region'"
-        :aria-label="locked ? 'Unlock region' : 'Lock region'"
+        :title="locked ? $t('Unlock region') : $t('Lock region')"
+        :aria-label="locked ? $t('Unlock region') : $t('Lock region')"
         :aria-pressed="locked"
         @click.stop="onClick"
     >

@@ -17,8 +17,8 @@
             size="small"
             color="text"
             :label="comparedTranscriptions.length
-                ? `${comparedTranscriptions.length} selected`
-                : 'Select'"
+                ? $t('{count} selected', { count: comparedTranscriptions.length })
+                : $t('Select')"
         >
             <template #button-icon>
                 <TranscribeIcon />
@@ -30,17 +30,17 @@
         <template #popper>
             <div class="escr-transcription-selector">
                 <div class="selector-header">
-                    <h3>Transcriptions</h3>
+                    <h3>{{ $t("Transcriptions") }}</h3>
                     <div>
                         <EscrButton
-                            label="Select All"
+                            :label="$t('Select All')"
                             color="link-primary"
                             size="small"
                             :on-click="selectAll"
                             :disabled="comparedTranscriptions.length === allTranscriptionsSorted.length"
                         />
                         <EscrButton
-                            label="Select None"
+                            :label="$t('Select None')"
                             color="link-primary"
                             size="small"
                             :on-click="selectNone"

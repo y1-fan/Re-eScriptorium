@@ -25,10 +25,11 @@
                 class="img"
                 :href="part.href"
                 :disabled="loading && loading.images"
-                aria-label="edit image"
+                :aria-label="$t('edit image')"
             >
                 <img :src="part.thumbnail">
             </a>
+
 
             <!-- select button -->
             <label
@@ -82,12 +83,12 @@
                         }"
                         :disabled="loading && loading.images"
                         :href="part.href"
-                        aria-label="edit image"
+                        :aria-label="$t('edit image')"
                     >
                         <EditImageIcon />
                     </a>
                     <template #popper>
-                        Edit
+                        {{ $t("Edit") }}
                     </template>
                 </VDropdown>
                 <VMenu
@@ -113,10 +114,18 @@
                         <ul class="escr-vertical-menu">
                             <li>
                                 <button
+                                    @mousedown="openNoteFromMenu"
+                                >
+                                    <NoteIcon class="escr-menuitem-icon" />
+                                    <span>{{ $t("Note") }}</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
                                     @mousedown="() => selectPartAndOpenModal(part.pk, 'segment')"
                                 >
                                     <SegmentIcon class="escr-menuitem-icon" />
-                                    <span>Segment</span>
+                                    <span>{{ $t("Segment") }}</span>
                                 </button>
                             </li>
                             <li>
@@ -124,7 +133,7 @@
                                     @mousedown="() => selectPartAndOpenModal(part.pk, 'transcribe')"
                                 >
                                     <TranscribeIcon class="escr-menuitem-icon" />
-                                    <span>Transcribe</span>
+                                    <span>{{ $t("Transcribe") }}</span>
                                 </button>
                             </li>
                             <li>
@@ -132,7 +141,7 @@
                                     @mousedown="() => selectPartAndOpenModal(part.pk, 'align')"
                                 >
                                     <AlignIcon class="escr-menuitem-icon" />
-                                    <span>Align</span>
+                                    <span>{{ $t("Align") }}</span>
                                 </button>
                             </li>
                             <li>
@@ -140,7 +149,7 @@
                                     @mousedown="() => selectPartAndOpenModal(part.pk, 'export')"
                                 >
                                     <ExportIcon class="escr-menuitem-icon" />
-                                    <span>Export</span>
+                                    <span>{{ $t("Export") }}</span>
                                 </button>
                             </li>
                             <li class="new-section">
@@ -148,7 +157,7 @@
                                     @mousedown="() => openDeleteModal(part)"
                                 >
                                     <TrashIcon class="escr-menuitem-icon" />
-                                    <span>Delete</span>
+                                    <span>{{ $t("Delete") }}</span>
                                 </button>
                             </li>
                         </ul>
@@ -182,7 +191,7 @@
                     <template #popper>
                         <div>
                             <SegmentIcon />
-                            <span>Segmentation</span>
+                            <span>{{ $t("Segmentation") }}</span>
                         </div>
                         <div class="task-metadata">
                             <span
@@ -192,13 +201,13 @@
                                     status: true,
                                 }"
                             >
-                                {{ part.workflow.segment|workflowString }}
+                                {{ workflowString(part.workflow.segment) }}
                             </span>
                             <span
                                 v-else
                                 class="status"
                             >
-                                Not initiated
+                                {{ $t("Not initiated") }}
                             </span>
                         <!-- TODO: Uncomment when task date info in API -->
                         <!-- <span class="date">
@@ -218,7 +227,7 @@
                     <template #popper>
                         <div>
                             <TranscribeIcon />
-                            <span>Transcription</span>
+                            <span>{{ $t("Transcription") }}</span>
                         </div>
                         <div class="task-metadata">
                             <span
@@ -228,13 +237,13 @@
                                     status: true,
                                 }"
                             >
-                                {{ part.workflow.transcribe|workflowString }}
+                                {{ workflowString(part.workflow.transcribe) }}
                             </span>
                             <span
                                 v-else
                                 class="status"
                             >
-                                Not initiated
+                                {{ $t("Not initiated") }}
                             </span>
                         <!-- <span class="date">
                             {{ part.transcribe_date|formatDate }}
@@ -253,7 +262,7 @@
                     <template #popper>
                         <div>
                             <AlignIcon />
-                            <span>Alignment</span>
+                            <span>{{ $t("Alignment") }}</span>
                         </div>
                         <div class="task-metadata">
                             <span
@@ -263,13 +272,13 @@
                                     status: true,
                                 }"
                             >
-                                {{ part.workflow.align|workflowString }}
+                                {{ workflowString(part.workflow.align) }}
                             </span>
                             <span
                                 v-else
                                 class="status"
                             >
-                                Not initiated
+                                {{ $t("Not initiated") }}
                             </span>
                         <!-- <span class="date">
                             {{ part.align_date|formatDate }}
@@ -291,6 +300,14 @@
             @dragleave="() => setDragOver(0)"
             @drop="(e) => handleDrop(e, 1)"
         />
+        <NoteModal
+            v-if="noteModalOpen"
+            :disabled="noteSaving"
+            :note="part.note || ''"
+            :on-cancel="closeNoteModal"
+            :on-save="saveNote"
+            :title="$t('Image note')"
+        />
     </li>
 </template>
 
@@ -306,10 +323,14 @@ import EditImageIcon from "../../components/Icons/EditImageIcon/EditImageIcon.vu
 import EscrButton from "../../components/Button/Button.vue";
 import ExportIcon from "../../components/Icons/ExportIcon/ExportIcon.vue";
 import HorizMenuIcon from "../../components/Icons/HorizMenuIcon/HorizMenuIcon.vue";
+import NoteModal from "../../components/NoteModal/NoteModal.vue";
 import SegmentIcon from "../../components/Icons/SegmentIcon/SegmentIcon.vue";
 import TranscribeIcon from "../../components/Icons/TranscribeIcon/TranscribeIcon.vue";
 import TrashIcon from "../../components/Icons/TrashIcon/TrashIcon.vue";
+import NoteIcon from "../../components/Icons/NoteIcon/NoteIcon.vue";
+import { updatePart } from "../../../src/api/documentPart";
 import "./ImageCard.css";
+import { formatDate as formatDotted } from "../../util/dates";
 
 export default {
     name: "EscrImageCard",
@@ -321,11 +342,13 @@ export default {
         EscrButton,
         ExportIcon,
         HorizMenuIcon,
+        NoteModal,
         SegmentIcon,
         TranscribeIcon,
         TrashIcon,
         VDropdown,
         VMenu,
+        NoteIcon,
     },
     filters: {
         /**
@@ -333,35 +356,8 @@ export default {
          * TODO: not yet used, awaiting backend support for task dates
          */
         formatDate(date) {
-            return new Date(date).toLocaleDateString(
-                undefined,
-                {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                    second: "numeric",
-                },
-            );
+            return formatDotted(date);
         },
-        /**
-         * Get the label for a workflow using the internal name as a key
-         */
-        workflowString(state) {
-            switch (state) {
-                case "pending":
-                    return "Initiated";
-                case "ongoing":
-                    return "In Progress";
-                case "error":
-                    return "Error";
-                case "done":
-                    return "Completed";
-                default:
-                    return "Not initiated";
-            }
-        }
     },
     props: {
         /**
@@ -411,10 +407,13 @@ export default {
         return {
             dragOver: 0,
             isBeingDragged: false,
+            noteModalOpen: false,
+            noteSaving: false,
         }
     },
     computed: {
         ...mapState({
+            documentId: (state) => state.document.id,
             loading: (state) => state.images.loading,
             parts: (state) => state.document.parts,
             selectedParts: (state) => state.images.selectedParts,
@@ -423,9 +422,58 @@ export default {
     },
     methods: {
         ...mapActions("alerts", ["addError"]),
+        openNoteModal() {
+            this.noteModalOpen = true;
+        },
+        openNoteFromMenu() {
+            this.closeContextMenu();
+            this.openNoteModal();
+        },
+        closeNoteModal() {
+            this.noteModalOpen = false;
+        },
+        /**
+         * Persist this image's markdown note.
+         */
+        async saveNote(text) {
+            this.noteSaving = true;
+            try {
+                await updatePart(this.documentId, this.part.pk, { note: text });
+                this.$store.commit("document/updatePart", {
+                    ...this.part,
+                    note: text,
+                });
+                this.noteModalOpen = false;
+                this.$store.commit("alerts/addAlert", {
+                    color: "success",
+                    message: this.$t("Note saved successfully"),
+                });
+            } catch (error) {
+                this.addError(error);
+            } finally {
+                this.noteSaving = false;
+            }
+        },
         ...mapActions("tasks", ["openModal"]),
         ...mapActions("images", ["movePart", "moveSelectedParts", "openDeleteModal"]),
         ...mapMutations("images", ["setSelectedParts", "setIsDragging"]),
+        /**
+         * Get the translated label for a workflow using the internal name as a key
+         */
+        workflowString(state) {
+            switch (state) {
+                case "pending":
+                    return this.$t("Initiated");
+                case "ongoing":
+                    return this.$t("In Progress");
+                case "error":
+                    return this.$t("Error");
+                case "done":
+                    return this.$t("Completed");
+                default:
+                    return this.$t("Not initiated");
+            }
+        },
         /**
          * Handler for opening a task modal on one image from context menu
          */
@@ -474,7 +522,9 @@ export default {
                     clonedNode.id = "is-drag-image";
                     // add the elements label
                     const elementsLabel = document.createElement("div");
-                    elementsLabel.innerText = `${this.selectedParts.length} elements`;
+                    elementsLabel.innerText = this.$t(
+                        "{count} elements", { count: this.selectedParts.length }
+                    );
                     elementsLabel.classList.add("elements-count");
                     clonedNode.prepend(elementsLabel);
                     // append the cloned node to the DOM (it will be positioned offscreen)

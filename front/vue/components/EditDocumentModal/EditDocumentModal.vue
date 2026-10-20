@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-edit-document">
         <template #modal-header>
-            <h2>{{ newDocument ? "Create New" : "Edit" }} Document</h2>
+            <h2>{{ newDocument ? $t("Create New Document") : $t("Edit Document") }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -14,8 +14,8 @@
         </template>
         <template #modal-content>
             <TextField
-                label="Name"
-                placeholder="Name"
+                :label="$t('Name')"
+                :placeholder="$t('Name')"
                 :disabled="disabled"
                 :max-length="512"
                 :on-input="(e) => handleTextFieldInput('name', e.target.value)"
@@ -23,37 +23,31 @@
                 required
             />
             <DropdownField
-                label="Script"
+                :label="$t('Script')"
                 :disabled="disabled"
                 :on-change="handleMainScriptChange"
                 :options="scriptOptions"
                 required
             />
             <DropdownField
-                label="Read Direction"
+                :label="$t('Read Direction')"
                 :disabled="disabled"
-                :help-text="(
-                    'The read direction describes the overall order of elements/pages in the ' +
-                    'document; NOT the order of words in a line, which will be automatically ' +
-                    'determined by the script.'
-                )"
+                :help-text="$t('The read direction describes the overall order of elements/pages in the document; NOT the order of words in a line, which will be automatically determined by the script.')"
                 :on-change="(e) => handleTextFieldInput('readDirection', e.target.value)"
                 :options="readDirectionOptions"
                 required
             />
             <DropdownField
-                label="Line Position"
-                help-text="The position of the line relative to the polygon."
+                :label="$t('Line Position')"
+                :help-text="$t('The position of the line relative to the polygon.')"
                 :disabled="disabled"
                 :on-change="(e) => handleTextFieldInput('linePosition', e.target.value)"
                 :options="linePositionOptions"
                 required
             />
             <DropdownField
-                label="Transcription Font"
-                help-text="Font used to display this document's transcription text in the
-                    editor, overriding the project and user fonts. Leave as Default to
-                    inherit from the project, user, or built-in font."
+                :label="$t('Transcription Font')"
+                :help-text="$t('Font used to display this document\'s transcription text in the editor, overriding the project and user fonts. Leave as Default to inherit from the project, user, or built-in font.')"
                 :disabled="disabled"
                 :on-change="(e) => handleTextFieldInput('transcriptionFont', e.target.value)"
                 :options="fontOptions"
@@ -66,7 +60,7 @@
                 :on-remove="handleRemoveMetadatum"
             />
             <TagsField
-                label="Tags"
+                :label="$t('Tags')"
                 :disabled="disabled"
                 :on-change="handleTagsFieldInput"
                 :on-change-tag-name="(e) => handleTextFieldInput('tagName', e.target.value)"
@@ -79,13 +73,13 @@
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                :label="newDocument ? 'Create' : 'Save'"
+                :label="newDocument ? $t('Create') : $t('Save')"
                 :on-click="onSave"
                 :disabled="disabled || invalid"
             />
@@ -197,7 +191,7 @@ export default {
         linePositionOptions() {
             return ["Baseline", "Topline", "Centered"].map((linePos, idx) => ({
                 value: idx.toString(),
-                label: linePos,
+                label: this.$t(linePos),
                 selected: idx.toString() === this.linePosition.toString(),
             }));
         },
@@ -208,12 +202,12 @@ export default {
             return [
                 {
                     value: "ltr",
-                    label: "Left to right",
+                    label: this.$t("Left to right"),
                     selected: this.readDirection === "ltr",
                 },
                 {
                     value: "rtl",
-                    label: "Right to left",
+                    label: this.$t("Right to left"),
                     selected: this.readDirection === "rtl",
                 }
             ];
@@ -236,7 +230,7 @@ export default {
             return [
                 {
                     value: "",
-                    label: "Default",
+                    label: this.$t("Default"),
                     selected: !selectedFont,
                 },
                 ...this.fonts.map((font) => ({

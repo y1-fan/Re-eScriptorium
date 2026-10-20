@@ -29,8 +29,8 @@
                         <SearchIcon />
                         <TextField
                             :label-visible="false"
-                            label="Filter elements by type, ID, or transcription"
-                            placeholder="Filter by type, ID, or transcription"
+                            :label="$t('Filter elements by type, ID, or transcription')"
+                            :placeholder="$t('Filter by type, ID, or transcription')"
                             :value="filterText"
                             :on-input="onFilterInput"
                             :on-focus="onFilterFocus"
@@ -60,8 +60,8 @@
                         v-else
                         type="button"
                         class="escr-elements-edit-button"
-                        title="Edit transcription"
-                        aria-label="Edit transcription"
+                        :title="$t('Edit transcription')"
+                        :aria-label="$t('Edit transcription')"
                         @click.stop="onEditLine(item)"
                     >
                         <PencilIcon />
@@ -73,10 +73,10 @@
                 :loading="false"
                 :no-data-message="
                     filterText
-                        ? 'No elements match this filter.'
+                        ? $t('No elements match this filter.')
                         : activeTab === 'regions'
-                            ? 'There are no regions on this part.'
-                            : 'There are no lines on this part.'
+                            ? $t('There are no regions on this part.')
+                            : $t('There are no lines on this part.')
                 "
             />
         </div>
@@ -140,13 +140,13 @@ export default {
                     label: RegionsIcon,
                     value: "regions",
                     selected: this.activeTab === "regions",
-                    tooltip: "Regions",
+                    tooltip: this.$t("Regions"),
                 },
                 {
                     label: LinesIcon,
                     value: "lines",
                     selected: this.activeTab === "lines",
-                    tooltip: "Lines",
+                    tooltip: this.$t("Lines"),
                 },
             ];
         },
@@ -157,7 +157,7 @@ export default {
                     label: TranscribeIcon,
                     value: "transcription",
                     selected: mode === "transcription",
-                    tooltip: "Transcription",
+                    tooltip: this.$t("Transcription"),
                 },
                 {
                     label: TagIcon,
@@ -172,14 +172,14 @@ export default {
                 this.activeTab === "lines" && this.identifyingColumnMode === "transcription";
             const identifyingHeader = showTranscription
                 ? {
-                    label: "Transcription",
+                    label: this.$t("Transcription"),
                     value: "displayTranscription",
                     class: "escr-elements-identifying-column",
                     dir: this.defaultTextDirection,
                 }
                 : { label: "ID", value: "displayId", class: "escr-elements-identifying-column" };
             return [
-                { label: "Type", value: "typeDisplay", component: TypeSwatch },
+                { label: this.$t("Type"), value: "typeDisplay", component: TypeSwatch },
                 identifyingHeader,
             ];
         },

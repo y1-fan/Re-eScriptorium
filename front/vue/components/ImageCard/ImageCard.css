@@ -164,6 +164,7 @@
     background-color: var(--secondary);
     padding: 3px 0.5rem;
     border-top-right-radius: 15px;
+    border-bottom-left-radius: 15px;
 }
 .escr-image-actions a {
     color: var(--button-text);
@@ -174,7 +175,6 @@
     background-color: var(--secondary-dark);
 }
 .escr-image-card:hover .escr-image-actions,
-.escr-image-card:focus-within .escr-image-actions,
 .escr-image-actions.context-menu-open {
     display: flex;
 }
@@ -278,4 +278,26 @@
 .v-popper--theme-escr-tooltip-small .v-popper__inner {
     text-align: center;
     max-width: none;
+}
+
+
+/*
+ * Selection control: a white circle when unselected and a solid blue circle
+ * when selected. The check mark icon itself is not used.
+ */
+.escr-image-card label.image-checkbox input[type="checkbox"] + svg {
+    display: none;
+}
+.escr-image-card label.image-checkbox input[type="checkbox"]:checked + svg {
+    display: none;
+}
+.escr-image-card label.image-checkbox input[type="checkbox"]:checked + svg + span::before {
+    display: block;
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--secondary);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }

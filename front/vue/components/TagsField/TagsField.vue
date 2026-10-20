@@ -172,17 +172,19 @@ export default {
             if (filteredTags.length === 0) {
                 return h(
                     "div",
-                    `No matching tags. ${this.tags.length} tag${this.tags.length !== 1 ? "s" : ""
-                    } hidden, including ${hiddenSelectedTagCount} selected.`,
+                    this.$t("No matching tags. {count} hidden, including {selected} selected.", {
+                        count: this.tags.length,
+                        selected: hiddenSelectedTagCount,
+                    }),
                 );
             } else if (filteredTags.length < this.tags.length) {
                 const hiddenTagCount = this.tags.length - filteredTags.length;
                 return h(
                     "div",
-                    `+ ${hiddenTagCount
-                    } tag${hiddenTagCount !== 1 ? "s" : ""} hidden, including ${
-                        hiddenSelectedTagCount
-                    } selected tag${hiddenSelectedTagCount !== 1 ? "s" : ""}`,
+                    this.$t("+ {count} hidden, including {selected} selected", {
+                        count: hiddenTagCount,
+                        selected: hiddenSelectedTagCount,
+                    }),
                 );
             }
             return [];
@@ -197,8 +199,8 @@ export default {
                     props: {
                         color: "text",
                         label: this.tagName
-                            ? `Create a tag "${this.tagName}"`
-                            : "Create a tag",
+                            ? this.$t("Create a tag \"{name}\"", { name: this.tagName })
+                            : this.$t("Create a tag"),
                         disabled: this.disabled || !this.tagName || this.tags.some(
                             (tag) => tag.name === this.tagName
                         ),
@@ -220,16 +222,16 @@ export default {
             "div",
             { class: "escr-tags-field escr-form-field" },
             [
-                h("span", { class: "escr-form-label" }, "Tags"),
+                h("span", { class: "escr-form-label" }, this.$t("Tags")),
                 h(
                     TextField,
                     {
                         props: {
                             disabled: this.disabled,
-                            label: "Add/search tags",
+                            label: this.$t("Add/search tags"),
                             labelVisible: false,
                             onInput: this.onChangeTagName,
-                            placeholder: "Add/search tags",
+                            placeholder: this.$t("Add/search tags"),
                             value: this.tagName,
                             maxLength: 100,
                         },

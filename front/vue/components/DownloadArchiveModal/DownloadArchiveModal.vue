@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-download-archive-modal">
         <template #modal-header>
-            <h2>Download Archive {{ scope }}</h2>
+            <h2>{{ $t("Download Archive {scope}", { scope: scopeLabel }) }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -14,11 +14,10 @@
         </template>
         <template #modal-content>
             <p class="escr-archive-intro">
-                Exports {{ scopeNoun }} as a full JSON
-                archive.
+                {{ $t("Exports {scopeNoun} as a full JSON archive.", { scopeNoun }) }}
             </p>
             <div class="escr-form-field">
-                <label>Archive format</label>
+                <label>{{ $t("Archive format") }}</label>
                 <select
                     :value="archiveFormat"
                     @change="handleArchiveFormatChange"
@@ -27,7 +26,7 @@
                         ZIP (.zip)
                     </option>
                     <option value="tar.gz">
-                        Gzipped Tar (.tar.gz)
+                        {{ $t("Gzipped Tar (.tar.gz)") }}
                     </option>
                 </select>
             </div>
@@ -38,20 +37,20 @@
                         :checked="includeImages"
                         @change="handleIncludeImagesChange"
                     >
-                    Include images
+                    {{ $t("Include images") }}
                 </label>
             </div>
         </template>
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                label="Download"
+                :label="$t('Download')"
                 :on-click="onSubmit"
                 :disabled="disabled"
             />
@@ -83,10 +82,29 @@ export default {
             archiveFormat: (state) => state.forms.downloadArchive.archiveFormat,
             includeImages: (state) => state.forms.downloadArchive.includeImages,
         }),
+        /**
+         * Translated label for the archive scope (e.g. "Document", "3 Images").
+         */
+        scopeLabel() {
+            const scope = this.scope || "";
+            if (scope === "Document") {
+                return this.$t("Document");
+            }
+            if (scope === "Image") {
+                return this.$t("Image");
+            }
+            const match = /^(\d+) Images$/.exec(scope);
+            if (match) {
+                return this.$t("{count} Images", { count: match[1] });
+            }
+            return scope;
+        },
         scopeNoun() {
             // "Document" -> "document", "Elements" -> "selection"
-            if (this.scope === "Elements") return "selection";
-            return this.scope.toLowerCase() || "document";
+            if (this.scope === "Elements") {
+                return this.$t("selection").toLowerCase();
+            }
+            return this.scopeLabel.toLowerCase();
         },
     },
     methods: {

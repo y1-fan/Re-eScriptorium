@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Import images</h3>
+        <h3>{{ $t("Import images") }}</h3>
         <ImageDropzone
             id="escr-drop-zone"
             :options="{
@@ -13,14 +13,14 @@
             @vdropzone-queue-complete="() => queueComplete()"
         >
             <UploadIcon />
-            <h4>Drag and drop files here</h4>
-            <p>Files supported: JPG, PNG, TIFF</p>
-            <p>or</p>
+            <h4>{{ $t("Drag and drop files here") }}</h4>
+            <p>{{ $t("Files supported: JPG, PNG, TIFF") }}</p>
+            <p>{{ $t("or") }}</p>
             <button
                 type="button"
                 class="escr-button escr-button--large escr-button--primary"
             >
-                Choose files
+                {{ $t("Choose files") }}
             </button>
         </ImageDropzone>
     </div>

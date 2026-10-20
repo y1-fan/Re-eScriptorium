@@ -13,7 +13,7 @@
         />
         <div
             class="d-table-cell"
-            :title="'Edited by ' + version.author + ' (' + version.source + ')'"
+            :title="$t('Edited by {author} ({source})', { author: version.author, source: version.source })"
         >
             <span class="escr-version-author">
                 {{ version.author }} ( {{ version.source }} )
@@ -21,7 +21,7 @@
         </div>
         <div
             class="d-table-cell"
-            title="Edited on"
+            :title="$t('Edited on')"
         >
             {{ momentDate }}
         </div>
@@ -29,7 +29,7 @@
             <button
                 v-if="legacyModeEnabled"
                 class="btn btn-sm btn-info js-pull-state"
-                title="Load this state"
+                :title="$t('Load this state')"
                 @click="loadState"
             >
                 <i class="fas fa-file-upload" />

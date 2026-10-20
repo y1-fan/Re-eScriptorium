@@ -1,11 +1,10 @@
 <template>
     <div>
-        <h3>Import images from IIIF</h3>
-        Input a valid IIIF manifest URI to import all of its images in full resolution
-        along with its metadata.
+        <h3>{{ $t("Import images from IIIF") }}</h3>
+        {{ $t("Input a valid IIIF manifest URI to import all of its images in full resolution along with its metadata.") }}
         <fieldset>
             <TextField
-                label="IIIF Manifest URI"
+                :label="$t('IIIF Manifest URI')"
                 placeholder="https://gallica.bnf.fr/iiif/ark:/12148/btv1b10224708f/manifest.json"
                 :invalid="invalid['iiifUri']"
                 :on-input="handleIIIFInput"

@@ -8,9 +8,9 @@
             <div class="escr-container">
                 <div class="escr-ontology-overview-header">
                     <h3 :title="documentName">
-                        {{ documentName || "Loading..." }}
+                        {{ documentName || $t("Loading...") }}
                     </h3>
-                    <h1>Ontology Overview</h1>
+                    <h1>{{ $t("Ontology Overview") }}</h1>
                 </div>
                 <div class="escr-ontology-overview-controls">
                     <SegmentedButtonGroup
@@ -24,9 +24,9 @@
                         v-if="category === 'characters'"
                         class="escr-ontology-overview-transcription"
                     >
-                        <h3>Transcription:</h3>
+                        <h3>{{ $t("Transcription:") }}</h3>
                         <EscrDropdown
-                            label="Change the transcription used for character stats"
+                            :label="$t('Change the transcription used for character stats')"
                             :disabled="loading"
                             :options="transcriptionLevels"
                             :on-change="onSelectTranscription"
@@ -61,13 +61,13 @@
                         <EscrLoader
                             v-else
                             :loading="false"
-                            no-data-message="There is no ontology to display."
+                            :no-data-message="$t('There is no ontology to display.')"
                         />
                     </div>
                     <div class="escr-ontology-overview-parts">
                         <template v-if="selectedType">
                             <h2>
-                                Parts containing "{{ selectedType.name }}"
+                                {{ $t('Parts containing "{name}"', { name: selectedType.name }) }}
                             </h2>
                             <EscrTable
                                 v-if="selectedTypeParts.length"
@@ -81,11 +81,11 @@
                             <EscrLoader
                                 v-else
                                 :loading="selectedTypeLoading"
-                                no-data-message="This type is not used in any part."
+                                :no-data-message="$t('This type is not used in any part.')"
                             />
                         </template>
                         <p v-else>
-                            Select a type to see which parts contain it.
+                            {{ $t("Select a type to see which parts contain it.") }}
                         </p>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ export default {
             return !!this.documentLoading || this.refreshingStats;
         },
         breadcrumbs() {
-            let docBreadcrumbs = [{ title: "Loading..." }, { title: "Loading..." }];
+            let docBreadcrumbs = [{ title: this.$t("Loading...") }, { title: this.$t("Loading...") }];
             if (this.projectName && this.projectSlug && this.documentName) {
                 docBreadcrumbs = [
                     { title: this.projectName, href: `/project/${this.projectSlug}/` },
@@ -147,18 +147,18 @@ export default {
                 ];
             }
             return [
-                { title: "My Projects", href: "/projects/" },
+                { title: this.$t("My Projects"), href: "/projects/" },
                 ...docBreadcrumbs,
-                { title: "Ontology Overview" },
+                { title: this.$t("Ontology Overview") },
             ];
         },
         categories() {
             return [
-                { label: "Regions", value: "regions" },
-                { label: "Lines", value: "lines" },
-                { label: "Text Annotations", value: "text" },
-                { label: "Image Annotations", value: "image" },
-                { label: "Characters", value: "characters" },
+                { label: this.$t("Regions"), value: "regions" },
+                { label: this.$t("Lines"), value: "lines" },
+                { label: this.$t("Text Annotations"), value: "text" },
+                { label: this.$t("Image Annotations"), value: "image" },
+                { label: this.$t("Characters"), value: "characters" },
             ].map((category) => ({
                 ...category,
                 selected: this.category === category.value,
@@ -191,28 +191,28 @@ export default {
         },
         typesHeading() {
             const headings = {
-                regions: "Region Types",
-                lines: "Line Types",
-                text: "Text Annotation Types",
-                image: "Image Annotation Types",
-                characters: "Characters",
+                regions: this.$t("Region Types"),
+                lines: this.$t("Line Types"),
+                text: this.$t("Text Annotation Types"),
+                image: this.$t("Image Annotation Types"),
+                characters: this.$t("Characters"),
             };
-            return headings[this.category] || "Types";
+            return headings[this.category] || this.$t("Types");
         },
         typeHeaders() {
             return [
                 {
-                    label: this.category === "characters" ? "Character" : "Type",
+                    label: this.category === "characters" ? this.$t("Character") : this.$t("Type"),
                     value: "name",
                     sortable: false,
                 },
-                { label: "# in Document", value: "frequency", sortable: false },
+                { label: this.$t("# in Document"), value: "frequency", sortable: false },
             ];
         },
         partHeaders() {
             return [
-                { label: "Part", value: "part_name" },
-                { label: "# on Part", value: "frequency" },
+                { label: this.$t("Part"), value: "part_name" },
+                { label: this.$t("# on Part"), value: "frequency" },
             ];
         },
         selectedTypeKey() {
@@ -226,7 +226,7 @@ export default {
             const parts = byKey[this.selectedTypeKey]?.parts || [];
             return parts.map((part) => ({
                 ...part,
-                part_name: part.part_name || part.part_filename || "Untitled",
+                part_name: part.part_name || part.part_filename || this.$t("Untitled"),
                 href: `/document/${this.documentId}/part/${part.document_part_id}/edit/`,
             }));
         },
@@ -287,7 +287,7 @@ export default {
          * Render whitespace characters in a readable way
          */
         displayChar(char) {
-            if (char === " ") return "(space)";
+            if (char === " ") return this.$t("(space)");
             if (char === "\n") return "\\n";
             return char;
         },

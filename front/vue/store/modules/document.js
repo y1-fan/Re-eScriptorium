@@ -21,6 +21,7 @@ import { tagColorToVariant } from "../util/color";
 import { getMetadataCRUD } from "../util/metadata";
 import forms from "../util/initialFormState";
 import { throttle } from "../util/throttle";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -40,6 +41,7 @@ const state = () => ({
     },
     mainScript: "",
     menuOpen: false,
+    note: "",
     /**
      * metadata: [{
      *     pk: Number,
@@ -261,7 +263,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Segmentation queued successfully",
+                    message: t("Segmentation queued successfully"),
                 },
                 { root: true },
             );
@@ -279,14 +281,14 @@ const actions = {
             // success message if ALL images imported successfully
             dispatch(
                 "alerts/add",
-                { color: "success", message: "Images imported successfully" },
+                { color: "success", message: t("Images imported successfully") },
                 { root: true },
             );
         } else {
             // otherwise, message that import has been canceled
             dispatch(
                 "alerts/add",
-                { color: "text", message: "Image import canceled" },
+                { color: "text", message: t("Image import canceled") },
                 { root: true },
             );
         }
@@ -310,7 +312,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Document deleted successfully",
+                    message: t("Document deleted successfully"),
                 },
                 { root: true },
             );
@@ -339,6 +341,7 @@ const actions = {
             commit("setReadDirection", data.read_direction);
             commit("setLinePosition", data.line_offset);
             commit("setName", data.name);
+            commit("setNote", data.note || "");
             commit("setTranscriptionFont", data.transcription_font || null);
             commit("setEffectiveTranscriptionFont", data.effective_transcription_font || null);
             commit("setPartsCount", data.parts_count);
@@ -347,8 +350,8 @@ const actions = {
             commit("setProjectName", data.project_name);
             await commit("setRegionTypes", [
                 ...data.valid_block_types,
-                { pk: "Undefined", name: "(Undefined region type)" },
-                { pk: "Orphan", name: "(Orphan lines)" },
+                { pk: "Undefined", name: t("(Undefined region type)") },
+                { pk: "Orphan", name: t("(Orphan lines)") },
             ]);
             // select all region types on forms that have that key
             Object.keys(forms)
@@ -494,7 +497,7 @@ const actions = {
             }
         } else {
             commit("setLoading", { key: "document", loading: false });
-            throw new Error("Unable to retrieve document");
+            throw new Error(t("Unable to retrieve document"));
         }
         commit("setLoading", { key: "document", loading: false });
 
@@ -525,7 +528,7 @@ const actions = {
                 { root: true },
             );
         } else {
-            throw new Error("Unable to retrieve document metadata");
+            throw new Error(t("Unable to retrieve document metadata"));
         }
     },
     /**
@@ -536,7 +539,7 @@ const actions = {
         let models = [];
         const { data } = await retrieveDocumentModels(state.id);
         if (!data?.results)
-            throw new Error("Unable to retrieve document models");
+            throw new Error(t("Unable to retrieve document models"));
         models = data.results;
         let nextPage = data.next;
         while (nextPage) {
@@ -567,7 +570,7 @@ const actions = {
                 })),
             );
         } else {
-            throw new Error("Unable to retrieve document images");
+            throw new Error(t("Unable to retrieve document images"));
         }
     },
     /**
@@ -580,7 +583,7 @@ const actions = {
         if (data?.results) {
             commit("setTasks", data.results);
         } else {
-            throw new Error("Unable to retrieve document tasks");
+            throw new Error(t("Unable to retrieve document tasks"));
         }
     },
     /**
@@ -599,7 +602,7 @@ const actions = {
         if (data?.results) {
             commit("setTextualWitnesses", data.results);
         } else {
-            throw new Error("Unable to retrieve textual witnesses");
+            throw new Error(t("Unable to retrieve textual witnesses"));
         }
     },
     /**
@@ -635,20 +638,20 @@ const actions = {
         if (data) {
             commit("setTypes", {
                 regions: data.regions.map((r) => (
-                    {...r, name: r.typology_name || "None", color: r.typology_color }
+                    {...r, name: r.typology_name || t("None"), color: r.typology_color }
                 )),
                 lines: data.lines.map((l) => (
-                    {...l, name: l.typology_name || "None", color: l.typology_color }
+                    {...l, name: l.typology_name || t("None"), color: l.typology_color }
                 )),
-                text: data.text_annotations.map((t) => (
-                    {...t, name: t.taxonomy_name || "None"}
+                text: data.text_annotations.map((ta) => (
+                    {...ta, name: ta.taxonomy_name || t("None")}
                 )),
                 image: data.image_annotations.map((i) => (
-                    {...i, name: i.taxonomy_name || "None"}
+                    {...i, name: i.taxonomy_name || t("None")}
                 )),
             });
         } else {
-            throw new Error("Unable to retrieve ontology");
+            throw new Error(t("Unable to retrieve ontology"));
         }
     },
     /**
@@ -681,14 +684,16 @@ const actions = {
                     "alerts/add",
                     {
                         color: "warning",
-                        message: `Ontology imported with warnings: ${data.warnings.join(" ")}`,
+                        message: t("Ontology imported with warnings: {warnings}", {
+                            warnings: data.warnings.join(" "),
+                        }),
                     },
                     { root: true },
                 );
             } else {
                 dispatch(
                     "alerts/add",
-                    { color: "success", message: "Ontology imported successfully" },
+                    { color: "success", message: t("Ontology imported successfully") },
                     { root: true },
                 );
             }
@@ -737,7 +742,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Alignment queued successfully",
+                    message: t("Alignment queued successfully"),
                 },
                 { root: true },
             );
@@ -768,7 +773,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Export queued successfully",
+                    message: t("Export queued successfully"),
                 },
                 { root: true },
             );
@@ -800,8 +805,9 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message:
+                    message: t(
                         "Archive queued. It will show up on your Downloads page when ready.",
+                    ),
                 },
                 { root: true },
             );
@@ -830,8 +836,8 @@ const actions = {
                     color: "success",
                     message:
                         importMode === "images"
-                            ? "Images imported successfully"
-                            : "Import queued successfully. It may take time for images to appear.",
+                            ? t("Images imported successfully")
+                            : t("Import queued successfully. It may take time for images to appear."),
                     delay: 4000,
                 },
                 { root: true },
@@ -872,7 +878,7 @@ const actions = {
                     "alerts/add",
                     {
                         color: "success",
-                        message: "Segmentation queued successfully",
+                        message: t("Segmentation queued successfully"),
                     },
                     { root: true },
                 );
@@ -905,7 +911,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Transcription queued successfully",
+                    message: t("Transcription queued successfully"),
                 },
                 { root: true },
             );
@@ -953,7 +959,7 @@ const actions = {
             );
             commit("setTranscriptions", transcriptions);
         } else {
-            throw new Error("Unable to fetch transcriptions");
+            throw new Error(t("Unable to fetch transcriptions"));
         }
     },
     /**
@@ -1028,7 +1034,7 @@ const actions = {
                         const pk = splitURL[splitURL.length - 2];
                         commit("removeMetadatum", pk);
                     } else {
-                        throw new Error("Error updating metadata");
+                        throw new Error(t("Error updating metadata"));
                     }
                 });
             // update state for document response
@@ -1048,14 +1054,14 @@ const actions = {
                 );
                 commit("setEditModalOpen", false);
             } else {
-                throw new Error("Unable to save document");
+                throw new Error(t("Unable to save document"));
             }
             // show toast alert on success
             dispatch(
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Document updated successfully",
+                    message: t("Document updated successfully"),
                 },
                 { root: true },
             );
@@ -1094,9 +1100,11 @@ const actions = {
                     "alerts/add",
                     {
                         color: "success",
-                        message: `${
-                            user ? "User" : "Group"
-                        } added successfully`,
+                        message: t(
+                            user
+                                ? "User added successfully"
+                                : "Group added successfully",
+                        ),
                     },
                     { root: true },
                 );
@@ -1104,7 +1112,7 @@ const actions = {
                 commit("setSharedWithGroups", data.shared_with_groups);
                 commit("setSharedWithUsers", data.shared_with_users);
             } else {
-                throw new Error("Unable to add user or group.");
+                throw new Error(t("Unable to add user or group."));
             }
         } catch (error) {
             commit("setLoading", { key: "document", loading: false });
@@ -1209,6 +1217,9 @@ const mutations = {
     },
     setName(state, name) {
         state.name = name;
+    },
+    setNote(state, note) {
+        state.note = note;
     },
     setParts(state, parts) {
         state.parts = parts;

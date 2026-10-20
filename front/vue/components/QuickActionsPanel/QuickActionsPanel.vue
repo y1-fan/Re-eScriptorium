@@ -10,7 +10,7 @@
                     color="text"
                     :disabled="!data || data.disabled"
                     :on-click="() => openModal('import')"
-                    label="Import"
+                    :label="$t('Import')"
                 >
                     <template #button-icon>
                         <ImportIcon />
@@ -18,7 +18,7 @@
                 </EscrButton>
                 <template #popper>
                     <span class="escr-tooltip-text">
-                        Import images or transcription content.
+                        {{ $t("Import images or transcription content.") }}
                     </span>
                 </template>
             </VDropdown>
@@ -28,7 +28,7 @@
                 color="text"
                 :disabled="!data || data.disabled"
                 :on-click="() => openModal('segment')"
-                :label="`Segment ${data && data.scope}`"
+                :label="$t('Segment {scope}', { scope: scopeLabel })"
             >
                 <template #button-icon>
                     <SegmentIcon />
@@ -40,7 +40,7 @@
                 color="text"
                 :disabled="!data || data.disabled"
                 :on-click="() => openModal('transcribe')"
-                :label="`Transcribe ${data && data.scope}`"
+                :label="$t('Transcribe {scope}', { scope: scopeLabel })"
             >
                 <template #button-icon>
                     <TranscribeIcon />
@@ -52,7 +52,7 @@
                 color="text"
                 :disabled="!data || data.disabled"
                 :on-click="() => openModal('align')"
-                :label="`Align ${data && data.scope}`"
+                :label="$t('Align {scope}', { scope: scopeLabel })"
             >
                 <template #button-icon>
                     <AlignIcon />
@@ -64,7 +64,7 @@
                 color="text"
                 :disabled="!data || data.disabled"
                 :on-click="() => openModal('export')"
-                :label="`Export ${data && data.scope}`"
+                :label="$t('Export {scope}', { scope: scopeLabel })"
             >
                 <template #button-icon>
                     <ExportIcon />
@@ -76,7 +76,7 @@
                 color="text"
                 :disabled="!data || data.disabled"
                 :on-click="() => openModal('downloadArchive')"
-                :label="`Download Archive ${data && data.scope}`"
+                :label="$t('Download Archive {scope}', { scope: scopeLabel })"
             >
                 <template #button-icon>
                     <DownloadIcon />
@@ -121,6 +121,25 @@ export default {
         data: {
             type: Object,
             required: true,
+        },
+    },
+    computed: {
+        /**
+         * Translated label for the action scope (e.g. "Document", "3 Images").
+         */
+        scopeLabel() {
+            const scope = (this.data && this.data.scope) || "";
+            if (scope === "Document") {
+                return this.$t("Document");
+            }
+            if (scope === "Image") {
+                return this.$t("Image");
+            }
+            const match = /^(\d+) Images$/.exec(scope);
+            if (match) {
+                return this.$t("{count} Images", { count: match[1] });
+            }
+            return scope;
         },
     },
     methods: {

@@ -34,7 +34,7 @@
             :disabled="disabled"
             :option-groups="optionGroups"
             :on-change="onChange"
-            :placeholder="placeholder"
+            :placeholder="placeholder || $t('Select or search...')"
             :allow-custom-value="allowCustomValue"
         />
     </label>
@@ -105,11 +105,11 @@ export default {
             default: false,
         },
         /**
-         * Placeholder text
+         * Placeholder text; falls back to a default prompt when empty
          */
         placeholder: {
             type: String,
-            default: "Select or search...",
+            default: "",
         },
         /**
          * Whether or not this field is required in the form.

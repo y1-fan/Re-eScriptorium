@@ -11,19 +11,19 @@
         <template #modal-content>
             <h3>{{ bodyText }}</h3>
             <p v-if="cannotUndo">
-                You cannot undo this action.
+                {{ $t("You cannot undo this action.") }}
             </p>
         </template>
         <template #modal-actions>
             <EscrButton
                 color="outline-text"
-                :label="cancelVerb"
+                :label="$t(cancelVerb)"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 :color="color === 'text' ? 'outline-text' : color"
-                :label="confirmVerb"
+                :label="$t(confirmVerb)"
                 :on-click="onConfirm"
                 :disabled="disabled"
             />

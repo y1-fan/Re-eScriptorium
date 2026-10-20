@@ -10,14 +10,14 @@
             class="tools"
         >
             <i
-                title="Segmentation Panel"
+                :title="$t('Segmentation Panel')"
                 class="panel-icon fas fa-align-left"
             />
             <div class="btn-group">
                 <button
                     id="undo"
                     ref="undo"
-                    title="Undo. (Ctrl+Z)"
+                    :title="$t('Undo. (Ctrl+Z)')"
                     class="btn btn-sm btn-outline-dark ml-3 fas fa-undo"
                     autocomplete="off"
                     disabled
@@ -25,7 +25,7 @@
                 <button
                     id="redo"
                     ref="redo"
-                    title="Redo. (Ctrl+Y)"
+                    :title="$t('Redo. (Ctrl+Y)')"
                     class="btn btn-sm btn-outline-dark fas fa-redo"
                     autocomplete="off"
                     disabled
@@ -35,7 +35,7 @@
             <div class="btn-group">
                 <button
                     id="toggle-settings"
-                    title="Editor settings."
+                    :title="$t('Editor settings.')"
                     class="btn btn-sm btn-info ml-3 fas fa-cogs dropdown-toggle"
                     type="button"
                     data-toggle="dropdown"
@@ -45,19 +45,19 @@
                     class="dropdown-menu"
                 >
                     <div>
-                        <label for="be-even-bl-color">Baselines</label>
+                        <label for="be-even-bl-color">{{ $t("Baselines") }}</label>
                         <br><input
                             id="be-bl-color"
                             type="color"
                         >
                     </div>
                     <div>
-                        <label for="be-dir-color">Line direction hints (by type)</label>
+                        <label for="be-dir-color">{{ $t("Line direction hints (by type)") }}</label>
                         <br>
                         <input
                             id="be-dir-color-0"
                             type="color"
-                            title="None"
+                            :title="$t('None')"
                         >
                         <input
                             v-for="(type, index) in $store.state.document.types.lines"
@@ -69,12 +69,12 @@
                         >
                     </div>
                     <div>
-                        <label for="be-reg-color">Regions (by type)</label>
+                        <label for="be-reg-color">{{ $t("Regions (by type)") }}</label>
                         <br>
                         <input
                             id="be-reg-color-0"
                             type="color"
-                            title="None"
+                            :title="$t('None')"
                         >
                         <input
                             v-for="(type, index) in $store.state.document.types.regions"
@@ -94,7 +94,7 @@
                 v-if="hasBinaryColor"
                 id="toggle-binary"
                 :class="[colorMode == 'binary' ? 'btn-success' : 'btn-info']"
-                title="Toggle binary image."
+                :title="$t('Toggle binary image.')"
                 class="btn btn-sm fas fa-adjust"
                 autocomplete="off"
                 @click="toggleBinary"
@@ -102,28 +102,28 @@
             <div class="btn-group">
                 <button
                     id="be-toggle-regions"
-                    title="Switch to region mode. (R)"
+                    :title="$t('Switch to region mode. (R)')"
                     class="btn btn-sm btn-info fas fa-th-large"
                     autocomplete="off"
                 />
 
                 <button
                     id="be-toggle-line-mode"
-                    title="Toggle line masks and stroke width. (M)"
+                    :title="$t('Toggle line masks and stroke width. (M)')"
                     class="btn btn-sm btn-info fas fa-mask"
                 />
             </div>
             <div class="btn-group">
                 <button
                     id="be-split-lines"
-                    title="Cut through lines. (C)"
+                    :title="$t('Cut through lines. (C)')"
                     class="btn btn-sm btn-warning fas fa-cut"
                 />
             </div>
                 <!-- toggle labels button -->
                 <button
                     id="toggle-region-labels"
-                    title="Toggle region labels"
+                    :title="$t('Toggle region labels')"
                     class="btn btn-sm fas fa-tag"
                     :class="regionLabels ? 'btn-success' : 'btn-info'"
                     :disabled="currentMode !== 'regions'"
@@ -133,13 +133,13 @@
             <div class="btn-group">
                 <button
                     id="be-toggle-order"
-                    title="Toggle ordering display. (L)"
+                    :title="$t('Toggle ordering display. (L)')"
                     class="btn btn-sm btn-info fas fa-sort-numeric-down"
                     autocomplete="off"
                 />
                 <button
                     id="toggle-auto-order"
-                    title="Toggle automatic reordering on line creation/deletion."
+                    :title="$t('Toggle automatic reordering on line creation/deletion.')"
                     class="btn btn-sm fas fa-robot"
                     :class="[autoOrder ? 'btn-success' : 'btn-info']"
                     @click="toggleAutoOrder"
@@ -147,7 +147,7 @@
                 <button
                     v-if="!autoOrder"
                     id="manualOrder"
-                    title="Reorder line automatically"
+                    :title="$t('Reorder line automatically')"
                     class="btn btn-sm btn-info fas fa-sort"
                     @click="recalculateOrdering"
                 />
@@ -158,14 +158,14 @@
                     !$store.getters['lines/hasMasks'] && $store.state.lines.all.length > 0
                 "
                 class="btn btn-sm btn-success fas fa-thumbs-up ml-auto"
-                title="Segmentation is ready for mask calculation!"
+                :title="$t('Segmentation is ready for mask calculation!')"
                 @click="processLines"
             />
             <button
                 id="segmentation-help-ben"
                 data-toggle="collapse"
                 data-target="#segmentation-help"
-                title="Help."
+                :title="$t('Help.')"
                 class="btn btn-sm btn-info fas fa-question help nav-item ml-2"
             />
             <div
@@ -177,7 +177,7 @@
                     data-toggle="collapse"
                     data-target="#segmentation-help"
                     class="close"
-                    aria-label="Close"
+                    :aria-label="$t('Close')"
                 >
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -256,37 +256,37 @@
         >
             <button
                 id="be-link-region"
-                title="Link selected lines to (the first detected) background region. (Y)"
+                :title="$t('Link selected lines to (the first detected) background region. (Y)')"
                 class="hide btn btn-info m-1 fas fa-link"
             />
             <button
                 id="be-unlink-region"
-                title="Unlink selected lines from their region. (U)"
+                :title="$t('Unlink selected lines from their region. (U)')"
                 class="hide btn btn-info m-1 fas fa-unlink"
             />
             <button
                 id="be-merge-selection"
-                title="Join selected lines. (J)"
+                :title="$t('Join selected lines. (J)')"
                 class="hide btn btn-info fas m-1 fa-compress-arrows-alt"
             />
             <button
                 id="be-reverse-selection"
-                title="Reverse selected lines. (I)"
+                :title="$t('Reverse selected lines. (I)')"
                 class="hide btn btn-info fas m-1 fa-arrows-alt-h"
             />
             <button
                 id="be-set-type"
-                title="Set the type on all selected lines/regions. (T)"
+                :title="$t('Set the type on all selected lines/regions. (T)')"
                 class="btn m-1 btn-info fas fa-text-height"
             />
             <button
                 id="be-delete-point"
-                title="Delete selected points. (ctrl+suppr)"
+                :title="$t('Delete selected points. (ctrl+suppr)')"
                 class="hide btn btn-warning m-1 fas fa-trash"
             />
             <button
                 id="be-delete-selection"
-                title="Delete all selected lines/regions. (suppr)"
+                :title="$t('Delete all selected lines/regions. (suppr)')"
                 class="btn m-1 btn-danger fas fa-trash"
             />
         </div>
@@ -699,9 +699,9 @@ export default Vue.extend({
                     function () {
                         this.add({
                             color: "alert",
-                            message:
-                                "That region was too small to be created and has " +
-                                "been discarded. Try drawing a larger one.",
+                            message: this.$t(
+                                "That region was too small to be created and has been discarded. Try drawing a larger one."
+                            ),
                         });
                     }.bind(this)
                 );
@@ -726,7 +726,7 @@ export default Vue.extend({
                         if (this.isWorking) {
                             this.add({
                                 color: "text",
-                                message: "Still joining lines, wait for it to finish",
+                                message: this.$t("Still joining lines, wait for it to finish"),
                             });
                             return;
                         }
@@ -925,12 +925,17 @@ export default Vue.extend({
          */
         reportSaveFailure(kind, err, action = "save") {
             const status = err?.response?.status;
-            const detail = status ? ` (error ${status})` : "";
+            const detail = status ? this.$t("(error {status})", { status }) : "";
             this.add({
                 color: "alert",
-                message:
-                    `Could not ${action} a ${kind}${detail}. Your latest change was ` +
-                    "not recorded -- please reload the page to see what was saved.",
+                message: this.$t(
+                    "Could not {action} a {kind}{detail}. Your latest change was not recorded -- please reload the page to see what was saved.",
+                    {
+                        action: action === "delete" ? this.$t("Delete") : this.$t("Save"),
+                        kind: kind === "region" ? this.$t("Region") : this.$t("Line"),
+                        detail,
+                    }
+                ),
                 delay: 60000,
             });
             console.error(`couldn't ${action} ${kind}`, err);
@@ -1212,10 +1217,10 @@ export default Vue.extend({
             try {
                 await this.$store.dispatch("lines/recalculateMasks");
                 if (!this.legacyModeEnabled)
-                    this.add({ color: "text", message: "Mask calculation queued" });
+                    this.add({ color: "text", message: this.$t("Mask calculation queued") });
             } catch (err) {
                 if (!this.legacyModeEnabled)
-                    this.add({ color: "alert", message: "Error calculating masks" });
+                    this.add({ color: "alert", message: this.$t("Error calculating masks") });
             }
         },
 

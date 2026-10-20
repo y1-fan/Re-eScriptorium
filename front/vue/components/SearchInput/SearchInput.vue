@@ -3,7 +3,7 @@
         <input
             type="text"
             :value="value"
-            :placeholder="placeholder"
+            :placeholder="$t(placeholder)"
             :disabled="disabled"
             @input="handleInput"
             @keyup.enter="onEnter"
@@ -14,7 +14,7 @@
             @click="handleClear"
             :disabled="disabled"
             class="escr-search-input-clear"
-            aria-label="Clear search"
+            :aria-label="$t('Clear search')"
         >
             ×
         </button>

@@ -35,7 +35,7 @@
                         :href="guidelines"
                         class="escr-project-guidelines"
                     >
-                        Project Guidelines
+                        {{ $t("Project Guidelines") }}
                     </a>
                     <EscrTags
                         v-if="tags"
@@ -45,16 +45,16 @@
                 <!-- Documents list -->
                 <div class="escr-card escr-card-table escr-documents-list">
                     <div class="escr-card-header">
-                        <h2>Documents</h2>
+                        <h2>{{ $t("Documents") }}</h2>
                         <div class="escr-card-actions">
                             <FilterSet
                                 :disabled="loading"
                                 :tags="documentTags"
                                 :on-filter="onFilterDocuments"
-                                search-placeholder="Search documents..."
+                                :search-placeholder="$t('Search documents...')"
                             />
                             <EscrButton
-                                label="Create New"
+                                :label="$t('Create New')"
                                 :on-click="openCreateDocumentModal"
                                 :disabled="loading || createDocumentModalOpen"
                             >
@@ -89,24 +89,37 @@
                         >
                             <template #actions="{ item }">
                                 <EscrButton
-                                    v-tooltip.bottom="'Images'"
+                                    v-tooltip.bottom="$t('Note')"
+                                    class="escr-note-button"
+                                    size="small"
+                                    color="text"
+                                    :on-click="() => openNoteModal(item)"
+                                    :disabled="loading"
+                                    :aria-label="$t('Note')"
+                                >
+                                    <template #button-icon>
+                                        <NoteIcon />
+                                    </template>
+                                </EscrButton>
+                                <EscrButton
+                                    v-tooltip.bottom="$t('Images')"
                                     size="small"
                                     color="text"
                                     :on-click="() => navigateToImages(item)"
                                     :disabled="loading"
-                                    aria-label="Document images"
+                                    :aria-label="$t('Document images')"
                                 >
                                     <template #button-icon>
                                         <ImagesIcon />
                                     </template>
                                 </EscrButton>
                                 <EscrButton
-                                    v-tooltip.bottom="'Delete'"
+                                    v-tooltip.bottom="$t('Delete')"
                                     size="small"
                                     color="text"
                                     :on-click="() => openDeleteDocumentModal(item)"
                                     :disabled="loading"
-                                    aria-label="Delete document"
+                                    :aria-label="$t('Delete document')"
                                 >
                                     <template #button-icon>
                                         <TrashIcon />
@@ -116,7 +129,7 @@
                         </EscrTable>
                         <EscrButton
                             v-if="nextPage"
-                            label="Load more"
+                            :label="$t('Load more')"
                             class="escr-load-more-btn"
                             color="outline-primary"
                             size="small"
@@ -127,7 +140,7 @@
                     <EscrLoader
                         v-else
                         :loading="loading"
-                        no-data-message="There are no documents to display."
+                        :no-data-message="$t('There are no documents to display.')"
                     />
                 </div>
                 <!-- Default project ontology -->
@@ -135,9 +148,9 @@
                 <!-- delete project modal -->
                 <ConfirmModal
                     v-if="deleteModalOpen"
-                    body-text="Are you sure you want to delete this project?"
-                    confirm-verb="Delete"
-                    title="Delete Project"
+                    :body-text="$t('Are you sure you want to delete this project?')"
+                    :confirm-verb="$t('Delete')"
+                    :title="$t('Delete Project')"
                     :cannot-undo="true"
                     :disabled="loading"
                     :on-cancel="closeDeleteModal"
@@ -146,11 +159,13 @@
                 <!-- delete document modal -->
                 <ConfirmModal
                     v-if="deleteDocumentModalOpen"
-                    :body-text="`Are you sure you want to delete the document ${
-                        (documentToDelete && documentToDelete.name) || ''
-                    }?`"
-                    confirm-verb="Delete"
-                    :title="`Delete ${(documentToDelete && documentToDelete.name) || 'Document'}`"
+                    :body-text="$t('Are you sure you want to delete the document {name}?', {
+                        name: (documentToDelete && documentToDelete.name) || '',
+                    })"
+                    :confirm-verb="$t('Delete')"
+                    :title="$t('Delete {name}', {
+                        name: (documentToDelete && documentToDelete.name) || $t('Document'),
+                    })"
                     :cannot-undo="true"
                     :disabled="loading"
                     :on-cancel="closeDeleteDocumentModal"
@@ -163,6 +178,15 @@
                     :disabled="loading"
                     :on-cancel="closeShareModal"
                     :on-submit="share"
+                />
+                <!-- document note modal -->
+                <NoteModal
+                    v-if="noteModalOpen"
+                    :disabled="noteSaving"
+                    :note="(noteTarget && noteTarget.note) || ''"
+                    :on-cancel="closeNoteModal"
+                    :on-save="saveNote"
+                    :title="$t('Document note')"
                 />
             </div>
         </template>
@@ -190,8 +214,12 @@ import ShareModal from "../../components/SharePanel/ShareModal.vue";
 import SharePanel from "../../components/SharePanel/SharePanel.vue";
 import TrashIcon from "../../components/Icons/TrashIcon/TrashIcon.vue";
 import VerticalMenu from "../../components/VerticalMenu/VerticalMenu.vue";
+import NoteIcon from "../../components/Icons/NoteIcon/NoteIcon.vue";
+import NoteModal from "../../components/NoteModal/NoteModal.vue";
+import { updateDocumentNote } from "../../../src/api/document";
 import "../../components/Common/Card.css"
 import "./Project.css";
+import { formatDate } from "../../util/dates";
 
 export default {
     name: "EscrProjectDashboard",
@@ -219,6 +247,8 @@ export default {
         SharePanel,
         TrashIcon,
         VerticalMenu,
+        NoteIcon,
+        NoteModal,
     },
     props: {
         /**
@@ -235,6 +265,13 @@ export default {
             type: Boolean,
             required: true,
         },
+    },
+    data() {
+        return {
+            noteModalOpen: false,
+            noteSaving: false,
+            noteTarget: null,
+        };
     },
     computed: {
         ...mapState({
@@ -265,8 +302,8 @@ export default {
          */
         breadcrumbs() {
             return [
-                { title: "My Projects", href: "/projects" },
-                { title: this.projectName || "Loading..." }
+                { title: this.$t("My Projects"), href: "/projects" },
+                { title: this.projectName || this.$t("Loading...") }
             ];
         },
         /**
@@ -274,17 +311,14 @@ export default {
          */
         headers() {
             return [
-                { label: "Name", value: "name", sortable: true },
-                { label: "Document Tags", value: "tags", component: EscrTags },
-                { label: "# of Images", value: "parts_count", sortable: true  },
+                { label: this.$t("Name"), value: "name", sortable: true },
+                { label: this.$t("Document Tags"), value: "tags", component: EscrTags },
+                { label: this.$t("# of Images"), value: "parts_count", sortable: true  },
                 {
-                    label: "Last Update",
+                    label: this.$t("Last Update"),
                     value: "updated_at",
                     sortable: true,
-                    format: (val) => new Date(val).toLocaleDateString(
-                        undefined,
-                        { year: "numeric", month: "long", day: "numeric" },
-                    ),
+                    format: formatDate,
                 },
                 // { label: "Default Transcription Level", value: "default_transcription_level"  },
             ];
@@ -297,7 +331,7 @@ export default {
                 {
                     icon: PencilIcon,
                     key: "edit",
-                    label: "Edit",
+                    label: this.$t("Edit"),
                     onClick: this.openEditModal,
                 },
                 {
@@ -305,7 +339,7 @@ export default {
                     // Add the "new-section" class if/when there is more than one item above this
                     // class: "new-section",
                     key: "delete",
-                    label: "Delete Project",
+                    label: this.$t("Delete Project"),
                     onClick: this.openDeleteModal,
                 }
             ]
@@ -324,7 +358,7 @@ export default {
                     },
                     icon: PeopleIcon,
                     key: "share",
-                    label: "Groups & Users",
+                    label: this.$t("Groups & Users"),
                     panel: SharePanel,
                 },
             ];
@@ -338,7 +372,7 @@ export default {
                     },
                     icon: SearchIcon,
                     key: "search",
-                    label: "Search Project",
+                    label: this.$t("Search Project"),
                     panel: SearchPanel,
                 });
             }
@@ -391,6 +425,45 @@ export default {
         ]),
         ...mapActions("projects", ["fetchAllProjectTags"]),
         ...mapActions("user", ["fetchGroups"]),
+        openNoteModal(item) {
+            this.noteTarget = item;
+            this.noteModalOpen = true;
+        },
+        closeNoteModal() {
+            this.noteModalOpen = false;
+            this.noteTarget = null;
+        },
+        /**
+         * Persist the markdown note attached to a document of this project.
+         */
+        async saveNote(text) {
+            if (!this.noteTarget) {
+                return;
+            }
+            this.noteSaving = true;
+            try {
+                await updateDocumentNote({
+                    documentId: this.noteTarget.pk,
+                    note: text,
+                });
+                const documents = this.documents.map((document) =>
+                    document.pk === this.noteTarget.pk
+                        ? { ...document, note: text }
+                        : document
+                );
+                this.$store.commit("project/setDocuments", documents);
+                this.noteModalOpen = false;
+                this.noteTarget = null;
+                this.$store.commit("alerts/addAlert", {
+                    color: "success",
+                    message: this.$t("Note saved successfully"),
+                });
+            } catch (error) {
+                this.addError(error);
+            } finally {
+                this.noteSaving = false;
+            }
+        },
         ...mapActions("alerts", ["addError"]),
         async onFilterDocuments() {
             this.setLoading(true);
@@ -405,7 +478,7 @@ export default {
             if (item?.pk) {
                 window.location = `/document/${item.pk}/images`;
             } else {
-                this.addError({ message: "Error navigating to the images page." });
+                this.addError({ message: this.$t("Error navigating to the images page.") });
             }
         },
     },

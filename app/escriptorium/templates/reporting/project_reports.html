@@ -200,7 +200,7 @@
                     <i class="fas fa-calendar-alt card-header"></i>
                     <div class="card-body">
                         <h5 class="card-title">{% trans 'Created on' %}</h5>
-                        <h4>{{ object.created_at|date }}</h4>
+                        <h4>{{ object.created_at|date:"Y.m.d" }}</h4>
                     </div>
                 </div>
             </div>
@@ -209,7 +209,7 @@
                     <i class="fas fa-calendar-alt card-header"></i>
                     <div class="card-body">
                         <h5 class="card-title">{% trans 'Last update on' %}</h5>
-                        <h4>{{ object.updated_at|date }}</h4>
+                        <h4>{{ object.updated_at|date:"Y.m.d" }}</h4>
                     </div>
                 </div>
             </div>

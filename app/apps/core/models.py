@@ -716,6 +716,13 @@ class Document(ExportModelOperationsMixin("Document"), CascadeUpdate, models.Mod
         help_text=_("If checked, enable toggling on and off colorized overlays for automatic transcription (OCR/HTR) confidences."),
     )
 
+    note = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("Note"),
+        help_text=_("Free-form note about this document, written in Markdown."),
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -1114,6 +1121,13 @@ class DocumentPart(ExportModelOperationsMixin("DocumentPart"), CascadeUpdate, Or
     order_with_respect_to = "document"
 
     comments = models.TextField(null=True, blank=True)
+
+    note = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("Note"),
+        help_text=_("Free-form note about this image, written in Markdown."),
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

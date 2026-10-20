@@ -274,6 +274,10 @@ export const editDocument = async (
         transcription_font: transcriptionFont || null,
     });
 
+// update the markdown note attached to a document
+export const updateDocumentNote = async ({ documentId, note }) =>
+    await axios.patch(`/documents/${documentId}/`, { note });
+
 // retrieve document metadata
 export const retrieveDocumentMetadata = async (documentId) =>
     await axios.get(`/documents/${documentId}/metadata/`);

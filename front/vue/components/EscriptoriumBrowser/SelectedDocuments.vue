@@ -37,9 +37,8 @@
                     @click="toggleFolder(doc.id)"
                 >
                     <span><strong>{{ doc.name }}</strong> ({{
-                        doc.items.length
-                    }}
-                        parts)</span>
+                        $t("{count} parts", { count: doc.items.length })
+                    }})</span>
                     <XIcon />
                 </div>
 
@@ -52,7 +51,7 @@
                         >
                             <button
                                 class="escr-remove-part-btn"
-                                aria-label="Remove part"
+                                :aria-label="$t('Remove part')"
                                 @click="removeSelectedPart(part.document_part)"
                             >
                                 &times;
@@ -60,7 +59,7 @@
                             <div class="escr-part-thumbnail">
                                 <img
                                     :src="getThumbnailUrl(part)"
-                                    alt="thumbnail"
+                                    :alt="$t('Thumbnail')"
                                     loading="lazy"
                                 >
                             </div>
@@ -74,10 +73,10 @@
                                 <span>
                                     {{ part.part_order + 1 }}
                                     &ndash;
-                                    {{ part.part_name || `Page ${part.document_part}` }}
+                                    {{ part.part_name || $t("Page {number}", { number: part.document_part }) }}
                                 </span>
                                 <template #popper>
-                                    {{ part.part_name || `Page ${part.document_part}` }}
+                                    {{ part.part_name || $t("Page {number}", { number: part.document_part }) }}
                                 </template>
                             </VDropdown>
                             <div class="escr-part-actions">

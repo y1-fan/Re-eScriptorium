@@ -21,7 +21,7 @@
                 <span class="task-label">{{ task.method }}</span>
                 <span>{{ task.message }}</span>
                 <span class="timestamp">
-                    {{ task.label }} {{ task.timestamp }}
+                    {{ $t(task.label) }} {{ task.timestamp }}
                 </span>
             </div>
             <EscrButton
@@ -45,6 +45,7 @@ import CanceledIcon from "../../components/Icons/CanceledIcon/CanceledIcon.vue";
 import CheckCircleFilledIcon from "../../components/Icons/CheckCircleFilledIcon/CheckCircleFilledIcon.vue";
 import ErrorIcon from "../../components/Icons/ErrorIcon/ErrorIcon.vue";
 import EscrButton from "../../components/Button/Button.vue";
+import { formatDateTime } from "../../util/dates";
 
 export default {
     name: "EscrTaskDashboard",
@@ -58,15 +59,7 @@ export default {
                 const { tasks, method } = taskGroup;
                 const taskStatus = this.getWorkflowStatus(tasks, method);
                 // convert timestamp date to string
-                taskStatus.timestamp = taskStatus.timestamp
-                    ? new Date(taskStatus.timestamp).toLocaleString(undefined, {
-                        year: "numeric",
-                        month: "numeric",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "2-digit",
-                    })
-                    : "";
+                taskStatus.timestamp = formatDateTime(taskStatus.timestamp);
                 return taskStatus;
             });
         },
@@ -92,14 +85,17 @@ export default {
             let m = method.split(".").pop();
             if (["segment", "transcribe"].includes(m)) {
                 // these two taskgroups have one task per element
-                m = `${m} ${elementCount} Element${elementCount > 1 ? 's' : ''}`;
+                const methodName = m === "segment" ? "Segment" : "Transcribe";
+                m = elementCount > 1
+                    ? this.$t(`${methodName} {count} Elements`, { count: elementCount })
+                    : this.$t(`${methodName} {count} Element`, { count: elementCount });
             }
             if (m === "segtrain") {
-                taskStatus.method = "Train Segmenter Model";
+                taskStatus.method = this.$t("Train Segmenter Model");
             } else if (m === "train") {
-                taskStatus.method = "Train Recognizer Model";
+                taskStatus.method = this.$t("Train Recognizer Model");
             } else {
-                taskStatus.method = m.charAt(0).toUpperCase() + m.slice(1);
+                taskStatus.method = this.$t(m.charAt(0).toUpperCase() + m.slice(1));
             }
             // convert to an object where keys are workflow state
             const stateObj = states.reduce(
@@ -109,12 +105,15 @@ export default {
             if (stateObj["Canceled"]) {
                 taskStatus.label = "Canceled";
                 taskStatus.icon = "inactive";
-                taskStatus.message = "Canceled";
+                taskStatus.message = this.$t("Canceled");
                 taskStatus.timestamp = stateObj["Canceled"].done_at;
             } else if (stateObj["Finished"]) {
                 taskStatus.label = "Completed";
                 taskStatus.icon = "complete";
-                taskStatus.message = `${stateObj["Finished"].count}/${totalCount} complete`;
+                taskStatus.message = this.$t("{count}/{total} complete", {
+                    count: stateObj["Finished"].count,
+                    total: totalCount,
+                });
                 taskStatus.timestamp = stateObj["Finished"].done_at;
                 if (stateObj["Queued"] || stateObj["Running"]) {
                     taskStatus.label = "Initiated";
@@ -123,25 +122,26 @@ export default {
                         ? stateObj["Queued"].queued_at
                         : stateObj["Running"].started_at;
                 } else if (stateObj["Crashed"]) {
-                    taskStatus.message = `Completed, ${
-                        stateObj["Crashed"].count
-                    }/${totalCount} errors`;
+                    taskStatus.message = this.$t("Completed, {count}/{total} errors", {
+                        count: stateObj["Crashed"].count,
+                        total: totalCount,
+                    });
                     taskStatus.icon = "warning";
                 }
             } else if (stateObj["Running"]) {
                 taskStatus.label = "Initiated";
                 taskStatus.icon = "secondary";
-                taskStatus.message = "In progress";
+                taskStatus.message = this.$t("In progress");
                 taskStatus.timestamp = stateObj["Running"].started_at;
             } else if (stateObj["Queued"]) {
                 taskStatus.label = "Queued";
                 taskStatus.icon = "inactive";
-                taskStatus.message = "Waiting...";
+                taskStatus.message = this.$t("Waiting...");
                 taskStatus.timestamp = stateObj["Queued"].queued_at;
             } else if (stateObj["Crashed"]) {
                 taskStatus.label = "Completed";
                 taskStatus.icon = "error";
-                taskStatus.message = "Error";
+                taskStatus.message = this.$t("Error");
                 taskStatus.timestamp = stateObj["Crashed"].done_at;
             }
             return taskStatus;

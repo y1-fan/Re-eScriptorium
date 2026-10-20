@@ -1,6 +1,6 @@
 <template>
     <div class="escr-filter-set">
-        <span>Filter by:</span>
+        <span>{{ $t("Filter by:") }}</span>
         <SearchInput
             :value="nameFilter"
             :placeholder="searchPlaceholder"
@@ -19,7 +19,7 @@
             <FilterButton
                 :active="tagFilterActive"
                 :count="tagCount"
-                label="Tags"
+                :label="$t('Tags')"
                 :on-click="() => toggleOpen('tags')"
                 :on-clear="() => clearFilter('tags')"
                 :disabled="disabled"

@@ -20,26 +20,26 @@
         <div
             class="escr-search-form"
         >
-            <h3>Search Text in {{ data && data.searchScope }}</h3>
+            <h3>{{ $t("Search Text in {scope}", { scope: $t(data && data.searchScope) }) }}</h3>
             <label class="escr-text-field escr-form-field">
                 <input
                     type="text"
-                    placeholder="Text to search"
-                    aria-label="Search"
+                    :placeholder="$t('Text to search')"
+                    :aria-label="$t('Search')"
                     :disabled="data && data.disabled"
                     name="query"
                 >
                 <span
                     class="escr-help-text"
                 >
-                    Surround one or more terms with quotation marks to deactivate fuzziness.
+                    {{ $t("Surround one or more terms with quotation marks to deactivate fuzziness.") }}
                 </span>
             </label>
         </div>
         <EscrButton
             :disabled="data && data.disabled"
             :on-click="(data && data.onSearch) || (() => {})"
-            label="Search"
+            :label="$t('Search')"
             color="primary"
             type="submit"
         />

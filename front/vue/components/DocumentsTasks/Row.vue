@@ -10,17 +10,17 @@
         </td>
         <td>{{ documentTasks.name }}</td>
         <td>{{ documentTasks.owner }}</td>
-        <td>{{ documentTasks.tasks_stats | formatStats }}</td>
+        <td>{{ formatStats(documentTasks.tasks_stats) }}</td>
         <td>{{ documentTasks.last_started_task | formatDate(timezone) }}</td>
         <td>
             <button
                 v-if="hasActiveTasks"
                 data-toggle="modal"
                 :data-target="'#' + modalId"
-                title="Cancel pending/running tasks for this document"
+                :title="$t('Cancel pending/running tasks for this document')"
                 class="btn btn-danger"
             >
-                Cancel
+                {{ $t("Cancel") }}
             </button>
         </td>
         <CancelModal
@@ -43,12 +43,6 @@ export default {
             if (!rawDate) return "/";
             return moment.tz(rawDate, timezone).fromNow();
         },
-        formatStats(rawStats) {
-            if (!rawStats) return "/";
-            const allStrings = Object.entries(rawStats).map((stat) => stat[1] !== 0 ? `${stat[1]} ${stat[0].toLowerCase()}` : null)
-            const filteredStrings = allStrings.filter((val) => val)
-            return filteredStrings.join(", ")
-        },
     },
     props: [
         "documentTasks",
@@ -59,6 +53,16 @@ export default {
         return {
             selected: false,
         }
+    },
+    methods: {
+        formatStats(rawStats) {
+            if (!rawStats) return "/";
+            const allStrings = Object.entries(rawStats).map((stat) => stat[1] !== 0
+                ? `${stat[1]} ${this.$t(stat[0].toLowerCase())}`
+                : null)
+            const filteredStrings = allStrings.filter((val) => val)
+            return filteredStrings.join(", ")
+        },
     },
     computed: {
         modalId () {

@@ -2,12 +2,12 @@
     <div class="escr-browser escr-card">
         <div class="escr-card-header">
             <h3 class="escr-browser-breadcrumbs">
-                <span v-if="!currentProject">Projects</span>
+                <span v-if="!currentProject">{{ $t("Projects") }}</span>
                 <template v-else>
                     <a
                         href="#"
                         @click.prevent="fetchProjects"
-                    > Projects </a>
+                    > {{ $t("Projects") }} </a>
                     <span class="separator italic">></span>
                     <span
                         v-if="!currentDocument"
@@ -33,9 +33,9 @@
                     :disabled="loading"
                     :on-filter="handleFilter"
                     :search-placeholder="
-                        currentDocument ? 'Search images...' :
-                        currentProject ? 'Search documents...' :
-                        'Search projects...'
+                        currentDocument ? $t('Search images...') :
+                        currentProject ? $t('Search documents...') :
+                        $t('Search projects...')
                     "
                     :tags="currentTags"
                     :hide-tags="!!currentDocument"
@@ -51,7 +51,7 @@
                 <EscrLoader
                     v-if="!projects || projects.length === 0"
                     :loading="loading"
-                    no-data-message="No projects to display."
+                    :no-data-message="$t('No projects to display.')"
                 />
                 <template v-else>
                     <EscrTable
@@ -70,7 +70,7 @@
                             class="escr-spinner escr-spinner--secondary"
                             role="status"
                         >
-                            <span class="sr-only">Loading more...</span>
+                            <span class="sr-only">{{ $t("Loading more...") }}</span>
                         </div>
                     </div>
                 </template>
@@ -83,7 +83,7 @@
                 <EscrLoader
                     v-if="!storeDocuments || storeDocuments.length === 0"
                     :loading="isFetchingContent"
-                    no-data-message="No documents to display."
+                    :no-data-message="$t('No documents to display.')"
                 />
                 <template v-else>
                     <EscrTable
@@ -107,7 +107,7 @@
                             class="escr-spinner escr-spinner--secondary"
                             role="status"
                         >
-                            <span class="sr-only">Loading more...</span>
+                            <span class="sr-only">{{ $t("Loading more...") }}</span>
                         </div>
                     </div>
                 </template>
@@ -119,7 +119,7 @@
                         class="escr-spinner"
                         role="status"
                     >
-                        <span class="sr-only">Updating...</span>
+                        <span class="sr-only">{{ $t("Updating...") }}</span>
                     </div>
                 </div>
             </div>
@@ -157,6 +157,7 @@ import EscrLoader from "../Loader/Loader.vue";
 import EscrTags from "../Tags/Tags.vue";
 import FilterSet from "../FilterSet/FilterSet.vue";
 import BrowserImageGrid from "./BrowserImageGrid.vue";
+import { formatDateTime } from "../../util/dates";
 import "./EscriptoriumBrowser.css";
 import "../../pages/Images/Images.css";
 
@@ -218,16 +219,16 @@ export default {
         ...mapState("images", ["nextPage"]),
         projectHeaders() {
             return [
-                { label: "Project Name", value: "name", sortable: true, class: "col-title" },
-                { label: "Tags", value: "tags", component: EscrTags, class: "col-tags" },
+                { label: this.$t("Project Name"), value: "name", sortable: true, class: "col-title" },
+                { label: this.$t("Tags"), value: "tags", component: EscrTags, class: "col-tags" },
                 {
-                    label: "Documents",
+                    label: this.$t("Documents"),
                     value: "documents_count",
                     sortable: true,
                     class: "col-small",
                 },
                 {
-                    label: "Updated At",
+                    label: this.$t("Updated At"),
                     value: "updated_at",
                     format: this.formatDate,
                     sortable: true,
@@ -237,11 +238,11 @@ export default {
         },
         documentHeaders() {
             return [
-                { label: "Document Name", value: "name", sortable: true, class: "col-title" },
-                { label: "Tags", value: "tags", component: EscrTags, class: "col-tags" },
-                { label: "Pages", value: "parts_count", sortable: true, class: "col-small" },
+                { label: this.$t("Document Name"), value: "name", sortable: true, class: "col-title" },
+                { label: this.$t("Tags"), value: "tags", component: EscrTags, class: "col-tags" },
+                { label: this.$t("Pages"), value: "parts_count", sortable: true, class: "col-small" },
                 {
-                    label: "Updated At",
+                    label: this.$t("Updated At"),
                     value: "updated_at",
                     format: this.formatDate,
                     class: "col-date",
@@ -427,12 +428,7 @@ export default {
          * @param {String} d Date string
          */
         formatDate(d) {
-            if (!d) return "";
-            const date = new Date(d);
-            return new Intl.DateTimeFormat("en-US", {
-                dateStyle: "medium",
-                timeStyle: "short",
-            }).format(date);
+            return formatDateTime(d);
         },
 
         /**

@@ -3,7 +3,7 @@
         class="escr-export-modal"
     >
         <template #modal-header>
-            <h2>Export {{ scope }}</h2>
+            <h2>{{ $t("Export {scope}", { scope: scopeLabel }) }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -16,14 +16,14 @@
         </template>
         <template #modal-content>
             <DropdownField
-                label="Transcription"
+                :label="$t('Transcription')"
                 :disabled="disabled || !transcriptions"
                 :options="transcriptionOptions"
                 :on-change="handleTranscriptionChange"
                 required
             />
             <DropdownField
-                label="File Format"
+                :label="$t('File Format')"
                 :disabled="disabled"
                 :options="fileFormatOptions"
                 :on-change="handleFileFormatChange"
@@ -38,10 +38,10 @@
                         :disabled="fileFormat === 'text'"
                         @change="handleIncludeImagesChange"
                     >
-                    Include images
+                    {{ $t("Include images") }}
                 </label>
                 <span class="escr-help-text">
-                    Will significantly increase the time to produce and download the export.
+                    {{ $t("Will significantly increase the time to produce and download the export.") }}
                 </span>
             </div>
 
@@ -52,11 +52,10 @@
                         value="include-characters"
                         @change="handleIncludeCharactersChange"
                     >
-                    Include Characters
+                    {{ $t("Include Characters") }}
                 </label>
                 <span class="escr-help-text">
-                    This data is only present for transcriptions coming from automatic recognition
-                    and is invalidated by manual edition.
+                    {{ $t("This data is only present for transcriptions coming from automatic recognition and is invalidated by manual edition.") }}
                 </span>
             </div>
 
@@ -64,21 +63,21 @@
                 :on-change="handleRegionTypesChange"
                 :options="regionTypesOptions"
                 class="escr-region-types"
-                help-text="Select region types to include in the export."
-                label="Region Types"
-                placeholder="Select region types..."
+                :help-text="$t('Select region types to include in the export.')"
+                :label="$t('Region Types')"
+                :placeholder="$t('Select region types...')"
             />
         </template>
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                label="Export"
+                :label="$t('Export')"
                 :on-click="onSubmit"
                 :disabled="disabled || invalid"
             />
@@ -173,6 +172,23 @@ export default {
             transcriptionLayer: (state) => state.forms.export.transcription,
         }),
         /**
+         * Translated label for the export scope (e.g. "Document", "3 Images").
+         */
+        scopeLabel() {
+            const scope = this.scope || "";
+            if (scope === "Document") {
+                return this.$t("Document");
+            }
+            if (scope === "Image") {
+                return this.$t("Image");
+            }
+            const match = /^(\d+) Images$/.exec(scope);
+            if (match) {
+                return this.$t("{count} Images", { count: match[1] });
+            }
+            return scope;
+        },
+        /**
          * this form is invalid and cannot be submitted if it is missing layer or file format
          */
         invalid() {
@@ -204,7 +220,7 @@ export default {
         fileFormatOptions() {
             const formatOptions = [
                 {
-                    label: "Text",
+                    label: this.$t("Text"),
                     value: "text",
                     selected: this.fileFormat === "text",
                 },

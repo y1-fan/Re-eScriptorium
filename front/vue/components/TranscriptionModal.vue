@@ -18,7 +18,7 @@
                         v-if="readDirection == 'rtl'"
                         id="next-btn"
                         type="button"
-                        title="Next (up arrow)"
+                        :title="$t('Next (up arrow)')"
                         class="btn btn-sm mr-1 btn-secondary"
                         @click="editLine('next')"
                     >
@@ -28,7 +28,7 @@
                         v-else
                         id="prev-btn"
                         type="button"
-                        title="Previous (up arrow)"
+                        :title="$t('Previous (up arrow)')"
                         class="btn btn-sm mr-1 btn-secondary"
                         @click="editLine('previous')"
                     >
@@ -39,7 +39,7 @@
                         v-if="readDirection == 'rtl'"
                         id="prev-btn"
                         type="button"
-                        title="Previous (down arrow)"
+                        :title="$t('Previous (down arrow)')"
                         class="btn btn-sm mr-1 btn-secondary"
                         @click="editLine('previous')"
                     >
@@ -49,7 +49,7 @@
                         v-else
                         id="next-btn"
                         type="button"
-                        title="Next (down arrow)"
+                        :title="$t('Next (down arrow)')"
                         class="btn btn-sm mr-1 btn-secondary"
                         @click="editLine('next')"
                     >
@@ -58,7 +58,7 @@
                     <button
                         class="btn btn-sm ml-2 mr-1"
                         :class="{'btn-info': isVKEnabled, 'btn-outline-info': !isVKEnabled}"
-                        title="Toggle Virtual Keyboard for this document."
+                        :title="$t('Toggle Virtual Keyboard for this document.')"
                         @click="toggleVK"
                     >
                         <i class="fas fa-keyboard" />
@@ -68,13 +68,13 @@
                         id="modal-label"
                         class="modal-title ml-3"
                     >
-                        Line #{{ line.order + 1 }}
+                        {{ $t("Line #{number}", { number: line.order + 1 }) }}
                     </h5>
 
                     <button
                         type="button"
                         class="close"
-                        aria-label="Close"
+                        :aria-label="$t('Close')"
                         @click="close"
                     >
                         <span aria-hidden="true">&times;</span>
@@ -84,7 +84,7 @@
                     v-else
                     class="modal-header escr-line-modal-header"
                 >
-                    <h2>Line #{{ line.order + 1 }}</h2>
+                    <h2>{{ $t("Line #{number}", { number: line.order + 1 }) }}</h2>
                     <EscrButton
                         color="text"
                         :on-click="() => editLine(readDirection === 'rtl' ? 'next' : 'previous')"
@@ -133,10 +133,9 @@
                         dir="ltr"
                         class="text-warning"
                     >
-                        No mask found for the line, preview unavailable!
+                        {{ $t("No mask found for the line, preview unavailable!") }}
                         <span v-if="legacyModeEnabled">
-                            Calculate masks by hitting the green thumbs up button in the
-                            segmentation panel.
+                            {{ $t("Calculate masks by hitting the green thumbs up button in the segmentation panel.") }}
                         </span>
                     </p>
                     <div
@@ -231,8 +230,8 @@
                             v-if="line.currentTrans && line.currentTrans.version_updated_at"
                             class="form-text text-muted"
                         >
-                            <span>by {{ line.currentTrans.version_author }} ({{ line.currentTrans.version_source }})</span>
-                            <span>on {{ momentDate }}</span>
+                            <span>{{ $t("by {author} ({source})", { author: line.currentTrans.version_author, source: line.currentTrans.version_source }) }}</span>
+                            <span>{{ $t("on {date}", { date: momentDate }) }}</span>
                         </small>
                     </div>
 
@@ -244,7 +243,7 @@
                         class="escr-compare"
                     >
                         <summary dir="ltr">
-                            <span>Transcription comparison</span>
+                            <span>{{ $t("Transcription comparison") }}</span>
                             <TranscriptionSelector />
                         </summary>
                         <div
@@ -266,14 +265,14 @@
                                     />
                                     <div
                                         class="d-table-cell text-muted text-nowrap col"
-                                        title="Transcription name"
+                                        :title="$t('Transcription name')"
                                     >
                                         <small>
                                             {{ trans.name }}
                                             <span
                                                 v-if="trans.pk == selectedTranscription"
                                             >
-                                                (current)
+                                                {{ $t("(current)") }}
                                             </span>
                                         </small>
                                     </div>
@@ -284,7 +283,7 @@
                             v-else
                             class="escr-no-content"
                         >
-                            No transcriptions selected
+                            {{ $t("No transcriptions selected") }}
                         </span>
                     </details>
                     <div
@@ -298,11 +297,11 @@
                                 data-toggle="collapse"
                                 data-target=".compare-show"
                             >
-                                <span>Toggle transcription comparison</span>
+                                <span>{{ $t("Toggle transcription comparison") }}</span>
                             </a>
 
                             <button
-                                title="Help."
+                                :title="$t('Help.')"
                                 data-toggle="collapse"
                                 data-target="#compare-help"
                                 class="btn btn-info fas fa-question help nav-item ml-2"
@@ -330,11 +329,11 @@
                                     />
                                     <div
                                         class="d-table-cell text-muted text-nowrap col"
-                                        title="Transcription name"
+                                        :title="$t('Transcription name')"
                                     >
                                         <small>
                                             {{ trans.name }}
-                                            <span v-if="trans.pk == selectedTranscription">(current)</span></small>
+                                            <span v-if="trans.pk == selectedTranscription">{{ $t("(current)") }}</span></small>
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +345,7 @@
                     <!-- versioning/history -->
                     <details v-if="!legacyModeEnabled">
                         <summary dir="ltr">
-                            <span>Transcription history</span>
+                            <span>{{ $t("Transcription history") }}</span>
                         </summary>
                         <div
                             v-if="line.currentTrans &&
@@ -370,7 +369,7 @@
                             v-else
                             class="escr-no-content"
                         >
-                            No history to display
+                            {{ $t("No history to display") }}
                         </span>
                     </details>
                     <div
@@ -386,10 +385,10 @@
                                 data-toggle="collapse"
                                 data-target=".history-show"
                             >
-                                <span>Toggle history</span>
+                                <span>{{ $t("Toggle history") }}</span>
                             </a>
                             <button
-                                title="Help."
+                                :title="$t('Help.')"
                                 data-toggle="collapse"
                                 data-target="#versions-help"
                                 class="btn btn-info fas fa-question help nav-item ml-2 collapsed"
@@ -532,7 +531,7 @@ export default Vue.extend({
     created() {
         $(document).on("hide.bs.modal", "#trans-modal", function(ev) {
             if (this.localTranscription != this.$refs.transInput.value
-                && !confirm("You have unsaved data, are you sure you want to close the modal?")) {
+                && !confirm(this.$t("You have unsaved data, are you sure you want to close the modal?"))) {
                 return false;
             }
 

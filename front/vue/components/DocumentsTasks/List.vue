@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label>Task state</label>
+                    <label>{{ $t("Task state") }}</label>
                     <select
                         v-model="selectedState"
                         class="form-control"
                     >
                         <option value="">
-                            All
+                            {{ $t("All") }}
                         </option>
                         <option
                             v-for="[key, label] in Object.entries(taskStates)"
@@ -27,13 +27,13 @@
                 class="col"
             >
                 <div class="form-group">
-                    <label>User</label>
+                    <label>{{ $t("User") }}</label>
                     <select
                         v-model="selectedUser"
                         class="form-control"
                     >
                         <option value="">
-                            All
+                            {{ $t("All") }}
                         </option>
                         <option
                             v-for="[id, name] in sortedUsersEntries"
@@ -48,12 +48,12 @@
 
             <div class="col">
                 <div class="form-group">
-                    <label>Document name</label>
+                    <label>{{ $t("Document name") }}</label>
                     <input
                         v-model="documentName"
                         type="text"
                         class="form-control"
-                        placeholder="Name..."
+                        :placeholder="$t('Name...')"
                     >
                 </div>
             </div>
@@ -63,7 +63,7 @@
             class="btn btn-primary mb-4"
             @click="getDocumentTasks"
         >
-            Filter results
+            {{ $t("Filter results") }}
         </button>
 
         <table class="table table-hover">
@@ -75,11 +75,11 @@
                         type="checkbox"
                     >
                 </th>
-                <th>Name</th>
-                <th>User</th>
-                <th>Statistics</th>
-                <th>Last task started</th>
-                <th>Actions</th>
+                <th>{{ $t("Name") }}</th>
+                <th>{{ $t("User") }}</th>
+                <th>{{ $t("Statistics") }}</th>
+                <th>{{ $t("Last task started") }}</th>
+                <th>{{ $t("Actions") }}</th>
             </tr>
             <template v-if="$store.state.documentsTasks && $store.state.documentsTasks.results && $store.state.documentsTasks.results.length">
                 <Row
@@ -96,7 +96,7 @@
             <template v-else>
                 <tr>
                     <td colspan="6">
-                        No document tasks to display.
+                        {{ $t("No document tasks to display.") }}
                     </td>
                 </tr>
             </template>
@@ -124,11 +124,11 @@
         <button
             data-toggle="modal"
             data-target="#cancelTasksModal"
-            title="Cancel pending/running tasks for the selected documents"
+            :title="$t('Cancel pending/running tasks for the selected documents')"
             class="btn btn-danger"
             :disabled="!selectedList || !Object.values(selectedList).length"
         >
-            Cancel all selected
+            {{ $t("Cancel all selected") }}
         </button>
 
         <CancelModal

@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-edit-ontology">
         <template #modal-header>
-            <h2>Ontology</h2>
+            <h2>{{ $t("Ontology") }}</h2>
             <EscrButton
                 color="text"
                 :disabled="disabled"
@@ -22,7 +22,7 @@
                 :on-change-selection="onTabChange"
             />
             <h3 v-if="!['image', 'text'].includes(tab)">
-                Default {{ tabLabel }} Types
+                {{ $t("Default {label} Types", { label: tabLabel }) }}
             </h3>
             <table
                 v-if="defaultTypesWithColor && defaultTypesWithColor[tab]"
@@ -32,13 +32,13 @@
                     <tr>
                         <th class="checkbox-column" />
                         <th class="name-column">
-                            <div><span>Name</span></div>
+                            <div><span>{{ $t("Name") }}</span></div>
                         </th>
                         <th
                             v-if="['lines', 'regions'].includes(tab)"
                             class="color-column"
                         >
-                            <div><span>Color</span></div>
+                            <div><span>{{ $t("Color") }}</span></div>
                         </th>
                     </tr>
                 </thead>
@@ -65,7 +65,7 @@
                             <input
                                 type="color"
                                 class="escr-color-button"
-                                aria-label="select color"
+                                :aria-label="$t('select color')"
                                 :value="item.color"
                                 :disabled="disabled"
                                 @change="(e) => setTypeColor(e, item)"
@@ -75,12 +75,14 @@
                 </tbody>
             </table>
             <h3 :class="{'anno-header': ['image', 'text'].includes(tab) }">
-                <span v-if="!['image', 'text'].includes(tab)">Custom {{ tabLabel }} Types</span>
+                <span v-if="!['image', 'text'].includes(tab)">
+                    {{ $t("Custom {label} Types", { label: tabLabel }) }}
+                </span>
                 <span v-else>{{ tabLabel }}</span>
                 <EscrButton
                     :disabled="disabled"
                     :on-click="async () => { await onAddType(); scroll(); }"
-                    label="Add New"
+                    :label="$t('Add New')"
                     size="small"
                 >
                     <template #button-icon>
@@ -102,13 +104,13 @@
                 <thead>
                     <tr>
                         <th class="name-column">
-                            <div><span>Name</span></div>
+                            <div><span>{{ $t("Name") }}</span></div>
                         </th>
                         <th
                             v-if="['lines', 'regions'].includes(tab)"
                             class="color-column"
                         >
-                            <div><span>Color</span></div>
+                            <div><span>{{ $t("Color") }}</span></div>
                         </th>
                         <th class="remove-column" />
                     </tr>
@@ -130,7 +132,7 @@
                                 v-if="isDuplicateName(item)"
                                 class="escr-help-text escr-error-text"
                             >
-                                This name is already used
+                                {{ $t("This name is already used") }}
                             </span>
                         </td>
                         <td
@@ -140,7 +142,7 @@
                             <input
                                 type="color"
                                 class="escr-color-button"
-                                aria-label="select color"
+                                :aria-label="$t('select color')"
                                 :disabled="disabled"
                                 :value="item.color"
                                 @focusout="(e) => setTypeColor(e, item)"
@@ -166,13 +168,13 @@
             <!-- only show save/cancel if changes have been made, otherwise it's confusing -->
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                label="Save"
+                :label="$t('Save')"
                 :on-click="onClickSave"
                 :disabled="disabled || invalid"
             />
@@ -303,27 +305,27 @@ export default {
         tabOptions() {
             return [
                 {
-                    label: "Region Types",
+                    label: this.$t("Region Types"),
                     value: "regions",
                     selected: this.tab === "regions",
                 },
                 {
-                    label: "Line Types",
+                    label: this.$t("Line Types"),
                     value: "lines",
                     selected: this.tab === "lines",
                 },
                 {
-                    label: "Part Types",
+                    label: this.$t("Part Types"),
                     value: "parts",
                     selected: this.tab === "parts",
                 },
                 {
-                    label: "Text Annotations",
+                    label: this.$t("Text Annotations"),
                     value: "text",
                     selected: this.tab === "text",
                 },
                 {
-                    label: "Image Annotations",
+                    label: this.$t("Image Annotations"),
                     value: "image",
                     selected: this.tab === "image",
                 },
@@ -335,15 +337,15 @@ export default {
         tabLabel() {
             switch (this.tab) {
                 case "regions":
-                    return "Region";
+                    return this.$t("Region");
                 case "lines":
-                    return "Line";
+                    return this.$t("Line");
                 case "parts":
-                    return "Part";
+                    return this.$t("Part");
                 case "text":
-                    return "Text Annotations";
+                    return this.$t("Text Annotations");
                 case "image":
-                    return "Image Annotations";
+                    return this.$t("Image Annotations");
                 default:
                     return "";
             }

@@ -35,7 +35,7 @@
                             </template>
                         </ToggleButton>
                         <template #popper>
-                            Line numbering (N)
+                            {{ $t("Line numbering (N)") }}
                         </template>
                     </VDropdown>
                     <VDropdown
@@ -56,7 +56,7 @@
                             </template>
                         </ToggleButton>
                         <template #popper>
-                            Toggle automatic reordering on line creation/deletion.
+                            {{ $t("Toggle automatic reordering on line creation/deletion.") }}
                         </template>
                     </VDropdown>
                     <!-- manual reorder when auto-order off -->
@@ -69,7 +69,7 @@
                         :triggers="['hover']"
                     >
                         <EscrButton
-                            aria-label="reorder lines"
+                            :aria-label="$t('Reorder lines')"
                             color="primary"
                             :on-click="onRecalculateOrdering"
                             :disabled="disabled"
@@ -79,7 +79,7 @@
                             </template>
                         </EscrButton>
                         <template #popper>
-                            Reorder lines manually
+                            {{ $t("Reorder lines manually") }}
                         </template>
                     </VDropdown>
                 </div>
@@ -93,7 +93,7 @@
                     :triggers="['hover']"
                 >
                     <EscrButton
-                        aria-label="calculate masks"
+                        :aria-label="$t('Calculate masks')"
                         color="primary"
                         :on-click="processLines"
                         :disabled="disabled"
@@ -103,7 +103,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Calculate masks
+                        {{ $t("Calculate masks") }}
                     </template>
                 </VDropdown>
 
@@ -118,7 +118,7 @@
                 >
                     <EscrButton
                         id="undo-button"
-                        aria-label="undo"
+                        :aria-label="$t('Undo')"
                         color="text"
                         :on-click="onUndo"
                         :disabled="disabled || !canUndo"
@@ -128,7 +128,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Undo (Ctrl Z)
+                        {{ $t("Undo (Ctrl Z)") }}
                     </template>
                 </VDropdown>
                 <VDropdown
@@ -140,7 +140,7 @@
                 >
                     <EscrButton
                         id="redo-button"
-                        aria-label="redo"
+                        :aria-label="$t('Redo')"
                         color="text"
                         :on-click="onRedo"
                         :disabled="disabled || !canRedo"
@@ -150,7 +150,7 @@
                         </template>
                     </EscrButton>
                     <template #popper>
-                        Redo (Ctrl Y)
+                        {{ $t("Redo (Ctrl Y)") }}
                     </template>
                 </VDropdown>
                 <DetachableToolbar
@@ -320,19 +320,19 @@ export default {
                     value: "lines",
                     label: LinesIcon,
                     selected: this.displayMode === "lines",
-                    tooltip: "Lines mode (L)",
+                    tooltip: this.$t("Lines mode (L)"),
                 },
                 {
                     value: "masks",
                     label: MasksIcon,
                     selected: this.displayMode === "masks",
-                    tooltip: "Masks mode (M)",
+                    tooltip: this.$t("Masks mode (M)"),
                 },
                 {
                     value: "regions",
                     label: RegionsIcon,
                     selected: this.displayMode === "regions",
-                    tooltip: "Regions mode (R)",
+                    tooltip: this.$t("Regions mode (R)"),
                 },
             ]
         },

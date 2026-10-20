@@ -16,7 +16,7 @@
                     :disabled="disabled"
                     :on-click="openPanelMenu"
                     color="text-alt"
-                    aria-label="Change Panel"
+                    :aria-label="$t('Change Panel')"
                 >
                     <template #button-icon>
                         <component :is="panelIcon" />
@@ -35,7 +35,7 @@
                                 })"
                             >
                                 <SegmentIcon />
-                                <span>Segmentation</span>
+                                <span>{{ $t("Segmentation") }}</span>
                             </button>
                         </li>
                         <li>
@@ -46,7 +46,7 @@
                                 })"
                             >
                                 <TranscribeIcon />
-                                <span>Transcription</span>
+                                <span>{{ $t("Transcription") }}</span>
                             </button>
                         </li>
                         <li>
@@ -57,7 +57,7 @@
                                 })"
                             >
                                 <TextPanelIcon />
-                                <span>Text / Line Ordering</span>
+                                <span>{{ $t("Text / Line Ordering") }}</span>
                             </button>
                         </li>
                         <li>
@@ -68,7 +68,7 @@
                                 })"
                             >
                                 <ImageAnnotationIcon />
-                                <span>Image Annotation</span>
+                                <span>{{ $t("Image Annotation") }}</span>
                             </button>
                         </li>
                         <li>
@@ -79,7 +79,7 @@
                                 })"
                             >
                                 <TableIcon />
-                                <span>Overview</span>
+                                <span>{{ $t("Overview") }}</span>
                             </button>
                         </li>
                     </ul>
@@ -99,14 +99,14 @@
                 :triggers="['hover']"
             >
                 <button
-                    :aria-label="`Close ${panelName} panel`"
+                    :aria-label="$t('Close {panel} panel', { panel: $t(panelName) })"
                     type="button"
                     @mousedown="() => removeEditorPanel(panelType)"
                 >
                     <RemovePanelIcon />
                 </button>
                 <template #popper>
-                    Close {{ panelName }} panel
+                    {{ $t("Close {panel} panel", { panel: $t(panelName) }) }}
                 </template>
             </VDropdown>
         </div>
@@ -190,15 +190,15 @@ export default {
         panelName() {
             switch (this.panelType) {
                 case "segmentation":
-                    return "segmentation";
+                    return "Segmentation";
                 case "visualisation":
-                    return "transcription";
+                    return "Transcription";
                 case "diplomatic":
-                    return "text/line ordering";
+                    return "Text / Line Ordering";
                 case "source":
-                    return "text annotation";
+                    return "Image Annotation";
                 case "elements":
-                    return "overview";
+                    return "Overview";
                 default:
                     return null;
             }

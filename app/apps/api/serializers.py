@@ -504,7 +504,7 @@ class DocumentSerializer(serializers.ModelSerializer):
                   'main_script', 'read_direction', 'line_offset', 'show_confidence_viz',
                   'valid_block_types', 'valid_line_types', 'valid_part_types',
                   'parts_count', 'tags', 'created_at', 'updated_at', 'project_name', 'project_id',
-                  'shared_with_users', 'shared_with_groups',
+                  'shared_with_users', 'shared_with_groups', 'note',
                   'transcription_font', 'effective_transcription_font')
 
     def __init__(self, *args, **kwargs):
@@ -705,6 +705,7 @@ class PartSerializer(serializers.ModelSerializer):
             'source',
             'max_avg_confidence',
             'comments',
+            'note',
             'updated_at',
         )
 

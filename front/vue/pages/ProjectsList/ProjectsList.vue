@@ -1,19 +1,19 @@
 <template>
     <EscrPage class="escr-projects-list">
         <template #page-content>
-            <h1>Welcome back, {{ firstName || username }}</h1>
+            <h1>{{ $t("Welcome back, {name}", { name: firstName || username }) }}</h1>
             <div class="escr-card escr-card-table">
                 <div class="escr-card-padding escr-card-header">
-                    <h2>Projects</h2>
+                    <h2>{{ $t("Projects") }}</h2>
                     <div class="escr-card-actions">
                         <FilterSet
                             :disabled="loading"
                             :tags="tags"
                             :on-filter="async () => await fetchProjects()"
-                            search-placeholder="Search projects..."
+                            :search-placeholder="$t('Search projects...')"
                         />
                         <EscrButton
-                            label="Create New"
+                            :label="$t('Create New')"
                             :on-click="openCreateModal"
                             :disabled="loading || createModalOpen"
                         >
@@ -38,22 +38,23 @@
                     class="escr-delete-project"
                 >
                     <template #modal-content>
-                        <h2>Delete Project "{{ projectToDelete.name }}"</h2>
+                        <h2>
+                            {{ $t('Delete Project "{name}"', { name: projectToDelete.name }) }}
+                        </h2>
                         <p>
-                            Are you sure you want to delete this project?
-                            This action cannot be undone.
+                            {{ $t("Are you sure you want to delete this project? This action cannot be undone.") }}
                         </p>
                     </template>
                     <template #modal-actions>
                         <EscrButton
                             color="outline-primary"
-                            label="Cancel"
+                            :label="$t('Cancel')"
                             :disabled="loading"
                             :on-click="() => closeDeleteModal()"
                         />
                         <EscrButton
                             color="danger"
-                            label="Delete"
+                            :label="$t('Delete')"
                             :disabled="loading"
                             :on-click="() => deleteProject()"
                         />
@@ -73,12 +74,12 @@
                     >
                         <template #actions="{ item }">
                             <EscrButton
-                                v-tooltip.bottom="'Delete'"
+                                v-tooltip.bottom="$t('Delete')"
                                 size="small"
                                 color="text"
                                 :on-click="() => openDeleteModal(item)"
                                 :disabled="loading"
-                                aria-label="Delete project"
+                                :aria-label="$t('Delete project')"
                             >
                                 <template #button-icon>
                                     <TrashIcon />
@@ -88,7 +89,7 @@
                     </EscrTable>
                     <EscrButton
                         v-if="nextPage"
-                        label="Load more"
+                        :label="$t('Load more')"
                         class="escr-load-more-btn"
                         color="outline-primary"
                         size="small"
@@ -99,7 +100,7 @@
                 <EscrLoader
                     v-else
                     :loading="loading"
-                    no-data-message="There are no projects to display."
+                    :no-data-message="$t('There are no projects to display.')"
                 />
             </div>
         </template>
@@ -119,6 +120,7 @@ import PlusIcon from "../../components/Icons/PlusIcon/PlusIcon.vue";
 import TrashIcon from "../../components/Icons/TrashIcon/TrashIcon.vue";
 import "../../components/Common/Card.css"
 import "./ProjectsList.css";
+import { formatDate } from "../../util/dates";
 
 export default {
     name: "EscrProjectsListPage",
@@ -150,18 +152,15 @@ export default {
         }),
         headers() {
             return [
-                { label: "Name", value: "name", sortable: true },
-                { label: "Project Tags", value: "tags", component: EscrTags },
-                { label: "# of Documents", value: "documents_count", sortable: true  },
-                { label: "Owner", value: "owner", sortable: true  },
+                { label: this.$t("Name"), value: "name", sortable: true },
+                { label: this.$t("Project Tags"), value: "tags", component: EscrTags },
+                { label: this.$t("# of Documents"), value: "documents_count", sortable: true  },
+                { label: this.$t("Owner"), value: "owner", sortable: true  },
                 {
-                    label: "Last Update",
+                    label: this.$t("Last Update"),
                     value: "updated_at",
                     sortable: true,
-                    format: (val) => new Date(val).toLocaleDateString(
-                        undefined,
-                        { year: "numeric", month: "long", day: "numeric" },
-                    ),
+                    format: formatDate,
                 },
             ];
         },

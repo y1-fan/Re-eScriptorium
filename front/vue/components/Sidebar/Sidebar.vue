@@ -17,7 +17,7 @@
                 <h2>{{ selectedAction.label }}</h2>
                 <button
                     class="escr-close-action"
-                    :aria-label="`Close the ${selectedAction.label} panel`"
+                    :aria-label="$t('Close the {panel} panel', { panel: selectedAction.label })"
                     @click="() => toggleAction(selectedAction.key)"
                 >
                     <EscrXIcon />
@@ -39,7 +39,7 @@
                     <button
                         :class="classes(action.key)"
                         :disabled="loading"
-                        :aria-label="`Open the ${action.label} panel`"
+                        :aria-label="$t('Open the {panel} panel', { panel: action.label })"
                         @click="() => toggleAction(action.key)"
                     >
                         <component

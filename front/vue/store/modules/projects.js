@@ -8,6 +8,7 @@ import {
     retrieveProjects,
 } from "../../../src/api";
 import { tagColorToVariant } from "../util/color";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -83,7 +84,7 @@ const actions = {
                     "alerts/add",
                     {
                         color: "success",
-                        message: "Project created successfully",
+                        message: t("Project created successfully"),
                     },
                     { root: true },
                 );
@@ -92,7 +93,7 @@ const actions = {
                 window.location = `/project/${data.slug}`;
             } else {
                 commit("setLoading", false);
-                throw new Error("Unable to create project");
+                throw new Error(t("Unable to create project"));
             }
         } catch (error) {
             commit("setLoading", false);
@@ -128,7 +129,7 @@ const actions = {
                 );
             } else {
                 commit("setLoading", false);
-                throw new Error("Unable to create tag");
+                throw new Error(t("Unable to create tag"));
             }
         } catch (error) {
             dispatch("alerts/addError", error, { root: true });
@@ -144,7 +145,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Project deleted successfully",
+                    message: t("Project deleted successfully"),
                 },
                 { root: true },
             );
@@ -173,7 +174,7 @@ const actions = {
             );
         } else {
             commit("setLoading", false);
-            throw new Error("Unable to retrieve project tags");
+            throw new Error(t("Unable to retrieve project tags"));
         }
         commit("setLoading", false);
     },
@@ -182,7 +183,7 @@ const actions = {
         if (data?.results) {
             commit("setFonts", data.results);
         } else {
-            throw new Error("Unable to retrieve fonts");
+            throw new Error(t("Unable to retrieve fonts"));
         }
     },
     /**
@@ -209,7 +210,7 @@ const actions = {
             commit("setNextPage", data.next);
         } else {
             commit("setLoading", false);
-            throw new Error("Unable to retrieve projects");
+            throw new Error(t("Unable to retrieve projects"));
         }
         commit("setLoading", false);
     },
@@ -233,7 +234,7 @@ const actions = {
                 commit("setNextPage", data.next);
             } else {
                 commit("setLoading", false);
-                throw new Error("Unable to retrieve projects");
+                throw new Error(t("Unable to retrieve projects"));
             }
         } catch (error) {
             commit("setLoading", false);

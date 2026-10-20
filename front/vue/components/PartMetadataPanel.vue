@@ -2,7 +2,7 @@
     <div class="col panel">
         <div class="tools">
             <i
-                title="Visual Transcription Panel"
+                :title="$t('Visual Transcription Panel')"
                 class="panel-icon fas fa-language"
             />
         </div>
@@ -15,7 +15,7 @@
                 class="content-container"
             >
                 <div class="form-group col-xl">
-                    <label for="partName">Name</label>
+                    <label for="partName">{{ $t("Name") }}</label>
                     <input
                         id="partName"
                         ref="partName"
@@ -26,10 +26,10 @@
                         @focusin="editInput(true)"
                         @focusout="editInput(false)"
                     >
-                    <small class="form-text text-muted">If left empty the name will automatically be {typology+index number}</small>
+                    <small class="form-text text-muted">{{ $t("If left empty the name will automatically be {typology+index number}") }}</small>
                 </div>
                 <div class="form-group col-xl">
-                    <label for="partTypology">Typology</label>
+                    <label for="partTypology">{{ $t("Typology") }}</label>
                     <select
                         id="partTypology"
                         v-model="typology"
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="form-group col-xl">
-                    <label for="partComments">Comments</label>
+                    <label for="partComments">{{ $t("Comments") }}</label>
                     <textarea
                         id="partComments"
                         v-model.lazy="comments"
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group col-xl">
-                    <label>Metadata</label>
+                    <label>{{ $t("Metadata") }}</label>
                     <div
                         id="metadata-form"
                         class="js-metadata-form"

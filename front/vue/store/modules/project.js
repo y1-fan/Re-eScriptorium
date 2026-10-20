@@ -18,6 +18,7 @@ import {
     shareProject,
 } from "../../../src/api";
 import { tagColorToVariant } from "../util/color";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -194,7 +195,7 @@ const actions = {
                     "alerts/add",
                     {
                         color: "success",
-                        message: "Document created successfully",
+                        message: t("Document created successfully"),
                     },
                     { root: true },
                 );
@@ -203,7 +204,7 @@ const actions = {
                 commit("setCreateDocumentModalOpen", false);
             } else {
                 commit("setLoading", false);
-                throw new Error("Unable to create document");
+                throw new Error(t("Unable to create document"));
             }
         } catch (error) {
             dispatch("alerts/addError", error, { root: true });
@@ -241,7 +242,7 @@ const actions = {
                     { root: true },
                 );
             } else {
-                throw new Error("Unable to create tag");
+                throw new Error(t("Unable to create tag"));
             }
         } catch (error) {
             dispatch("alerts/addError", error, { root: true });
@@ -267,7 +268,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Document deleted successfully",
+                    message: t("Document deleted successfully"),
                 },
                 { root: true },
             );
@@ -284,7 +285,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Project deleted successfully",
+                    message: t("Project deleted successfully"),
                 },
                 { root: true },
             );
@@ -315,7 +316,7 @@ const actions = {
                 commit("setNextPage", data.next);
             } else {
                 commit("setLoading", false);
-                throw new Error("Unable to retrieve projects");
+                throw new Error(t("Unable to retrieve projects"));
             }
         } catch (error) {
             commit("setLoading", false);
@@ -361,7 +362,7 @@ const actions = {
                 { root: true },
             );
         } else {
-            throw new Error("Unable to retrieve project");
+            throw new Error(t("Unable to retrieve project"));
         }
         // set off all the other fetches
         await dispatch("fetchProjectDocuments");
@@ -391,7 +392,7 @@ const actions = {
             commit("setOntologyConfig", data || null);
             dispatch(
                 "alerts/add",
-                { color: "success", message: "Default ontology imported successfully" },
+                { color: "success", message: t("Default ontology imported successfully") },
                 { root: true },
             );
         } catch (error) {
@@ -425,7 +426,7 @@ const actions = {
             commit("setOntologyConfig", null);
             dispatch(
                 "alerts/add",
-                { color: "success", message: "Default ontology cleared" },
+                { color: "success", message: t("Default ontology cleared") },
                 { root: true },
             );
         } catch (error) {
@@ -457,7 +458,7 @@ const actions = {
                 })),
             );
         } else {
-            throw new Error("Unable to retrieve documents");
+            throw new Error(t("Unable to retrieve documents"));
         }
     },
     /**
@@ -474,7 +475,7 @@ const actions = {
                 })),
             );
         } else {
-            throw new Error("Unable to retrieve document tags");
+            throw new Error(t("Unable to retrieve document tags"));
         }
     },
     /**
@@ -485,7 +486,7 @@ const actions = {
         if (data?.results) {
             commit("setScripts", data.results);
         } else {
-            throw new Error("Unable to retrieve scripts");
+            throw new Error(t("Unable to retrieve scripts"));
         }
     },
     async fetchFonts({ commit }) {
@@ -493,7 +494,7 @@ const actions = {
         if (data?.results) {
             commit("setFonts", data.results);
         } else {
-            throw new Error("Unable to retrieve fonts");
+            throw new Error(t("Unable to retrieve fonts"));
         }
     },
     /**
@@ -558,7 +559,7 @@ const actions = {
                 );
                 commit("setEditModalOpen", false);
             } else {
-                throw new Error("Unable to retrieve project");
+                throw new Error(t("Unable to retrieve project"));
             }
         } catch (error) {
             commit("setLoading", false);
@@ -594,9 +595,11 @@ const actions = {
                     "alerts/add",
                     {
                         color: "success",
-                        message: `${
-                            user ? "User" : "Group"
-                        } added successfully`,
+                        message: t(
+                            user
+                                ? "User added successfully"
+                                : "Group added successfully",
+                        ),
                     },
                     { root: true },
                 );
@@ -604,7 +607,7 @@ const actions = {
                 commit("setSharedWithGroups", data.shared_with_groups);
                 commit("setSharedWithUsers", data.shared_with_users);
             } else {
-                throw new Error("Unable to add user or group.");
+                throw new Error(t("Unable to add user or group."));
             }
         } catch (error) {
             dispatch("alerts/addError", error, { root: true });

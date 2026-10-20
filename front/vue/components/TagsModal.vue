@@ -16,13 +16,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Assign tags
+                        {{ $t("Assign tags") }}
                     </h5>
                     <button
                         type="button"
                         class="close"
                         data-dismiss="modal"
-                        aria-label="Close"
+                        :aria-label="$t('Close')"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -69,7 +69,7 @@
                                 v-model="valuesSelected"
                                 name="tags"
                                 data-live-search="true"
-                                data-live-search-placeholder="filters"
+                                :data-live-search-placeholder="$t('Filters')"
                                 multiple
                             >
                                 <option
@@ -87,7 +87,7 @@
                                 type="text"
                                 class="form-control w-50"
                                 name="name"
-                                placeholder="Type to add a tag"
+                                :placeholder="$t('Type to add a tag')"
                             >
                             <input
                                 v-model="rColor"
@@ -104,14 +104,14 @@
                             class="btn btn-secondary"
                             data-dismiss="modal"
                         >
-                            Close
+                            {{ $t("Close") }}
                         </button>
                         <button
                             type="button"
                             class="btn btn-primary"
                             @click="updateTagList"
                         >
-                            Save
+                            {{ $t("Save") }}
                         </button>
                     </div>
                 </form>

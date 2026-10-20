@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-transcription-management">
         <template #modal-header>
-            <h2>Transcriptions</h2>
+            <h2>{{ $t("Transcriptions") }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -64,7 +64,7 @@
                         color="text"
                         :on-click="() => openDeleteModal(item)"
                         :disabled="disabled"
-                        aria-label="Delete transcription"
+                        :aria-label="$t('Delete transcription')"
                     >
                         <template #button-icon>
                             <TrashIcon />
@@ -78,14 +78,14 @@
             <EscrButton
                 v-if="dirty"
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 v-if="dirty"
                 color="primary"
-                label="Save"
+                :label="$t('Save')"
                 :on-click="onSave"
                 :disabled="disabled || !!editing"
             />
@@ -103,6 +103,7 @@ import TrashIcon from "../Icons/TrashIcon/TrashIcon.vue";
 import XCircleIcon from "../Icons/XCircleIcon/XCircleIcon.vue";
 import XIcon from "../Icons/XIcon/XIcon.vue";
 import "./TranscriptionsModal.css";
+import { formatDate } from "../../util/dates";
 
 export default {
     name: "EscrTranscriptionsModal",
@@ -165,17 +166,14 @@ export default {
         // Table headers for transcriptions list
         headers() {
             return [
-                { label: "Name", value: "name", sortable: true, editable: true },
+                { label: this.$t("Name"), value: "name", sortable: true, editable: true },
                 {
-                    label: "Date Created",
+                    label: this.$t("Date Created"),
                     value: "created_at",
                     sortable: true,
-                    format: (val) => new Date(val).toLocaleDateString(
-                        undefined,
-                        { year: "numeric", month: "long", day: "numeric" },
-                    ),
+                    format: formatDate,
                 },
-                { label: "Comments", value: "comments", sortable: false, editable: true },
+                { label: this.$t("Comments"), value: "comments", sortable: false, editable: true },
             ];
         },
         // transcriptions sorted by sort state

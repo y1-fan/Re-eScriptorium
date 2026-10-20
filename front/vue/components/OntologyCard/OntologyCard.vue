@@ -2,7 +2,7 @@
     <div :class="classes">
         <div class="escr-card-header">
             <h2>
-                Ontology
+                {{ $t("Ontology") }}
             </h2>
             <div class="escr-card-actions">
                 <a
@@ -10,7 +10,7 @@
                     class="escr-ontology-overview-link"
                     :href="`/document/${documentId}/ontology-overview/`"
                 >
-                    View overview
+                    {{ $t("View overview") }}
                 </a>
                 <SegmentedButtonGroup
                     v-if="compact"
@@ -30,7 +30,7 @@
                 <EscrButton
                     color="text"
                     size="small"
-                    label="Import"
+                    :label="$t('Import')"
                     :disabled="loading"
                     :on-click="onClickImport"
                 >
@@ -41,7 +41,7 @@
                 <EscrButton
                     color="text"
                     size="small"
-                    label="Export"
+                    :label="$t('Export')"
                     :disabled="loading"
                     :on-click="onClickExport"
                 >
@@ -75,7 +75,7 @@
         <EscrLoader
             v-else
             :loading="loading"
-            no-data-message="There is no ontology to display."
+            :no-data-message="$t('There is no ontology to display.')"
         />
     </div>
 </template>
@@ -133,10 +133,10 @@ export default {
          */
         categories() {
             return [
-                { label: "Regions", value: "regions" },
-                { label: "Lines", value: "lines" },
-                { label: "Text", value: "text" },
-                { label: "Images", value: "image" },
+                { label: this.$t("Regions"), value: "regions" },
+                { label: this.$t("Lines"), value: "lines" },
+                { label: this.$t("Text"), value: "text" },
+                { label: this.$t("Images"), value: "image" },
             ].map((category) => ({
                 ...category,
                 selected: this.category === category.value,
@@ -188,8 +188,8 @@ export default {
          */
         tableHeaders() {
             return [
-                { label: "Type", value: "name", sortable: true },
-                { label: "# in Document", value: "frequency", sortable: true },
+                { label: this.$t("Type"), value: "name", sortable: true },
+                { label: this.$t("# in Document"), value: "frequency", sortable: true },
             ];
         },
     },

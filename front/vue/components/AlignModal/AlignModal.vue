@@ -1,7 +1,7 @@
 <template>
     <EscrModal class="escr-align-modal">
         <template #modal-header>
-            <h2>Align {{ scope }}</h2>
+            <h2>{{ $t("Align {scope}", { scope: $t(scope) }) }}</h2>
             <EscrButton
                 color="text"
                 :on-click="onCancel"
@@ -14,13 +14,13 @@
         </template>
         <template #modal-content>
             <h3>
-                Transcription<span
-                    aria-label="required"
+                {{ $t("Transcription") }}<span
+                    :aria-label="$t('required')"
                     class="escr-required"
                 >*</span>
             </h3>
             <DropdownField
-                label="Transcription"
+                :label="$t('Transcription')"
                 :disabled="disabled || !transcriptions"
                 :options="transcriptionOptions"
                 :on-change="handleTranscriptionChange"
@@ -29,8 +29,8 @@
             />
             <hr>
             <h3>
-                Textual Witness<span
-                    aria-label="required"
+                {{ $t("Textual Witness") }}<span
+                    :aria-label="$t('required')"
                     class="escr-required"
                 >*</span>
             </h3>
@@ -44,7 +44,7 @@
                 />
                 <DropdownField
                     v-if="textualWitnessType === 'select'"
-                    label="Textual witness"
+                    :label="$t('Textual witness')"
                     :disabled="disabled || !textualWitnesses"
                     :options="textualWitnessOptions"
                     :on-change="handleTextualWitnessSelectionChange"
@@ -59,33 +59,33 @@
             </div>
             <hr>
             <h3 class="escr-align-settings">
-                Settings <EscrButton
+                {{ $t("Settings") }} <EscrButton
                     color="link-secondary"
-                    :label="`${showAdvanced ? 'Hide' : 'Show'} advanced settings`"
+                    :label="showAdvanced ? $t('Hide advanced settings') : $t('Show advanced settings')"
                     :on-click="showHideAdvanced"
                 />
             </h3>
             <TextField
                 :disabled="disabled"
-                help-text="Name for the new transcription layer produced by this alignment."
+                :help-text="$t('Name for the new transcription layer produced by this alignment.')"
                 :on-input="handleLayerNameInput"
                 :value="layerName"
                 :max-length="512"
-                placeholder="Enter layer name"
-                label="Layer Name"
+                :placeholder="$t('Enter layer name')"
+                :label="$t('Layer Name')"
                 required
             />
             <EscrAlert
                 v-if="overwriteWarningVisible"
                 color="danger"
-                message="Reusing an existing layer name will overwrite that layer."
+                :message="$t('Reusing an existing layer name will overwrite that layer.')"
             />
             <ArrayField
                 :on-change="handleRegionTypesChange"
                 :options="regionTypesOptions"
                 class="escr-region-types"
-                help-text="Select region types to include in the alignment."
-                label="Region Types"
+                :help-text="$t('Select region types to include in the alignment.')"
+                :label="$t('Region Types')"
             />
             <div class="escr-form-field escr-fulldoc-field escr-checkbox-field">
                 <label>
@@ -95,11 +95,10 @@
                         :checked="fullDoc === true"
                         @change="handleUseFullChange"
                     >
-                    Use full transcribed document
+                    {{ $t("Use full transcribed document") }}
                 </label>
                 <span class="escr-help-text">
-                    If checked, the aligner will use all transcribed pages of the document to find
-                    matches. If unchecked, it will compare each page to the text separately.
+                    {{ $t("If checked, the aligner will use all transcribed pages of the document to find matches. If unchecked, it will compare each page to the text separately.") }}
                 </span>
             </div>
             <div class="escr-form-field escr-merge-field escr-checkbox-field">
@@ -110,11 +109,10 @@
                         :checked="merge === true"
                         @change="handleMergeChange"
                     >
-                    Merge aligned text with existing transcription
+                    {{ $t("Merge aligned text with existing transcription") }}
                 </label>
                 <span class="escr-help-text">
-                    If checked, the aligner will reuse the text of the original transcription when
-                    alignment could not be performed; if unchecked, those lines will be blank.
+                    {{ $t("If checked, the aligner will reuse the text of the original transcription when alignment could not be performed; if unchecked, those lines will be blank.") }}
                 </span>
             </div>
             <div class="escr-form-field escr-hyphens-field escr-checkbox-field">
@@ -125,11 +123,10 @@
                         :checked="addHyphens === true"
                         @change="handleAddHyphensChange"
                     >
-                    Add hyphens to words broken across lines
+                    {{ $t("Add hyphens to words broken across lines") }}
                 </label>
                 <span class="escr-help-text">
-                    If checked, the aligner will automatically insert hyphens when it detects a
-                    word was split across two lines in the ground truth.
+                    {{ $t("If checked, the aligner will automatically insert hyphens when it detects a word was split across two lines in the ground truth.") }}
                 </span>
             </div>
             <hr v-if="showAdvanced">
@@ -141,13 +138,13 @@
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
             <EscrButton
                 color="primary"
-                label="Align"
+                :label="$t('Align')"
                 :on-click="onSubmit"
                 :disabled="disabled || invalid"
             />
@@ -284,12 +281,12 @@ export default {
         textalWitnessTypeOptions() {
             return [
                 {
-                    label: "Select Existing",
+                    label: this.$t("Select Existing"),
                     value: "select",
                     selected: this.textualWitnessType === "select",
                 },
                 {
-                    label: "Upload New",
+                    label: this.$t("Upload New"),
                     value: "upload",
                     selected: this.textualWitnessType === "upload",
                 },

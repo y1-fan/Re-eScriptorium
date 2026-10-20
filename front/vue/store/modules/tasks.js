@@ -10,6 +10,7 @@ import {
     transcribeDocument,
 } from "../../../src/api";
 import initialFormState from "../util/initialFormState";
+import { t } from "../../i18n";
 
 // initial state
 const state = () => ({
@@ -61,7 +62,7 @@ const actions = {
                 ...witness,
             });
         } else {
-            throw new Error("Error: alignment failed, no form fields found");
+            throw new Error(t("Error: alignment failed, no form fields found"));
         }
     },
     /**
@@ -86,7 +87,7 @@ const actions = {
                 "alerts/add",
                 {
                     color: "success",
-                    message: "Task canceled successfully",
+                    message: t("Task canceled successfully"),
                 },
                 { root: true },
             );
@@ -317,7 +318,7 @@ const actions = {
                 parts,
             });
         } else {
-            throw new Error("Unable to create transcription layer.");
+            throw new Error(t("Unable to create transcription layer."));
         }
     },
 };

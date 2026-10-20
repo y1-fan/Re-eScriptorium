@@ -16,13 +16,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        Tags management
+                        {{ $t("Tags management") }}
                     </h5>
                     <button
                         type="button"
                         class="close"
                         data-dismiss="modal"
-                        aria-label="Close"
+                        :aria-label="$t('Close')"
                     >
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -45,7 +45,7 @@
                                 ref="tagName"
                                 type="text"
                                 class="form-control m-1"
-                                placeholder="Type to add a tag"
+                                :placeholder="$t('Type to add a tag')"
                                 @focusout="updateSingleTag()"
                             >
                             <input
@@ -68,7 +68,7 @@
                             <input
                                 :id="'checkbox-tag-' + tag.pk"
                                 type="checkbox"
-                                title="Assign this tag to selected documents."
+                                :title="$t('Assign this tag to selected documents.')"
                                 @click="assignSingleTag(tag.pk)"
                             >
                             <input

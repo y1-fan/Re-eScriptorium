@@ -13,7 +13,7 @@
             v-else
             class="status"
         >
-            Not initiated
+            {{ $t("Not initiated") }}
         </span>
     </div>
 </template>

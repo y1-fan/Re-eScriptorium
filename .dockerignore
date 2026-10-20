@@ -10,3 +10,5 @@ ci/
 .idea
 variables.env
 .python-version
+SourceHanSerifSC/
+.i18n_dump/

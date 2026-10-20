@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Import images, segmentation and transcriptions described by METS</h3>
+        <h3>{{ $t("Import images, segmentation and transcriptions described by METS") }}</h3>
         <fieldset>
             <SegmentedButtonGroup
                 color="secondary"
@@ -18,13 +18,13 @@
                     @change="handleFileChange"
                 >
                 <span class="escr-help-text">
-                    A single ZIP archive described by a METS file contained inside it.
+                    {{ $t("A single ZIP archive described by a METS file contained inside it.") }}
                 </span>
             </div>
             <div v-else>
                 <TextField
-                    label="Remote METS URI"
-                    placeholder="Enter METS file URI"
+                    :label="$t('Remote METS URI')"
+                    :placeholder="$t('Enter METS file URI')"
                     :invalid="invalid['metsUri']"
                     :label-visible="false"
                     :value="metsUri"
@@ -32,9 +32,9 @@
                 />
             </div>
             <TextField
-                label="Transcription Name"
-                help-text="The name of the resulting transcription layer."
-                placeholder="Name"
+                :label="$t('Transcription Name')"
+                :help-text="$t('The name of the resulting transcription layer.')"
+                :placeholder="$t('Name')"
                 :invalid="invalid['layerName']"
                 :value="layerName"
                 :on-input="handleLayerNameInput"
@@ -47,11 +47,10 @@
                         :checked="overwrite === true"
                         @change="handleOverwriteChange"
                     >
-                    Overwrite Existing Segmentation and Transcriptions
+                    {{ $t("Overwrite Existing Segmentation and Transcriptions") }}
                 </label>
                 <span class="escr-help-text">
-                    Overwriting destroys existing regions, lines and any bound transcriptions
-                    before importing.
+                    {{ $t("Overwriting destroys existing regions, lines and any bound transcriptions before importing.") }}
                 </span>
             </div>
         </fieldset>
@@ -83,8 +82,8 @@ export default {
         }),
         metsOptions() {
             return [
-                { value: "url", label: "Enter URL", selected: this.metsType === "url" },
-                { value: "local", label: "Upload file", selected: this.metsType === "local" }
+                { value: "url", label: this.$t("Enter URL"), selected: this.metsType === "url" },
+                { value: "local", label: this.$t("Upload file"), selected: this.metsType === "local" }
             ];
         },
     },

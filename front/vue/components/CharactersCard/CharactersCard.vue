@@ -1,7 +1,7 @@
 <template>
     <div :class="classes">
         <div class="escr-card-header">
-            <h2>{{ label }}</h2>
+            <h2>{{ $t(label) }}</h2>
             <div class="escr-card-actions">
                 <SegmentedButtonGroup
                     v-if="compact"
@@ -25,7 +25,7 @@
             <div
                 v-for="item in items"
                 :key="item.char || 'no-character'"
-                v-tooltip.bottom="item.char ? unicodeCodePoint(item.char) : 'empty string'"
+                v-tooltip.bottom="item.char ? unicodeCodePoint(item.char) : $t('empty string')"
             >
                 <!-- handle space -->
                 <dt :class="item.char === ' ' ? 'space-char' : ''">
@@ -38,7 +38,7 @@
         <EscrLoader
             v-else
             :loading="loading"
-            no-data-message="There are no characters to display."
+            :no-data-message="$t('There are no characters to display.')"
         />
     </div>
 </template>
@@ -115,8 +115,8 @@ export default {
          */
         sortOptions() {
             return [
-                { label: "by Character", value: "char" },
-                { label: "by Frequency", value: "frequency" },
+                { label: this.$t("by Character"), value: "char" },
+                { label: this.$t("by Frequency"), value: "frequency" },
             ].map((sort) => ({
                 ...sort,
                 selected: this.sort === sort.value,

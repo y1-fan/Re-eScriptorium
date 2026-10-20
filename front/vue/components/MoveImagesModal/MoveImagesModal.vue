@@ -1,14 +1,13 @@
 <template>
     <EscrModal class="escr-moveimages-modal">
         <template #modal-header>
-            <h2>Move Image{{ selectedParts.length > 1 ? "s" : "" }}</h2>
+            <h2>{{ $tn(selectedParts.length, "Move Image", "Move Images") }}</h2>
         </template>
         <template #modal-content>
-            Move {{ selectedParts.length }} selected image{{ selectedParts.length > 1 ? "s" : "" }}
-            to the following position
+            {{ moveMessage }}
             <h3>
-                Location<span
-                    aria-label="required"
+                {{ $t("Location") }}<span
+                    :aria-label="$t('required')"
                     class="escr-required"
                 >*</span>
             </h3>
@@ -22,8 +21,8 @@
                 />
             </div>
             <h3>
-                New Position<span
-                    aria-label="required"
+                {{ $t("New Position") }}<span
+                    :aria-label="$t('required')"
                     class="escr-required"
                 >*</span>
             </h3>
@@ -32,18 +31,18 @@
                     type="number"
                     min="1"
                     :max="partsCount"
-                    placeholder="Number"
+                    :placeholder="$t('Number')"
                     :disabled="disabled"
                     :value="index"
                     @input="(e) => handleChange('index', e.target.value)"
                 >
-                <span>of {{ partsCount }}</span>
+                <span>{{ $t("of {count}", { count: partsCount }) }}</span>
             </label>
         </template>
         <template #modal-actions>
             <EscrButton
                 color="outline-primary"
-                label="Cancel"
+                :label="$t('Cancel')"
                 :on-click="onCancel"
                 :disabled="disabled"
             />
@@ -54,19 +53,20 @@
                 placement="bottom"
             >
                 <EscrButton
-                    label="Move"
+                    :label="$t('Move')"
                     :on-click="() => {}"
                     :disabled="true"
                 />
                 <template #popper>
-                    Position is required and must be between 1 and
-                    {{ partsCount.toString() }}
+                    {{ $t("Position is required and must be between 1 and {count}", {
+                        count: partsCount.toString(),
+                    }) }}
                 </template>
             </VDropdown>
             <EscrButton
                 v-else
                 color="primary"
-                label="Move"
+                :label="$t('Move')"
                 :on-click="onSubmit"
                 :disabled="disabled || invalid"
             />
@@ -121,17 +121,29 @@ export default {
             selectedParts: (state) => state.images.selectedParts,
         }),
         /**
+         * Message describing how many images will be moved
+         */
+        moveMessage() {
+            return this.selectedParts.length > 1
+                ? this.$t("Move {count} selected images to the following position", {
+                    count: this.selectedParts.length,
+                })
+                : this.$t("Move {count} selected image to the following position", {
+                    count: this.selectedParts.length,
+                });
+        },
+        /**
          * Choices for location (before/after the chosen position)
          */
         locationOptions() {
             return [
                 {
-                    label: "Before",
+                    label: this.$t("Before"),
                     value: "before",
                     selected: this.location === "before",
                 },
                 {
-                    label: "After",
+                    label: this.$t("After"),
                     value: "after",
                     selected: this.location === "after",
                 },

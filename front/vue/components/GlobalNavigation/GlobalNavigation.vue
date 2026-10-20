@@ -16,7 +16,7 @@
                 <button
                     v-if="isAuthenticated && !searchDisabled"
                     href="/search/"
-                    aria-label="global search"
+                    :aria-label="$t('Global search')"
                     class="escr-global-search"
                     :class="{
                         'escr-globalnav-icon': true,
@@ -26,19 +26,19 @@
                     }"
                 >
                     <SearchLargeIcon />
-                    <span>Search</span>
+                    <span>{{ $t("Search") }}</span>
                 </button>
 
                 <template #popper>
                     <ul class="escr-vertical-menu escr-tasks-menu">
                         <li>
                             <a href="/search/">
-                                <span>Search</span>
+                                <span>{{ $t("Search") }}</span>
                             </a>
                         </li>
                         <li>
                             <a href="/find-replace/">
-                                <span>Find and Replace</span>
+                                <span>{{ $t("Find and Replace") }}</span>
                             </a>
                         </li>
                     </ul>
@@ -47,38 +47,38 @@
             <a
                 v-if="isAuthenticated"
                 href="/projects/"
-                aria-label="projects list"
+                :aria-label="$t('Projects list')"
                 :class="{
                     'escr-globalnav-icon': true,
                     'escr-globalnav-icon-active': location.href.endsWith('/projects/'),
                 }"
             >
                 <HomeIcon />
-                <span>Projects</span>
+                <span>{{ $t("Projects") }}</span>
             </a>
             <a
                 v-if="isAuthenticated"
                 href="/models/"
-                aria-label="models list"
+                :aria-label="$t('Models list')"
                 :class="{
                     'escr-globalnav-icon': true,
                     'escr-globalnav-icon-active': location.href.endsWith('/models/'),
                 }"
             >
                 <ModelsIcon />
-                <span>Models</span>
+                <span>{{ $t("Models") }}</span>
             </a>
             <a
                 v-if="isAuthenticated"
                 href="/training/"
-                aria-label="training page"
+                :aria-label="$t('Training page')"
                 :class="{
                     'escr-globalnav-icon': true,
                     'escr-globalnav-icon-active': location.href.endsWith('/training/'),
                 }"
             >
                 <TrainIcon />
-                <span>Training</span>
+                <span>{{ $t("Training") }}</span>
             </a>
             <VMenu
                 v-if="isAuthenticated"
@@ -87,7 +87,7 @@
                 :triggers="['click']"
             >
                 <button
-                    aria-label="expand task monitoring and usage menu"
+                    :aria-label="$t('Expand task monitoring and usage menu')"
                     :class="{
                         'escr-globalnav-icon': true,
                         'escr-globalnav-icon-active': ['/tasks/', '/quotas/', '/downloads/'].some(
@@ -97,23 +97,23 @@
                     type="button"
                 >
                     <TasksIcon />
-                    <span>Tasks</span>
+                    <span>{{ $t("Tasks") }}</span>
                 </button>
                 <template #popper>
                     <ul class="escr-vertical-menu escr-tasks-menu">
                         <li>
                             <a href="/documents/tasks/">
-                                <span>Task Monitoring</span>
+                                <span>{{ $t("Task Monitoring") }}</span>
                             </a>
                         </li>
                         <li>
                             <a href="/quotas/">
-                                <span>Task Usage</span>
+                                <span>{{ $t("Task Usage") }}</span>
                             </a>
                         </li>
                         <li>
                             <a href="/downloads/">
-                                <span>Downloads</span>
+                                <span>{{ $t("Downloads") }}</span>
                             </a>
                         </li>
                     </ul>
@@ -128,7 +128,7 @@
                 :triggers="['click']"
             >
                 <button
-                    aria-label="expand user profile menu"
+                    :aria-label="$t('Expand user profile menu')"
                     :class="{
                         'escr-globalnav-icon': true,
                         'escr-globalnav-icon-active': profilePages.some(
@@ -138,23 +138,23 @@
                     type="button"
                 >
                     <ProfileIcon />
-                    <span>Profile</span>
+                    <span>{{ $t("Profile") }}</span>
                 </button>
                 <template #popper>
                     <ul class="escr-vertical-menu">
                         <li>
                             <a href="/profile/">
-                                <span>Profile Settings</span>
+                                <span>{{ $t("Profile Settings") }}</span>
                             </a>
                         </li>
                         <li>
                             <a href="/password_change/">
-                                <span>Change Password</span>
+                                <span>{{ $t("Change Password") }}</span>
                             </a>
                         </li>
                         <li v-if="canInvite">
                             <a href="/invite/">
-                                <span>Invite Users</span>
+                                <span>{{ $t("Invite Users") }}</span>
                             </a>
                         </li>
                         <li
@@ -162,17 +162,17 @@
                             class="new-section"
                         >
                             <a href="/quotas/instance/">
-                                <span>Leaderboard</span>
+                                <span>{{ $t("Leaderboard") }}</span>
                             </a>
                         </li>
                         <li v-if="isStaff">
                             <a href="/admin/">
-                                <span>Site Administration</span>
+                                <span>{{ $t("Site Administration") }}</span>
                             </a>
                         </li>
                         <li class="new-section">
                             <a href="/logout/">
-                                <span>Logout</span>
+                                <span>{{ $t("Logout") }}</span>
                             </a>
                         </li>
                     </ul>
@@ -181,16 +181,16 @@
             <a
                 v-else
                 href="/login"
-                aria-label="sign in"
+                :aria-label="$t('Sign in')"
                 class="escr-globalnav-icon"
             >
                 <ProfileIcon />
-                <span>Sign in</span>
+                <span>{{ $t("Sign in") }}</span>
             </a>
             <input
                 id="escr-lightdark-switcher"
                 type="checkbox"
-                aria-label="switch to light mode"
+                :aria-label="$t('Switch to light mode')"
                 :checked="currentTheme === 'dark-mode'"
                 @change="toggleTheme"
             >

@@ -7,7 +7,7 @@
             <select
                 id="document-transcriptions"
                 v-model="$store.state.transcriptions.selectedTranscription"
-                title="Transcription"
+                :title="$t('Transcription')"
                 class="form-control custom-select"
             >
                 <option
@@ -22,7 +22,7 @@
             <button
                 type="button"
                 class="btn btn-primary fas fa-cog ml-1"
-                title="Transcription management"
+                :title="$t('Transcription management')"
                 data-toggle="modal"
                 data-target="#transcriptionsManagement"
             />
@@ -39,21 +39,21 @@
                     <div class="modal-content">
                         <div class="modal-header ui-draggable-handle">
                             <h5 class="modal-title">
-                                Transcriptions management
+                                {{ $t("Transcriptions management") }}
                             </h5>
                             <button
                                 type="button"
                                 class="close"
                                 data-dismiss="modal"
-                                aria-label="Close"
+                                :aria-label="$t('Close')"
                             >
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div>
-                                <span>Compare</span>
-                                <span class="float-right">Delete</span>
+                                <span>{{ $t("Compare") }}</span>
+                                <span class="float-right">{{ $t("Delete") }}</span>
                             </div>
                             <div
                                 v-for="trans in $store.state.transcriptions.all"
@@ -77,7 +77,7 @@
                                     v-if="trans.name!='manual' && trans.pk != $store.state.transcriptions.selectedTranscription"
                                     :data-trPk="trans.pk"
                                     class="btn btn-danger fas fa-trash"
-                                    title="Completely remove the transcription and all of its content!&#10;You can not remove the manual or the current transcription."
+                                    :title="$t('Completely remove the transcription and all of its content! You can not remove the manual or the current transcription.')"
                                     @click="deleteTranscription"
                                 />
                             </div>
@@ -104,7 +104,7 @@ export default {
         async deleteTranscription(ev) {
             let transcription = ev.target.dataset.trpk;
             // I lied, it's only archived
-            if(confirm("Are you sure you want to delete the transcription? This will affect ALL pages of the document!")) {
+            if(confirm(this.$t("Are you sure you want to delete the transcription? This will affect ALL pages of the document!"))) {
                 this.$store.dispatch("transcriptions/archive", transcription)
                     .then((test) => {
                         ev.target.parentNode.remove();

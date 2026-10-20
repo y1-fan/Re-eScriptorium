@@ -16,6 +16,7 @@ import tasks from "./modules/tasks";
 import transcription from "./modules/transcription";
 import user from "./modules/user";
 import "floating-vue/dist/style.css";
+import "../i18n";
 
 Vue.use(Vuex);
 

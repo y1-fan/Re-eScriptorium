@@ -1,17 +1,16 @@
 <template>
     <div class="hidden-images-indicator">
         <span v-if="filteredParts.length < parts.length">
-            {{ parts.length - filteredParts.length }}
-            images hidden by search filter
+            {{ $t("{count} images hidden by search filter", { count: parts.length - filteredParts.length }) }}
         </span>
         <span
             v-if="hiddenSelectedCount > 0"
         >
-            including {{ hiddenSelectedCount }} selected images
+            {{ $t("including {count} selected images", { count: hiddenSelectedCount }) }}
         </span>
         <EscrButton
             v-if="filteredParts.length < parts.length"
-            label="Clear search filter"
+            :label="$t('Clear search filter')"
             color="outline-secondary"
             size="small"
             :disabled="loading && loading.images"
@@ -22,8 +21,7 @@
             </template>
         </EscrButton>
         <span v-if="parts.length < partsCount">
-            Only the first {{ parts.length }} images currently visible;
-            click "Load More" below to load more images.
+            {{ $t('Only the first {count} images currently visible; click "Load More" below to load more images.', { count: parts.length }) }}
         </span>
     </div>
 </template>
